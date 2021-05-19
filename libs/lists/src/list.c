@@ -6,7 +6,6 @@
 */
 
 #include "list.h"
-#include <criterion/criterion.h>
 
 list_t *node_list_create(void *data)
 {

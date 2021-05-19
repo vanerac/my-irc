@@ -3,3 +3,4 @@ CMakeLists.txt
 myteams_*
 *.a
 .idea
+*.gc*
