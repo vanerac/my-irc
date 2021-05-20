@@ -23,11 +23,10 @@ OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
 ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 
-CFLAGS				+=	-Iincludes/ -I../includes/ -Wall -Wextra -Werror
+CFLAGS				+=	-Iincludes/ -I../includes/ -Wall -Wextra
 
 RM					=	rm -rf
 LD					=	gcc
-
 
 all:				$(NAME)
 
