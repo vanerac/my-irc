@@ -8,7 +8,9 @@
 NAME				=	lib_sockets.a
 TNAME				=	unit_test
 
-SRC					=
+SRC					=	socket_client.c	\
+						socket_server.c	\
+						sockets.c
 
 TRC					=
 
