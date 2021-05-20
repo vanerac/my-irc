@@ -4,3 +4,4 @@ myteams_*
 *.a
 .idea
 *.gc*
+*.o

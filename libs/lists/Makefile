@@ -5,7 +5,7 @@
 ## Makefile ...
 ##
 
-NAME				=	lib_node.a
+NAME				=	../../libnode.a
 TNAME				=	unit_test
 
 SRC					=	list.c			\
@@ -21,7 +21,7 @@ TOBJ				=	$(TRC:.c=.o)
 
 OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
-CFLAGS				+=	-Iincludes/
+CFLAGS				+=	-Iincludes/ -Wall -Wextra -Werror
 
 RM					=	rm -rf
 LD					=	gcc
@@ -40,9 +40,9 @@ clean:
 fclean:				clean
 					$(RM) $(NAME) $(TNAME)
 
-tests_run:			CFLAGS += -lcriterion -l ./$(NAME) -g -lgcov --coverage
-tests_run:			$(NAME) $(TOBJECTS)
-					$(LD) -o $(TNAME) $(TOBJECTS)
+tests_run:			CFLAGS += -lcriterion -g --coverage
+tests_run:			$(TOBJECTS) $(OBJECTS)
+					$(LD) -o $(TNAME) $(TOBJECTS) $(OBJECTS)
 					./$(TNAME)
 
 re:					fclean all

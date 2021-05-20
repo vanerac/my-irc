@@ -17,8 +17,8 @@ fclean:
 		make -C ./lists fclean
 		make -C ./sockets fclean
 tests_run:
-		make -C ./lists test_run
-		make -C ./sockets test_run
+		make -C ./lists tests_run
+		make -C ./sockets tests_run
 re:
 		make -C ./lists re
 		make -C ./sockets re

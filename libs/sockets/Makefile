@@ -5,7 +5,7 @@
 ## Makefile ...
 ##
 
-NAME				=	lib_sockets.a
+NAME				=	../../libsockets.a
 TNAME				=	unit_test
 
 SRC					=	socket_client.c	\
@@ -19,11 +19,9 @@ TOBJ				=	$(TRC:.c=.o)
 
 OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
-CFLAGS				+=	-Iincludes/
+CFLAGS				+=	-Iincludes/ -Wall -Wextra -Werror
 
 RM					=	rm -rf
-LD					=	gcc
-
 
 all:				$(NAME)
 
@@ -38,8 +36,8 @@ fclean:				clean
 					$(RM) $(NAME) $(TNAME)
 
 tests_run:			CFLAGS += -lcriterion -l ./$(NAME) -g -lgcov --coverage
-tests_run:			$(NAME) $(TOBJECTS)
-					$(LD) -o $(TNAME) $(TOBJECTS)
+tests_run:			$(TOBJECTS) $(OBJECTS)
+					$(LD) -o $(TNAME) $(TOBJECTS) $(OBJECTS)
 					./$(TNAME)
 
 re:					fclean all

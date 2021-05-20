@@ -5,7 +5,7 @@
 ## Makefile ...
 ##
 
-NAME				=	myteams_client
+NAME				=	../myteams_client
 TNAME				=	unit_test
 
 SRC					=
@@ -16,10 +16,14 @@ OBJ					=	$(SRC:.c=.o)
 TOBJ				=	$(TRC:.c=.o)
 OMAIN				=	$(MAIN:.c=.o)
 
+LIBS				=	../libnode.a 		\
+						../libsockets.a
+
 OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
+ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 
-CFLAGS				+=	-Iincludes/ -I../includes/
+CFLAGS				+=	-Iincludes/ -I../includes/ -Wall -Wextra -Werror
 
 RM					=	rm -rf
 LD					=	gcc
@@ -27,9 +31,8 @@ LD					=	gcc
 
 all:				$(NAME)
 
-
 $(NAME):			$(OMAIN) $(OBJECTS)
-					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN)
+					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN) $(LIBS)
 
 clean:
 					$(RM) $(OBJECTS) $(TOBJECTS) $(OMAIN)
