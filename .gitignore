@@ -5,3 +5,4 @@ myteams_*
 .idea
 *.gc*
 *.o
+.vscode
