@@ -41,11 +41,15 @@ clean:
 
 fclean:				clean
 						$(RM) 	$(OBJECTS) 			\
-							$(TOBJECTS)			\
-							$(OBJECTS:.o=.gcno) \
-						  	$(OBJECTS:.o=.gcda) \
-						  	$(TOBJECTS:.o=.gcno)\
-							$(TOBJECTS:.o=.gcda)\
+								$(TOBJECTS)			\
+								$(OBJECTS:.o=.gcno) \
+						  		$(OBJECTS:.o=.gcda) \
+						  		$(TOBJECTS:.o=.gcno)\
+								$(TOBJECTS:.o=.gcda)\
+								$(OMAIN:.o=.gcda)	\
+								$(OMAIN:.o=.gcno)	\
+								$(TNAME)			\
+								$(NAME)
 
 tests_run:			CFLAGS += -g
 tests_run:			$(TOBJECTS) $(OBJECTS)

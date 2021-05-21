@@ -11,6 +11,9 @@
 int handle_command(int socket)
 {
     (void) socket;
+    // todo find session
+    // todo read
+    // todo parse command
     return 0;
 }
 
