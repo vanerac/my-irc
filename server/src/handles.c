@@ -7,9 +7,6 @@
 
 #include "sockets.h"
 #include "list.h"
-#include "../../includes/sockets.h"
-#include "../../includes/list.h"
-#include "../../libs/sockets/includes/sockets.h"
 
 int handle_command(int socket)
 {

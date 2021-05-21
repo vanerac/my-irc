@@ -10,8 +10,7 @@
 #include <ctype.h>
 #include "struct.h"
 #include "sockets.h"
-#include "../includes/sockets.h"
-#include "includes/server.h"
+#include "server.h"
 
 int check_args(int ac, char **ag)
 {

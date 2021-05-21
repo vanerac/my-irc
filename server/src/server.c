@@ -8,9 +8,7 @@
 #include "sockets.h"
 #include "handles.h"
 #include "list.h"
-#include "../../includes/list.h"
-#include "../../includes/sockets.h"
-#include "../includes/handles.h"
+
 
 void set_ports(fd_set *rfds, list_t *sessions)
 {
