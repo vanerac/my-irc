@@ -6,3 +6,5 @@ myteams_*
 *.gc*
 *.o
 .vscode
+vgcore.*
+unit_test

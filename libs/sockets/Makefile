@@ -30,14 +30,20 @@ $(NAME):			$(OBJECTS)
 					ar rc $(NAME) $(OBJECTS)
 
 clean:
-					$(RM) $(OBJECTS) $(TOBJECTS)
+					$(RM) 	$(OBJECTS) 			\
+                    		$(TOBJECTS)			\
+                    		$(OBJECTS:.o=.gcno) \
+                    		$(OBJECTS:.o=.gcda) \
+                    		$(TOBJECTS:.o=.gcno)\
+                    		$(TOBJECTS:.o=.gcda)
 
 fclean:				clean
 					$(RM) $(NAME) $(TNAME)
 
-tests_run:			CFLAGS += -lcriterion -l ./$(NAME) -g -lgcov --coverage
-tests_run:			$(TOBJECTS) $(OBJECTS)
-					$(LD) -o $(TNAME) $(TOBJECTS) $(OBJECTS)
+tests_run:			CFLAGS += -g
+tests_run:			$(NAME) $(TOBJECTS) $(OBJECTS)
+					$(CC) -o $(TNAME) $(TOBJECTS) $(OBJECTS) \
+						-lcriterion -lgcov --coverage
 					./$(TNAME)
 
 re:					fclean all

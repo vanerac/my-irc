@@ -8,4 +8,6 @@
 #ifndef C_SERVER_H
 #define C_SERVER_H
 
+int myteams_server(int server_socket);
+
 #endif //C_SERVER_H

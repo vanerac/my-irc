@@ -8,7 +8,8 @@
 NAME				=	../myteams_server
 TNAME				=	unit_test
 
-SRC					=	server.c
+SRC					=	server.c	\
+						handles.c
 TRC					=	test_basic.c
 MAIN				= 	main.c
 
@@ -23,7 +24,7 @@ OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
 ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 
-CFLAGS				+=	-Iincludes/ -I../includes/ -Wall -Wextra -Werror
+CFLAGS				+=	-Iincludes/ -I../includes/ -Wall -Wextra -Werror -g
 
 RM					=	rm -rf
 
@@ -34,15 +35,20 @@ $(NAME):			$(OMAIN) $(OBJECTS)
 					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN) $(LIBS)
 
 clean:
-					$(RM) $(OBJECTS) $(TOBJECTS) $(OMAIN)
+					$(RM) 	$(OBJECTS) 			\
+							$(TOBJECTS)			\
+							$(OBJECTS:.o=.gcno) \
+						  	$(OBJECTS:.o=.gcda) \
+						  	$(TOBJECTS:.o=.gcno)\
+							$(TOBJECTS:.o=.gcda)\
 
 fclean:				clean
 					$(RM) $(NAME) $(TNAME) $(OMAIN)
 
-tests_run:			CFLAGS += -lcriterion -g --coverage
+tests_run:			CFLAGS += -g --coverage
 tests_run:			$(TOBJECTS) $(OBJECTS)
-					$(CC) -o $(TNAME) $(TOBJECTS) $(OBJECTS) $(ABS_LIBS)
-					./$(TNAME)
+					$(CC) -o $(TNAME) $(TOBJECTS) $(OBJECTS) $(LIBS)\
+ 						-lgcov -lcriterion
 
 re:					fclean all
 
