@@ -34,16 +34,19 @@ all:				$(NAME)
 $(NAME):			$(OMAIN) $(OBJECTS)
 					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN) $(LIBS)
 
-clean:
-					$(RM) 	$(OBJECTS) 			\
-							$(TOBJECTS)			\
-							$(OBJECTS:.o=.gcno) \
-						  	$(OBJECTS:.o=.gcda) \
-						  	$(TOBJECTS:.o=.gcno)\
-							$(TOBJECTS:.o=.gcda)\
-
 fclean:				clean
-					$(RM) $(NAME) $(TNAME) $(OMAIN)
+					$(RM) $(NAME) $(TNAME)
+
+clean:
+						$(RM) 	$(OBJECTS) 			\
+								$(TOBJECTS)			\
+								$(OBJECTS:.o=.gcno) \
+								$(OBJECTS:.o=.gcda) \
+						  		$(TOBJECTS:.o=.gcno)\
+								$(TOBJECTS:.o=.gcda)\
+								$(OMAIN:.o=.gcda)	\
+								$(OMAIN:.o=.gcno)	\
+								$(OMAIN)
 
 tests_run:			CFLAGS += -g --coverage
 tests_run:			$(TOBJECTS) $(OBJECTS)
