@@ -26,7 +26,6 @@ ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 CFLAGS				+=	-Iincludes/ -I../includes/ -Wall -Wextra
 
 RM					=	rm -rf
-LD					=	gcc
 
 all:				$(NAME)
 
@@ -37,11 +36,17 @@ clean:
 					$(RM) $(OBJECTS) $(TOBJECTS) $(OMAIN)
 
 fclean:				clean
-					$(RM) $(NAME) $(TNAME) $(OMAIN)
+						$(RM) 	$(OBJECTS) 			\
+							$(TOBJECTS)			\
+							$(OBJECTS:.o=.gcno) \
+						  	$(OBJECTS:.o=.gcda) \
+						  	$(TOBJECTS:.o=.gcno)\
+							$(TOBJECTS:.o=.gcda)\
 
-tests_run:			CFLAGS += -lcriterion -g -lgcov --coverage
-tests_run:			$(NAME) $(TOBJECTS)
-					$(LD) -o $(TNAME) $(TOBJECTS) $(OBJECTS)
+tests_run:			CFLAGS += -g
+tests_run:			$(TOBJECTS) $(OBJECTS)
+					$(CC) -o $(TNAME) $(TOBJECTS) $(OBJECTS) $(LIBS)\
+ 						-lgcov -lcriterion
 					./$(TNAME)
 
 re:					fclean all

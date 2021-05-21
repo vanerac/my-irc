@@ -7,3 +7,4 @@ myteams_*
 *.o
 .vscode
 vgcore.*
+unit_test

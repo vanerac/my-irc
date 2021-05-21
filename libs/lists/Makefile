@@ -12,9 +12,11 @@ SRC					=	list.c			\
 						list_delete.c	\
 						list_find.c
 
-TRC					=	test_create.c	\
-						test_delete.c	\
-						test_find.c
+TRC					=	tests_create.c	\
+						tests_delete.c	\
+						tests_find.c		\
+						tests_add.c		\
+						tests_utils.c
 
 OBJ					=	$(SRC:.c=.o)
 TOBJ				=	$(TRC:.c=.o)
@@ -24,7 +26,7 @@ TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
 CFLAGS				+=	-Iincludes/ -Wall -Wextra -Werror
 
 RM					=	rm -rf
-LD					=	gcc
+#LD					=	gcc
 
 
 
@@ -35,14 +37,20 @@ $(NAME):			$(OBJECTS)
 					ar rc $(NAME) $(OBJECTS)
 
 clean:
-					$(RM) $(OBJECTS) $(TOBJECTS)
+					$(RM) 	$(OBJECTS) 			\
+							$(TOBJECTS)			\
+							$(OBJECTS:.o=.gcno) \
+						  	$(OBJECTS:.o=.gcda) \
+						  	$(TOBJECTS:.o=.gcno)\
+							$(TOBJECTS:.o=.gcda)
 
 fclean:				clean
 					$(RM) $(NAME) $(TNAME)
 
-tests_run:			CFLAGS += -lcriterion -g --coverage
-tests_run:			$(TOBJECTS) $(OBJECTS)
-					$(LD) -o $(TNAME) $(TOBJECTS) $(OBJECTS)
+tests_run:			CFLAGS += -g
+tests_run:			$(NAME) $(TOBJECTS) $(OBJECTS)
+					$(CC) -o $(TNAME) $(TOBJECTS) $(OBJECTS)  \
+						-lcriterion -lgcov --coverage
 					./$(TNAME)
 
 re:					fclean all

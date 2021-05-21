@@ -35,15 +35,20 @@ $(NAME):			$(OMAIN) $(OBJECTS)
 					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN) $(LIBS)
 
 clean:
-					$(RM) $(OBJECTS) $(TOBJECTS) $(OMAIN)
+					$(RM) 	$(OBJECTS) 			\
+							$(TOBJECTS)			\
+							$(OBJECTS:.o=.gcno) \
+						  	$(OBJECTS:.o=.gcda) \
+						  	$(TOBJECTS:.o=.gcno)\
+							$(TOBJECTS:.o=.gcda)\
 
 fclean:				clean
 					$(RM) $(NAME) $(TNAME) $(OMAIN)
 
-tests_run:			CFLAGS += -lcriterion -g --coverage
+tests_run:			CFLAGS += -g --coverage
 tests_run:			$(TOBJECTS) $(OBJECTS)
-					$(CC) -o $(TNAME) $(TOBJECTS) $(OBJECTS) $(ABS_LIBS)
-					./$(TNAME)
+					$(CC) -o $(TNAME) $(TOBJECTS) $(OBJECTS) $(LIBS)\
+ 						-lgcov -lcriterion
 
 re:					fclean all
 
