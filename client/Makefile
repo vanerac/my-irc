@@ -8,7 +8,11 @@
 NAME				=	../myteams_client
 TNAME				=	unit_test
 
-SRC					=
+SRC					=	manager.c				\
+						tools.c					\
+						str_to_word_array.c		\
+						command_lib.c			\
+
 TRC					=
 MAIN				= 	main.c
 
