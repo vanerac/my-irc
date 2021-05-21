@@ -10,6 +10,8 @@
 #include <ctype.h>
 #include "struct.h"
 #include "sockets.h"
+#include "../includes/sockets.h"
+#include "includes/server.h"
 
 int check_args(int ac, char **ag)
 {
@@ -36,7 +38,6 @@ int main(int ac, char **ag)
     if ((server_fd = server_create(atoi(ag[1]))) == -1)
         return 84;
     printf("%i\n", server_fd);
-    // if (server(server_fd) == -1)
-        // return 84;
+    myteams_server(server_fd);
     return 0;
 }

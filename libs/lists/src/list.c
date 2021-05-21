@@ -31,9 +31,7 @@ bool node_insert_data(list_t *list, void *data)
 
     new->data = data;
 
-    new = list->prev;
     new->next = list->next;
-
     list->next = new;
 
     return true;

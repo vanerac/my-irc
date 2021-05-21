@@ -8,7 +8,8 @@
 NAME				=	../myteams_server
 TNAME				=	unit_test
 
-SRC					=	server.c
+SRC					=	server.c	\
+						handles.c
 TRC					=	test_basic.c
 MAIN				= 	main.c
 
@@ -23,7 +24,7 @@ OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
 ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 
-CFLAGS				+=	-Iincludes/ -I../includes/ -Wall -Wextra -Werror
+CFLAGS				+=	-Iincludes/ -I../includes/ -Wall -Wextra -Werror -g
 
 RM					=	rm -rf
 

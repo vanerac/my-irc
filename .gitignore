@@ -6,3 +6,4 @@ myteams_*
 *.gc*
 *.o
 .vscode
+vgcore.*

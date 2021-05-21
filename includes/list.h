@@ -8,6 +8,7 @@
 #ifndef C_LIST_H
 #define C_LIST_H
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
