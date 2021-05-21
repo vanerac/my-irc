@@ -36,20 +36,19 @@ all:				$(NAME)
 $(NAME):			$(OMAIN) $(OBJECTS)
 					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN) $(LIBS)
 
-clean:
-					$(RM) $(OBJECTS) $(TOBJECTS) $(OMAIN)
-
 fclean:				clean
+					$(RM) $(NAME) $(TNAME)
+
+clean:
 						$(RM) 	$(OBJECTS) 			\
 								$(TOBJECTS)			\
 								$(OBJECTS:.o=.gcno) \
-						  		$(OBJECTS:.o=.gcda) \
+								$(OBJECTS:.o=.gcda) \
 						  		$(TOBJECTS:.o=.gcno)\
 								$(TOBJECTS:.o=.gcda)\
 								$(OMAIN:.o=.gcda)	\
 								$(OMAIN:.o=.gcno)	\
-								$(TNAME)			\
-								$(NAME)
+								$(OMAIN)
 
 tests_run:			CFLAGS += -g
 tests_run:			$(TOBJECTS) $(OBJECTS)
