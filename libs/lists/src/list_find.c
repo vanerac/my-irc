@@ -26,5 +26,5 @@ list_t *node_find_fn(list_t *list, CHECKFN, void *data)
     list_t *ptr = list;
     for (; ptr && !check_fn(ptr->data, data); ptr = ptr->next);
 
-    return NULL;
+    return ptr;
 }
