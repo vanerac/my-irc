@@ -13,5 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install criterion
+      run:  |
+        sudo add-apt-repository ppa:snaipewastaken/ppa
+        sudo apt-get update
+        sudo apt-get install criterion-dev
+
     - name: Run tests
       run: make tests_run
