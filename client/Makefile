@@ -37,15 +37,15 @@ $(NAME):			$(OMAIN) $(OBJECTS)
 					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN) $(LIBS)
 
 clean:
-					$(RM) $(OBJECTS) $(TOBJECTS) $(OMAIN)
-
-fclean:				clean
-						$(RM) 	$(OBJECTS) 			\
+					$(RM) 	$(OBJECTS) 			\
 							$(TOBJECTS)			\
 							$(OBJECTS:.o=.gcno) \
 						  	$(OBJECTS:.o=.gcda) \
 						  	$(TOBJECTS:.o=.gcno)\
 							$(TOBJECTS:.o=.gcda)\
+
+fclean:				clean
+					$(RM) $(NAME) $(TNAME) $(OMAIN)
 
 tests_run:			CFLAGS += -g
 tests_run:			$(TOBJECTS) $(OBJECTS)
