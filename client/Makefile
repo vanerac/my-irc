@@ -27,14 +27,16 @@ OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
 ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 
-CFLAGS				+=	-Iincludes/ -I../includes/ -Wall -Wextra
+CFLAGS				+=	-Iincludes/ -I../includes/ -Wall
+
+#-Wextra    // a décommenter plus tard, flemme du warning "unused variables" la
 
 RM					=	rm -rf
 
 all:				$(NAME)
 
 $(NAME):			$(OMAIN) $(OBJECTS)
-					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN) $(LIBS)
+					$(CC) -o $(NAME) $(OBJECTS) -ldl $(OMAIN) $(LIBS)
 
 fclean:				clean
 					$(RM) $(NAME) $(TNAME)

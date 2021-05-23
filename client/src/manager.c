@@ -20,6 +20,8 @@ int search_command(char *cmd[], char *handle_cmd)
 
 void client_command_handler(struct data *var)
 {
+    void *handle = dlopen("./libs/myteams/libmyteams.so", RTLD_LAZY);
+
     char *cmd[] = {" /help", "/login", "/logout", "/users", "/user", "/send",
                     "/messages", "/subscribe", "/subscribed", "/unsubscribe",
                     "/use", "/create", "/list", "/info"};
@@ -36,9 +38,9 @@ void client_command_handler(struct data *var)
         write(0, "Unknow Command\n", 15);
         return;
     } else {
-        void (*fun_ptr_arr[])(struct data *) = {help, login , logout, user,
+        void (*fun_ptr_arr[])(struct data *, void *) = {help, login , logout, user,
         users,send, messages, subscribe, subscribed, unsubscribe, use, create,
         info, list};
-        (*fun_ptr_arr[to_point])(var);
+        (*fun_ptr_arr[to_point])(var, handle);
     }
 }
