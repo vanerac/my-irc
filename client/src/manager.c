@@ -18,29 +18,25 @@ int search_command(char *cmd[], char *handle_cmd)
     return (return_value);
 }
 
-void client_command_handler(struct data *var)
+void server_handler(struct data *var)
 {
-    void *handle = dlopen("./libs/myteams/libmyteams.so", RTLD_LAZY);
+    var->handle = dlopen("./libs/myteams/libmyteams.so", RTLD_LAZY);
 
-    char *cmd[] = {" /help", "/login", "/logout", "/users", "/user", "/send",
+    char *cmd[] = {"/help", "/login", "/logout", "/users", "/user", "/send",
                     "/messages", "/subscribe", "/subscribed", "/unsubscribe",
                     "/use", "/create", "/list", "/info"};
 
-    var->splitted_cmd = str_to_word_array(var->buffer_client, ' ');
+    var->splitted_cmd = str_to_word_array(var->buffer_server, ' ');
+    printf("HERE => %s\n", var->splitted_cmd[0]);
     int to_point = search_command(cmd, var->splitted_cmd[0]);
-
-    if (var->login == UNSET && to_point != 1){
-        printf("You must set a unsername first ! (/login [username])\n");
-        return;
-    }
 
     if (to_point == -1){
         write(0, "Unknow Command\n", 15);
         return;
     } else {
-        void (*fun_ptr_arr[])(struct data *, void *) = {help, login , logout, user,
+        void (*fun_ptr_arr[])(struct data *) = {help, login , logout, user,
         users,send, messages, subscribe, subscribed, unsubscribe, use, create,
         info, list};
-        (*fun_ptr_arr[to_point])(var, handle);
+        (*fun_ptr_arr[to_point])(var);
     }
 }

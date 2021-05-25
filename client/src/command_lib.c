@@ -7,90 +7,73 @@
 
 #include "client.h"
 
-void help(struct data *var, void *handle)
+void help(struct data *var)
 {
     printf("Here is the help\n");
-    var->buffer_client = var->buffer_client;
 }
 
-void login(struct data *var, void *handle)
+void login(struct data *var)
 {
-    void (*func)() = dlsym(handle, "client_event_logged_in");
-
-    if (array_size(var->splitted_cmd) >= 2){
-        var->login = var->splitted_cmd[1];
-        func("test1234", "test");
-    } else
-        return;
+    void (*func)() = dlsym(var->handle, "client_event_logged_in");
+    func("test1234", "test");
 }
 
-void logout(struct data *var, void *handle)
+void logout(struct data *var)
 {
-    var->login = UNSET;
+    printf("Here is the logout\n");
 }
 
-void user(struct data *var, void *handle)
+void user(struct data *var)
 {
     printf("Here is the user\n");
-    var->buffer_client = var->buffer_client;
 }
 
-void users(struct data *var, void *handle)
+void users(struct data *var)
 {
     printf("Here is the users\n");
-    var->buffer_client = var->buffer_client;
 }
 
-void send(struct data *var, void *handle)
+void send(struct data *var)
 {
     printf("Here is the send\n");
-    var->buffer_client = var->buffer_client;
 }
 
-void messages(struct data *var, void *handle)
+void messages(struct data *var)
 {
     printf("Here is the messages\n");
-    var->buffer_client = var->buffer_client;
 }
 
-void subscribe(struct data *var, void *handle)
+void subscribe(struct data *var)
 {
     printf("Here is the subscribe\n");
-    var->buffer_client = var->buffer_client;
 }
 
-void subscribed(struct data *var, void *handle)
+void subscribed(struct data *var)
 {
     printf("Here is the subscribed\n");
-    var->buffer_client = var->buffer_client;
 }
 
-void unsubscribe(struct data *var, void *handle)
+void unsubscribe(struct data *var)
 {
     printf("Here is the unsubscribe\n");
-    var->buffer_client = var->buffer_client;
 }
 
-void use(struct data *var, void *handle)
+void use(struct data *var)
 {
     printf("Here is the use\n");
-    var->buffer_client = var->buffer_client;
 }
 
-void create(struct data *var, void *handle)
+void create(struct data *var)
 {
     printf("Here is the create\n");
-    var->buffer_client = var->buffer_client;
 }
 
-void info(struct data *var, void *handle)
+void info(struct data *var)
 {
     printf("Here is the info\n");
-    var->buffer_client = var->buffer_client;
 }
 
-void list(struct data *var, void *handle)
+void list(struct data *var)
 {
     printf("Here is the list\n");
-    var->buffer_client = var->buffer_client;
 }

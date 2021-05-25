@@ -11,8 +11,6 @@
 int main(int ac, char **ag)
 {
     struct data *var = malloc(sizeof(var));
-    var->login = malloc(sizeof(char *));
-    var->login = UNSET;
 
     if (ac < 2)
         return 84;
@@ -21,15 +19,20 @@ int main(int ac, char **ag)
     var->buffer_client = calloc(sizeof(char), 200);
     var->buffer_server = calloc(sizeof(char), 200);
 
-    while (var->buffer_client) {
-        read(var->server_fd, var->buffer_server, 200);
-        // printf("buffer server => %s\n", var->buffer_server);
-        memset(var->buffer_server, 0, 200);
+    while (1) {
 
-        read(0, var->buffer_client, 200);
-        client_command_handler(var);
-        // printf("buffer client => %s\n", var->buffer_client);
-        write(var->server_fd, var->buffer_client, strlen(var->buffer_client));
-        memset(var->buffer_client, 0, 200);
+        if (read(var->server_fd, var->buffer_server, 200) != 0){
+            printf("buffer server => %s\n", var->buffer_server);
+            server_handler(var);
+            memset(var->buffer_server, 0, 200);
+            printf("SERVER\n");
+        }
+
+        if (read(0, var->buffer_client, 200) != 0){
+            printf("buffer client => %s\n", var->buffer_client);
+            write(var->server_fd, var->buffer_client, strlen(var->buffer_client));
+            memset(var->buffer_client, 0, 200);
+            printf("CLIENT\n");
+        }
     }
 }
