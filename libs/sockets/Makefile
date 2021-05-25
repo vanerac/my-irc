@@ -10,7 +10,9 @@ TNAME				=	unit_test
 
 SRC					=	socket_client.c	\
 						socket_server.c	\
-						sockets.c
+						sockets.c		\
+						binary_encoder.c\
+						io_functions.c
 
 TRC					=
 
@@ -19,7 +21,7 @@ TOBJ				=	$(TRC:.c=.o)
 
 OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
-CFLAGS				+=	-Iincludes/ -Wall -Wextra -Werror
+CFLAGS				+=	-Iincludes/ #-Wall -Wextra -Werror
 
 RM					=	rm -rf
 
