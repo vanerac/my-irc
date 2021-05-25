@@ -39,7 +39,7 @@ char *socket_read(int fd)
         ret = strcatndup(ret, buffer, rd);
     char *decoded = binary_decode(ret);
     free(ret);
-    return ret;
+    return decoded;
 }
 
 size_t socket_write(int socket, char *buffer)
