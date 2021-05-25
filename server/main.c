@@ -30,18 +30,6 @@ int check_args(int ac, char **ag)
 
 int main(int ac, char **ag)
 {
-    list_t *list = node_list_create((void *)1);
-    int data1 = 1;
-    int data2 = 2;
-    int data3 = 3;
-    node_append_data(list, &data1);
-    node_append_data(list, &data2);
-    node_append_data(list, &data3);
-
-    list = node_delete_data(list, &data2);
-
-
-
     int server_fd = 0;
 
     if (check_args(ac, ag) == -1)
