@@ -12,7 +12,17 @@
 
 typedef int uuid;
 
-typedef struct user {
+enum data_type {
+    USER,
+    TEAM,
+    CHANNEL,
+    THREAD,
+    REPLY,
+    MESSAGE
+};
+
+typedef struct __attribute__((__packed__)) user {
+    enum data_type type;
     uuid uid;
     char *username;
 } t_user;
@@ -20,10 +30,11 @@ typedef struct user {
 typedef struct session_s {
     int socket;
     bool logged;
-    t_user user_data;
-} session_t;
+    t_user *user_data;
+} t_session;
 
-typedef struct teams {
+typedef struct __attribute__((__packed__)) teams {
+    enum data_type type;
     uuid uid;               // uuid of the teams
     char *name;
     char *desc;
@@ -31,31 +42,34 @@ typedef struct teams {
     list_t *channels;  // list of all channels in the team
 } t_teams;
 
-typedef struct channel {
+typedef struct __attribute__((__packed__)) channel {
+    enum data_type type;
     uuid uid;               // uuid of channel
     list_t *messages;  // list of all channel messages
 } t_channel;
 
-typedef struct dm {
+typedef struct __attribute__((__packed__)) dm {
+    enum data_type type;
     uuid user_first;
     uuid user_second;
     list_t *messages;
 } t_dm;
 
 enum message_type {
-    THREAD = 0,
-    REPLY = 1,
-    DM = 2
+    M_THREAD = 0,
+    M_REPLY = 1,
+    M_DM = 2
 };
 
-typedef struct messages {
+typedef struct __attribute__((__packed__)) messages {
+    enum data_type type;
     uuid uid;               // uuid for message
     struct user *source;      // user who send message
     void *destination;           // channel or user
     char *body;             // message
     char *title;               // null if not a thread
     list_t *replies;   // list of replies
-    enum message_type type;
+    enum message_type m_type;
 } t_messages;
 
 typedef struct global {

@@ -5,16 +5,16 @@
 ** server.c file
 */
 
+#include "struct.h"
 #include "sockets.h"
 #include "handles.h"
 #include "list.h"
-
 
 void set_ports(fd_set *rfds, list_t *sessions)
 {
     FD_ZERO(rfds);
     for (list_t *i = sessions; i; i = i->next) {
-        FD_SET(*((int *) i->data), rfds);
+        FD_SET(((t_session *) i->data)->socket, rfds);
     }
 }
 
@@ -36,7 +36,7 @@ int myteams_server(int server_socket)
 {
     fd_set rfds;
     FD_ZERO(&rfds);
-//    int server_socket = server_create(port);
+    //    int server_socket = server_create(port);
 
     int *data = malloc(sizeof(int));
     *data = server_socket;
@@ -47,8 +47,9 @@ int myteams_server(int server_socket)
     if (server_socket < 0)
         return 84;
 
-    while (true)
-        listen_updates(server_socket, sessions, &rfds);
+    int status = 0;
+    while (status == 0)
+        status = listen_updates(server_socket, sessions, &rfds);
 
     return 0;
 }

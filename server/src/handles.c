@@ -5,6 +5,8 @@
 ** handles.c file
 */
 
+#include <stdio.h>
+#include "struct.h"
 #include "sockets.h"
 #include "list.h"
 
@@ -22,9 +24,11 @@ void handle_connections(list_t *sessions, int server_socket)
     int client = socket_accept(server_socket);
     if (client < 0)
         return;
-    int *data = malloc(sizeof(int));
+    t_session *data = malloc(sizeof(t_session));
     if (!data)
         return;
-    *data = client;
+    data->socket = client;
+    data->logged = false;
+    data->user_data = NULL;
     node_append_data(sessions, data);
 }
