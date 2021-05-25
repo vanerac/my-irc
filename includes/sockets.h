@@ -10,7 +10,7 @@
 
 #include <stddef.h>
 
-#define RD_SIZE 1024;
+#define RD_SIZE 1024
 
 int socket_create(void);
 int socket_bind(int socket_fd, int port);
