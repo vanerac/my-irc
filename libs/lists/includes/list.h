@@ -8,6 +8,7 @@
 #ifndef C_LIST_H
 #define C_LIST_H
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
@@ -33,11 +34,11 @@ bool node_insert_data(list_t *list, void *data);
 
 //void *pop_node(list_t *list);
 
-void node_delete(list_t *node);
+list_t *node_delete(list_t *list, list_t *node);
 
-void node_delete_data(list_t *list, void *data);
+list_t *node_delete_data(list_t *list, void *data);
 
-void node_delete_fn(list_t *list, CHECKFN, void *data);
+list_t *node_delete_fn(list_t *list, CHECKFN, void *data);
 
 list_t *node_find_data(list_t *list, void *data);
 

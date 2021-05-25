@@ -27,12 +27,12 @@ bool node_insert_data(list_t *list, void *data)
 
     list_t *new = malloc(sizeof(list_t));
 
-    LIST_CHECKPTR(new) NULL;
+    LIST_CHECKPTR(new) false;
 
     new->data = data;
-
     new->next = list->next;
     list->next = new;
+    new->prev = list;
 
     return true;
 }
