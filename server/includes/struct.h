@@ -14,7 +14,14 @@ typedef int uuid;
 
 typedef struct user {
     uuid uid;
+    char *username;
 } t_user;
+
+typedef struct session_s {
+    int socket;
+    bool logged;
+    t_user user_data;
+} session_t;
 
 typedef struct teams {
     uuid uid;               // uuid of the teams
@@ -28,6 +35,12 @@ typedef struct channel {
     uuid uid;               // uuid of channel
     list_t *messages;  // list of all channel messages
 } t_channel;
+
+typedef struct dm {
+    uuid user_first;
+    uuid user_second;
+    list_t *messages;
+} t_dm;
 
 enum message_type {
     THREAD = 0,
