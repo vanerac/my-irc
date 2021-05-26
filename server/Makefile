@@ -9,7 +9,8 @@ NAME				=	../myteams_server
 TNAME				=	unit_test
 
 SRC					=	server.c	\
-						handles.c
+						handles.c	\
+						commands/help.c
 TRC					=	test_basic.c
 MAIN				= 	main.c
 

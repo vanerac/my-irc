@@ -8,9 +8,10 @@
 #ifndef STRUCT_H_
 #define STRUCT_H_
 
+#include <uuid/uuid.h>
 #include "list.h"
 
-typedef int uuid;
+typedef uuid_t uuid;
 
 enum data_type {
     USER,
@@ -26,12 +27,6 @@ typedef struct __attribute__((__packed__)) user {
     uuid uid;
     char *username;
 } t_user;
-
-typedef struct session_s {
-    int socket;
-    bool logged;
-    t_user *user_data;
-} t_session;
 
 typedef struct __attribute__((__packed__)) teams {
     enum data_type type;

@@ -9,8 +9,9 @@
 #define B_NWP_400_BDX_4_1_MYTEAMS_CORENTIN_MAS_HANDLES_H
 
 #include "list.h"
+#include "server.h"
 
-int handle_command(int socket);
+int handle_command(session_t *session);
 
 void handle_connections(list_t *sessions, int server_socket);
 

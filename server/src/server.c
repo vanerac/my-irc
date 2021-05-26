@@ -14,8 +14,13 @@ void set_ports(fd_set *rfds, list_t *sessions)
 {
     FD_ZERO(rfds);
     for (list_t *i = sessions; i; i = i->next) {
-        FD_SET(((t_session *) i->data)->socket, rfds);
+        FD_SET(((session_t *) i->data)->socket, rfds);
     }
+}
+
+static bool find_session_by_fd(void *iterator, void *value)
+{
+    return ((session_t *) iterator)->socket == *(int *) value;
 }
 
 int listen_updates(int server_socket, list_t *sessions, fd_set *rfds)
@@ -24,10 +29,12 @@ int listen_updates(int server_socket, list_t *sessions, fd_set *rfds)
     FD_SET(server_socket, rfds);
     if (select(FD_SETSIZE, rfds, NULL, NULL, NULL) == -1)
         return 84;
-    for (int i = 0; i < FD_SETSIZE; ++i)
-        if (FD_ISSET(i, rfds) && i != server_socket)
-            handle_command(i);
-        else if (FD_ISSET(i, rfds) && i == server_socket)
+    int status = 0;
+    for (int i = 0; i < FD_SETSIZE && status == 0; ++i)
+        if (FD_ISSET(i, rfds) && i != server_socket) {
+            list_t *n = node_find_fn(sessions, &find_session_by_fd, &i);
+            status = handle_command(n ? n->data : NULL);
+        } else if (FD_ISSET(i, rfds) && i == server_socket)
             handle_connections(sessions, server_socket);
     return 0;
 }
