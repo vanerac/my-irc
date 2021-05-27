@@ -1,18 +1,16 @@
 ##
 ## EPITECH PROJECT, 2021
-## qui lit ca meme ?
+## makefile
 ## File description:
-## Makefile ...
+## Makefile
 ##
 
-NAME				=	../../libsockets.a
+NAME				=	../../libmessage.a
 TNAME				=	unit_test
 
-SRC					=	socket_client.c	\
-						socket_server.c	\
-						sockets.c
-						# binary_encoder.c\
-						# io_functions.c
+SRC					=	message_send.c	\
+						message_receive.c	\
+						utils_send.c
 
 TRC					=
 
@@ -21,7 +19,7 @@ TOBJ				=	$(TRC:.c=.o)
 
 OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
-CFLAGS				+=	-Iincludes/ #-Wall -Wextra -Werror
+CFLAGS				+=	-I./includes/ #-W -Wall -Wextra -Werror
 
 RM					=	rm -rf
 

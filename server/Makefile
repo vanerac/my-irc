@@ -19,7 +19,8 @@ TOBJ				=	$(TRC:.c=.o)
 OMAIN				=	$(MAIN:.c=.o)
 
 LIBS				=	../libnode.a 		\
-						../libsockets.a
+						../libsockets.a		\
+						../libmessage.a
 
 OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))

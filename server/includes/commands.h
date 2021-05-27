@@ -9,6 +9,8 @@
 #define C_COMMANDS_H
 
 #include "server.h"
+#include "command_enum.h"
+
 enum command_return {
     SUCCESS = 0,
     UNKNOWN_TEAM = -1,
@@ -19,22 +21,23 @@ enum command_return {
     SYSTEM_ERROR = -6
 };
 
-enum command_e {
-    INVALID,
-    HELP,
-    LOGIN,
-    LOGOUT,
-    USERS,
-    USR,
-    SEND,
-    MESSAGES,
-    SUBSCRIBE,
-    UNSUBSCRIBE,
-    USE,
-    CREATE,
-    LIST,
-    INFO
-};
+// enum command_e {
+//     INVALID,
+//     HELP,
+//     LOGIN,
+//     LOGOUT,
+//     USERS,
+//     USR,
+//     SEND,
+//     MESSAGES,
+//     SUBSCRIBE,
+//     SUBSCRIBED,
+//     UNSUBSCRIBE,
+//     USE,
+//     CREATE,
+//     LIST,
+//     INFO
+// };
 
 enum command_return command_help(session_t *session, char **args);
 enum command_return command_login(session_t *session, char **args);
@@ -44,6 +47,7 @@ enum command_return command_usr(session_t *session, char **args);
 enum command_return command_send(session_t *session, char **args);
 enum command_return command_messages(session_t *session, char **args);
 enum command_return command_subscribe(session_t *session, char **args);
+enum command_return command_subscribed(session_t *session, char **args);
 enum command_return command_unsubscribe(session_t *session, char **args);
 enum command_return command_use(session_t *session, char **args);
 enum command_return command_create(session_t *session, char **args);

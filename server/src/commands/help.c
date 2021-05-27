@@ -16,6 +16,7 @@ const command_t commands_list[] = {
     {SEND, NULL, &command_send},
     {MESSAGES, NULL, &command_messages},
     {SUBSCRIBE, NULL, &command_subscribe},
+    {SUBSCRIBED, NULL, &command_subscribed},
     {UNSUBSCRIBE, NULL, &command_unsubscribe},
     {USE, NULL, &command_use},
     {CREATE, NULL, &command_create},
@@ -66,6 +67,12 @@ enum command_return command_messages(session_t *session, char **args)
 }
 
 enum command_return command_subscribe(session_t *session, char **args)
+{
+    (void) session, (void) args;
+    return SUCCESS;
+}
+
+enum command_return command_subscribed(session_t *session, char **args)
 {
     (void) session, (void) args;
     return SUCCESS;

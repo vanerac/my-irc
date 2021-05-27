@@ -11,6 +11,7 @@
 #include "sockets.h"
 #include "list.h"
 #include "server.h"
+#include "message.h"
 
 command_t parse_command(char *buffer)
 {
@@ -21,12 +22,19 @@ command_t parse_command(char *buffer)
 
 int handle_command(session_t *session)
 {
+    message_info_t info;
+
     if (!session)
         return SYSTEM_ERROR;
-    char *buffer = socket_read(session->socket);
-    if (!buffer)
+    if (!read_message(&info, session->socket))
         return SYSTEM_ERROR;
-    command_t cmd = parse_command(buffer);
+    // char *buffer = socket_read(session->socket);
+    // if (!buffer)
+        // return SYSTEM_ERROR;
+    command_t cmd = parse_command(info.args);
+
+    // envoie de info.args dans la fonction parse_command a la place du buffer
+
     return cmd.fn(session, cmd.args);
 }
 
