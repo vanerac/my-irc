@@ -20,7 +20,6 @@ int main(int ac, char **ag)
     var->buffer_server = calloc(sizeof(char), 200);
 
     while (1) {
-
         if (read(var->server_fd, var->buffer_server, 200) != 0){
             printf("buffer server => %s\n", var->buffer_server);
             server_handler(var);

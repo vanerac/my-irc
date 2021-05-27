@@ -11,7 +11,12 @@ TNAME				=	unit_test
 SRC					=	manager.c				\
 						tools.c					\
 						str_to_word_array.c		\
-						command_lib.c			\
+						command_lib_first.c		\
+						command_lib_second.c	\
+						command_lib_third.c		\
+						command_lib_fourth.c	\
+						command_lib_fifth.c		\
+						command_lib_sixth.c		\
 
 TRC					=
 MAIN				= 	main.c
@@ -27,9 +32,9 @@ OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
 ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 
-CFLAGS				+=	-Iincludes/ -I../includes/ -Wall
+CFLAGS				+=	-Iincludes/ -I../includes/
 
-#-Wextra    // a décommenter plus tard, flemme du warning "unused variables" la
+#-Wall -Wextra    // a décommenter plus tard, flemme du warning "unused variables" la
 
 RM					=	rm -rf
 
