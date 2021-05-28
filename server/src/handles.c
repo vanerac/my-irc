@@ -19,8 +19,16 @@ command_t parse_command(char *buffer)
     return commands_list[INVALID];
 }
 
+int reply_to_client(session_t *session, enum command_e command,
+    enum command_return status
+)
+{
+    // todo
+    (void) session, (void) command, (void) status;
+    return 0;
+}
 
-int handle_command(session_t *session)
+int handle_command(t_global *global, session_t *session)
 {
     message_info_t info;
 
@@ -30,12 +38,13 @@ int handle_command(session_t *session)
         return SYSTEM_ERROR;
     // char *buffer = socket_read(session->socket);
     // if (!buffer)
-        // return SYSTEM_ERROR;
+    // return SYSTEM_ERROR;
     command_t cmd = parse_command(info.args);
 
     // envoie de info.args dans la fonction parse_command a la place du buffer
 
-    return cmd.fn(session, cmd.args);
+    return reply_to_client(session, cmd.command_id,
+        cmd.fn(global, session, cmd.args));
 }
 
 void handle_connections(list_t *sessions, int server_socket)

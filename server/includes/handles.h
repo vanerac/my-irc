@@ -11,7 +11,7 @@
 #include "list.h"
 #include "server.h"
 
-int handle_command(session_t *session);
+int handle_command(t_global *global, session_t *session);
 
 void handle_connections(list_t *sessions, int server_socket);
 

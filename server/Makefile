@@ -8,9 +8,11 @@
 NAME				=	../myteams_server
 TNAME				=	unit_test
 
-SRC					=	server.c	\
-						handles.c	\
-						commands/help.c
+SRC					=	server.c		\
+						handles.c		\
+						commands/help.c	\
+						commands/use.c	\
+						commands/create.c
 TRC					=	test_basic.c
 MAIN				= 	main.c
 
@@ -34,7 +36,7 @@ RM					=	rm -rf
 all:				$(NAME)
 
 $(NAME):			$(OMAIN) $(OBJECTS)
-					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN) $(LIBS)
+					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN) $(LIBS) -luuid
 
 fclean:				clean
 					$(RM) $(NAME) $(TNAME)
@@ -53,7 +55,7 @@ clean:
 tests_run:			CFLAGS += -g --coverage
 tests_run:			$(TOBJECTS) $(OBJECTS)
 					$(CC) -o $(TNAME) $(TOBJECTS) $(OBJECTS) $(LIBS)\
- 						-lgcov -lcriterion
+ 						-lgcov -lcriterion -luuid
 
 re:					fclean all
 

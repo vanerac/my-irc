@@ -24,86 +24,80 @@ const command_t commands_list[] = {
     {INFO, NULL, &command_info},
 };
 
-enum command_return command_help(session_t *session, char **args)
+enum command_return command_help(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
     return SUCCESS;
 }
 
-enum command_return command_login(session_t *session, char **args)
+enum command_return command_login(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
+    // is user already logged in ?
+    //
     return SUCCESS;
 }
 
-enum command_return command_logout(session_t *session, char **args)
+enum command_return command_logout(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
     return SUCCESS;
 }
 
-enum command_return command_users(session_t *session, char **args)
+enum command_return command_users(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
     return SUCCESS;
 }
 
-enum command_return command_usr(session_t *session, char **args)
+enum command_return command_usr(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
     return SUCCESS;
 }
 
-enum command_return command_send(session_t *session, char **args)
+enum command_return command_send(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
     return SUCCESS;
 }
 
-enum command_return command_messages(session_t *session, char **args)
+enum command_return command_messages(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
     return SUCCESS;
 }
 
-enum command_return command_subscribe(session_t *session, char **args)
+enum command_return command_subscribe(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
     return SUCCESS;
 }
 
-enum command_return command_subscribed(session_t *session, char **args)
+enum command_return command_subscribed(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
     return SUCCESS;
 }
 
-enum command_return command_unsubscribe(session_t *session, char **args)
+enum command_return command_unsubscribe(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
     return SUCCESS;
 }
 
-enum command_return command_use(session_t *session, char **args)
+
+
+
+
+enum command_return command_list(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
     return SUCCESS;
 }
 
-enum command_return command_create(session_t *session, char **args)
+enum command_return command_info(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args;
-    return SUCCESS;
-}
-
-enum command_return command_list(session_t *session, char **args)
-{
-    (void) session, (void) args;
-    return SUCCESS;
-}
-
-enum command_return command_info(session_t *session, char **args)
-{
-    (void) session, (void) args;
+    (void) session, (void) args, (void) global;
     return SUCCESS;
 }

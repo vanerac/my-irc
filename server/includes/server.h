@@ -16,9 +16,9 @@ typedef struct session_s {
     int socket;
     bool logged;
     t_user *user_data;
-    uuid *current_team;
-    uuid *current_channel;
-    uuid *current_thread;
+    t_teams *current_team;
+    t_channel *current_channel;
+    t_messages *current_thread;
 } session_t;
 
 #endif //C_SERVER_H
