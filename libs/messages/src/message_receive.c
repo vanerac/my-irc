@@ -22,7 +22,7 @@ static enum command_e get_command_enum(uint8_t command)
         : (command == 0x02) ? LOGIN
         : (command == 0x03) ? LOGOUT
         : (command == 0x04) ? USERS
-        : (command == 0x05) ? USR
+        : (command == 0x05) ? USER
         : (command == 0x06) ? SEND
         : (command == 0x07) ? MESSAGES
         : (command == 0x08) ? SUBSCRIBE
