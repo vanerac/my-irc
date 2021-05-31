@@ -70,11 +70,17 @@ typedef struct __attribute__((__packed__)) messages {
     enum message_type m_type;
 } t_messages;
 
+typedef struct __attribute__((__packed__)) libfunctions {
+    char *name;
+    void (*func)();
+} libfunctions_t;
+
 typedef struct global {
     list_t *all_user;  // list of all users
     list_t *teams;     // list of all the teams
     list_t *private_message;   //
     list_t *sessions;
+    libfunctions_t *lib_func;
 } t_global;
 
 #endif /* !STRUCT_H_ */

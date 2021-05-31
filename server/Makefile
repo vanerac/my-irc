@@ -39,7 +39,7 @@ RM					=	rm -rf
 all:				$(NAME)
 
 $(NAME):			$(OMAIN) $(OBJECTS)
-					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN) $(LIBS) -luuid
+					$(CC) -o $(NAME) $(OBJECTS) -ldl $(OMAIN) $(LIBS) -luuid
 
 fclean:				clean
 					$(RM) $(NAME) $(TNAME)
