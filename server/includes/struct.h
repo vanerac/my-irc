@@ -31,17 +31,17 @@ typedef struct __attribute__((__packed__)) user {
 
 typedef struct __attribute__((__packed__)) teams {
     enum data_type type;
-    uuid uid;               // uuid of the teams
+    uuid uid;
     char *name;
     char *desc;
-    list_t *users;     // list of all users in the team
-    list_t *channels;  // list of all channels in the team
+    list_t *users;
+    list_t *channels;
 } t_teams;
 
 typedef struct __attribute__((__packed__)) channel {
     enum data_type type;
-    uuid uid;               // uuid of channel
-    list_t *messages;  // list of all channel messages
+    uuid uid;
+    list_t *messages;
     char *desc;
     char *name;
 } t_channel;
@@ -61,12 +61,12 @@ enum message_type {
 
 typedef struct __attribute__((__packed__)) messages {
     enum data_type type;
-    uuid uid;               // uuid for message
-    struct user *source;      // user who send message
-    void *destination;           // channel or user
-    char *body;             // message
-    char *title;               // null if not a thread
-    list_t *replies;   // list of replies
+    uuid uid;
+    struct user *source;
+    void *destination;
+    char *body;
+    char *title;
+    list_t *replies;
     enum message_type m_type;
 } t_messages;
 
@@ -76,9 +76,9 @@ typedef struct __attribute__((__packed__)) libfunctions {
 } libfunctions_t;
 
 typedef struct global {
-    list_t *all_user;  // list of all users
-    list_t *teams;     // list of all the teams
-    list_t *private_message;   //
+    list_t *all_user;
+    list_t *teams;
+    list_t *private_message;
     list_t *sessions;
     libfunctions_t *lib_func;
 } t_global;

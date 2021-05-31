@@ -13,7 +13,7 @@ extern list_t *list;
 void create_list();
 void cleanup();
 
-Test(list_delete, last_node, .init=create_list, .fini=cleanup)
+Test(list_delete, last_node, .init = create_list, .fini = cleanup)
 {
     int data1 = 1;
     int data2 = 2;
@@ -28,7 +28,7 @@ Test(list_delete, last_node, .init=create_list, .fini=cleanup)
     cr_assert(node_find_data(list, &data3) == NULL);
 }
 
-Test(list_delete, first_node, .init=create_list, .fini=cleanup)
+Test(list_delete, first_node, .init = create_list, .fini = cleanup)
 {
     int data1 = 1;
     int data2 = 2;
@@ -41,7 +41,7 @@ Test(list_delete, first_node, .init=create_list, .fini=cleanup)
     cr_assert(list = second);
 }
 
-Test(list_delete, middle_node, .init=create_list, .fini=cleanup)
+Test(list_delete, middle_node, .init = create_list, .fini = cleanup)
 {
     int data1 = 1;
     int data2 = 2;
@@ -56,7 +56,7 @@ Test(list_delete, middle_node, .init=create_list, .fini=cleanup)
     cr_assert(node_find_data(list, &data3) != NULL);
 }
 
-Test(list_delete, only_node, .init=create_list, .fini=cleanup)
+Test(list_delete, only_node, .init = create_list, .fini = cleanup)
 {
     list = node_delete(list, list);
     cr_assert(list == NULL);

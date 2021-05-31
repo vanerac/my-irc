@@ -58,7 +58,7 @@ clean:
 tests_run:			CFLAGS += -g --coverage
 tests_run:			$(TOBJECTS) $(OBJECTS)
 					$(CC) -o $(TNAME) $(TOBJECTS) $(OBJECTS) $(LIBS)\
- 						-lgcov -lcriterion -luuid
+						-lgcov -lcriterion -luuid
 
 re:					fclean all
 
