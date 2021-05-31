@@ -13,6 +13,7 @@ SRC					=	server.c		\
 						commands/help.c	\
 						commands/use.c	\
 						commands/create.c
+						commands/login.c
 TRC					=	test_basic.c
 MAIN				= 	main.c
 

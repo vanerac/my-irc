@@ -37,15 +37,6 @@ enum command_return command_help(t_global *global, session_t *session,
     return SUCCESS;
 }
 
-enum command_return command_logout(t_global *global, session_t *session,
-    char **args
-)
-{
-    (void) args, (void) global;
-    server_event_user_logged_out((char const *)session->user_data->uid);
-    session->user_data = NULL;
-    return SUCCESS;
-}
 
 enum command_return command_users(t_global *global, session_t *session,
     char **args
