@@ -8,9 +8,14 @@
 #ifndef C_SERVER_H
 #define C_SERVER_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "struct.h"
 
 int myteams_server(int server_socket);
+char **str_to_word_array(char *str, char spliter_char);
 
 typedef struct session_s {
     int socket;

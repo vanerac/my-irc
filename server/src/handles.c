@@ -13,15 +13,17 @@
 #include "server.h"
 #include "message.h"
 
-command_t parse_command(char *buffer)
+command_t parse_command(char *buffer, enum command_e command)
 {
-    (void) buffer;
-    return commands_list[INVALID];
+    command_t new_command;
+
+    new_command.args = str_to_word_array(buffer, ' ');
+    new_command.command_id = command;
+    return new_command;
 }
 
 int reply_to_client(session_t *session, enum command_e command,
-    enum command_return status
-)
+    enum command_return status)
 {
     // todo
     (void) session, (void) command, (void) status;
@@ -39,7 +41,7 @@ int handle_command(t_global *global, session_t *session)
     // char *buffer = socket_read(session->socket);
     // if (!buffer)
     // return SYSTEM_ERROR;
-    command_t cmd = parse_command(info.args);
+    command_t cmd = parse_command(info.args, info.command);
 
     // envoie de info.args dans la fonction parse_command a la place du buffer
 
