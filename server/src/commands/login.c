@@ -14,7 +14,8 @@ enum command_return command_logout(t_global *global, session_t *session,
 )
 {
     (void) args, (void) global;
-    server_event_user_logged_out((char const *)session->user_data->uid);
+//    global->lib_func[0].func((char const *)session->user_data->uid);
+//    server_event_user_logged_out((char const *)session->user_data->uid);
     session->user_data = NULL;
     return SUCCESS;
 }
@@ -28,7 +29,7 @@ static t_user *create_user(t_global *global, char *username)
     ret->type = USER;
     ret->username = strdup(username);
     node_append_data(global->all_user, ret);
-    server_event_user_created((char const *) ret->uid, ret->username);
+//    server_event_user_created((char const *) ret->uid, ret->username);
     return ret;
 }
 
@@ -55,7 +56,7 @@ enum command_return command_login(t_global *global, session_t *session,
 
     if (!session->user_data)
         return SYSTEM_ERROR;
-    server_event_user_logged_in((char const *) session->user_data->uid);
+//    server_event_user_logged_in((char const *) session->user_data->uid);
 
     return SUCCESS;
 }
