@@ -51,7 +51,7 @@ int myteams_server(int server_socket)
     *data = server_socket;
     list_t *sessions = node_list_create(data);
     t_global global = {.all_user = NULL, .private_message = NULL, .teams =
-    NULL};
+    NULL, .sessions = sessions};
     if (!sessions)
         return 84;
 

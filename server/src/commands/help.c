@@ -5,6 +5,7 @@
 ** help.c file
 */
 
+#include <logging_server.h>
 #include "commands.h"
 
 const command_t commands_list[] = {{INVALID, NULL, NULL, NULL},
@@ -36,21 +37,13 @@ enum command_return command_help(t_global *global, session_t *session,
     return SUCCESS;
 }
 
-enum command_return command_login(t_global *global, session_t *session,
-    char **args
-)
-{
-    (void) session, (void) args, (void) global;
-    // is user already logged in ?
-    //
-    return SUCCESS;
-}
-
 enum command_return command_logout(t_global *global, session_t *session,
     char **args
 )
 {
-    (void) session, (void) args, (void) global;
+    (void) args, (void) global;
+    server_event_user_logged_out((char const *)session->user_data->uid);
+    session->user_data = NULL;
     return SUCCESS;
 }
 
