@@ -14,6 +14,7 @@ SRC					=	manager.c				\
 						command_lib_first.c		\
 						command_lib_second.c	\
 						command_lib_third.c		\
+						function_pointer.c
 
 TRC					=
 MAIN				= 	main.c
@@ -30,7 +31,7 @@ OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
 ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 
-CFLAGS				+=	-Iincludes/ -I../includes/
+CFLAGS				+=	-Iincludes/ -I../includes/ -g
 
 #-Wall -Wextra    // a décommenter plus tard, flemme du warning "unused variables" la
 

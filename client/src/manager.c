@@ -7,35 +7,35 @@
 
 #include "client.h"
 
-int search_command(char *cmd[], char *handle_cmd)
+void server_handler(message_info_t *info, lib_func_client_t *lib_client)
 {
-    int return_value = -1;
-
-    for (int i = 0; i < 14; i++){
-        if (strcmp(handle_cmd, cmd[i]) == 0)
-            return_value = i;
+    char **args = NULL;
+    
+    if (info->args) {
+        if (!(args = str_to_word_array(info->args, ' ')))
+            return;
     }
-    return (return_value);
-}
-
-void server_handler(struct data *var)
-{
-    var->handle = dlopen("./libs/myteams/libmyteams.so", RTLD_LAZY);
-    char *cmd[] = {"/help", "/login", "/logout", "/user", "/users", "/send",
-                "/messages", "/subscribe", "/subscribed", "/unsubscribe",
-                "/use", "/create", "/info", "/list"};
-
-    var->splitted_cmd = str_to_word_array(var->buffer_server, ' ');
-    int to_point = search_command(cmd, var->splitted_cmd[0]);
-
-    if (to_point == -1){
-        printf("Unkwown Command\n");
-        return;
-    } else {
-        void (*fun_ptr_arr[])(struct data *) = {help, login , logout, user,
-        users,send, messages, subscribe, subscribed, unsubscribe, use, create,
-        info, list};
-
-        (*fun_ptr_arr[to_point])(var);
+    for (int i = 0; i < 15; i++) {
+        if (func_ptr_client[i].command == info->command)
+            (*func_ptr_client[i].func)(args, lib_client);
+            return;
     }
+    
+    // char *cmd[] = {"/help", "/login", "/logout", "/user", "/users", "/send",
+    //             "/messages", "/subscribe", "/subscribed", "/unsubscribe",
+    //             "/use", "/create", "/info", "/list"};
+
+    // char **splitted_cmd = str_to_word_array(var->buffer_server, ' ');
+    // int to_point = search_command(cmd, info->command);
+
+    // if (to_point == -1){
+        // printf("Unkwown Command\n");
+        // return;
+    // } else {
+        // void (*fun_ptr_arr[])(struct data *) = {help, login , logout, user,
+        // users,send, messages, subscribe, subscribed, unsubscribe, use, create,
+        // info, list};
+
+        // (*fun_ptr_arr[to_point])(var);
+    // }
 }

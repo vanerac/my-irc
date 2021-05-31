@@ -7,27 +7,27 @@
 
 #include "client.h"
 
-void send(struct data *var)
+void send(char **args, lib_func_client_t *lib_client)
 {
-    void (*func)() = dlsym(var->handle, "client_event_channel_created");
+    // void (*func)() = dlsym(var->handle, "client_event_channel_created");
 }
 
-void messages(struct data *var)
+void messages(char **args, lib_func_client_t *lib_client)
 {
-    void (*func)() = dlsym(var->handle, "client_event_thread_created");
+    // void (*func)() = dlsym(var->handle, "client_event_thread_created");
 }
 
-void subscribe(struct data *var)
+void subscribe(char **args, lib_func_client_t *lib_client)
 {
-    void (*func)() = dlsym(var->handle, "client_print_users");
+    // void (*func)() = dlsym(var->handle, "client_print_users");
 }
 
-void subscribed(struct data *var)
+void subscribed(char **args, lib_func_client_t *lib_client)
 {
-    void (*func)() = dlsym(var->handle, "client_print_teams");
+    // void (*func)() = dlsym(var->handle, "client_print_teams");
 }
 
-void unsubscribe(struct data *var)
+void unsubscribe(char **args, lib_func_client_t *lib_client)
 {
-    void (*func)() = dlsym(var->handle, "client_team_print_channels");
+    // void (*func)() = dlsym(var->handle, "client_team_print_channels");
 }
