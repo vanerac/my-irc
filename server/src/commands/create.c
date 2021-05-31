@@ -8,6 +8,7 @@
 #include <server.h>
 #include <commands.h>
 #include <string.h>
+#include <logging_server.h>
 
 static enum command_return create_team(t_global *global, char *name, char *desc
 )
@@ -21,6 +22,7 @@ static enum command_return create_team(t_global *global, char *name, char *desc
     team->channels = NULL;
     team->type = TEAM;
     team->users = NULL;
+    server_event_team_created((char const *) team->uid, name, desc);
     if (global->teams)
         return node_append_data(global->teams, team) ? SUCCESS : SYSTEM_ERROR;
     else
@@ -38,6 +40,8 @@ static enum command_return create_channel(t_teams *team, char *arg, char *arg1)
     channel->desc = arg1;
     uuid_generate(channel->uid);
     channel->messages = NULL;
+    server_event_channel_created((char const *) team->uid,
+        (char const *) channel->uid, channel->name);
     if (team->channels)
         return node_append_data(team->channels, channel) ? SUCCESS :
             SYSTEM_ERROR;
@@ -61,6 +65,9 @@ static enum command_return create_tread(t_channel *pChannel,
     thread->destination = pChannel;
     thread->source = session->user_data;
     thread->replies = NULL;
+    server_event_thread_created((char const *) pChannel->uid,
+        (char const *) thread->uid, (char const *) session->user_data->uid,
+        thread->title, thread->body);
     if (pChannel->messages)
         return node_append_data(pChannel->messages, thread) ? SUCCESS :
             SYSTEM_ERROR;
@@ -84,6 +91,8 @@ static enum command_return create_comment(t_messages *pMessages,
     thread->destination = pMessages;
     thread->source = session->user_data;
     thread->replies = NULL;
+    server_event_thread_new_reply((char const *) pMessages->uid,
+        (char const *) session->user_data->uid, thread->body);
     if (pMessages->replies)
         return node_append_data(pMessages->replies, thread) ? SUCCESS :
             SYSTEM_ERROR;

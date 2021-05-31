@@ -55,10 +55,15 @@ enum command_return command_create(t_global *global, session_t *session, char **
 enum command_return command_list(t_global *global, session_t *session, char **args);
 enum command_return command_info(t_global *global, session_t *session, char **args);
 
+enum command_return is_logged(t_global *global, session_t *session, char
+    **args);
+
+
 typedef struct command_s {
     enum command_e command_id;
     char **args;
-    int (*fn)(t_global *global, session_t *session, char **);
+    enum command_return (*fn)(t_global *global, session_t *session, char **);
+    enum command_return (*check_fn)(t_global *global, session_t *session, char **);
 } command_t;
 
 extern const command_t commands_list[];

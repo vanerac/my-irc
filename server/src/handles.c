@@ -43,8 +43,11 @@ int handle_command(t_global *global, session_t *session)
 
     // envoie de info.args dans la fonction parse_command a la place du buffer
 
-    return reply_to_client(session, cmd.command_id,
-        cmd.fn(global, session, cmd.args));
+    enum command_return status =
+        cmd.check_fn ? cmd.check_fn(global, session, cmd.args) : SUCCESS;
+    if (status)
+        status = cmd.fn(global, session, cmd.args);
+    return reply_to_client(session, cmd.command_id, status);
 }
 
 void handle_connections(list_t *sessions, int server_socket)
