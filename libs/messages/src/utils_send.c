@@ -44,7 +44,7 @@ uint8_t command_enum_to_uint(enum command_e command)
         : (command == LOGIN) ? 0x02
         : (command == LOGOUT) ? 0x03
         : (command == USERS) ? 0x04
-        : (command == USR) ? 0x05
+        : (command == USER) ? 0x05
         : (command == SEND) ? 0x06
         : (command == MESSAGES) ? 0x07
         : (command == SUBSCRIBE) ? 0x08

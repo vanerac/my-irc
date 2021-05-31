@@ -19,9 +19,12 @@ int main(int ac, char **ag)
     var->buffer_client = calloc(sizeof(char), 200);
     var->buffer_server = calloc(sizeof(char), 200);
 
+    message_info_t ok;
+
     while (1) {
         if (read(var->server_fd, var->buffer_server, 200) != 0){
             printf("buffer server => %s\n", var->buffer_server);
+            // printf("%d\n", read_message(&ok, var->server_fd));
             server_handler(var);
             memset(var->buffer_server, 0, 200);
             printf("SERVER\n");

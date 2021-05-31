@@ -14,9 +14,6 @@ SRC					=	manager.c				\
 						command_lib_first.c		\
 						command_lib_second.c	\
 						command_lib_third.c		\
-						command_lib_fourth.c	\
-						command_lib_fifth.c		\
-						command_lib_sixth.c		\
 
 TRC					=
 MAIN				= 	main.c
@@ -26,7 +23,8 @@ TOBJ				=	$(TRC:.c=.o)
 OMAIN				=	$(MAIN:.c=.o)
 
 LIBS				=	../libnode.a 		\
-						../libsockets.a
+						../libsockets.a		\
+						../libmessage.a		\
 
 OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))

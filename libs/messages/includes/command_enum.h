@@ -14,7 +14,7 @@ enum command_e {
     LOGIN,
     LOGOUT,
     USERS,
-    USR,
+    USER,
     SEND,
     MESSAGES,
     SUBSCRIBE,
