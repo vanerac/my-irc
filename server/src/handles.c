@@ -15,19 +15,19 @@
 
 command_t parse_command(char *buffer, enum command_e command)
 {
-    command_t new_command;
-
+    command_t new_command = commands_list[command];
     new_command.args = str_to_word_array(buffer, ' ');
-    new_command.command_id = command;
     return new_command;
 }
 
 int reply_to_client(session_t *session, enum command_e command,
     enum command_return status)
 {
-    // todo
-    (void) session, (void) command, (void) status;
-    return 0;
+    char *buffer = NULL;
+    sprintf(buffer, "%d\n", status);
+    if (status < 0)
+        send_message(session->socket, buffer, RESPONSE, command);
+    return status;
 }
 
 int handle_command(t_global *global, session_t *session)
