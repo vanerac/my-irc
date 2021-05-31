@@ -15,10 +15,11 @@ enum command_return {
     SUCCESS = 0,
     UNKNOWN_TEAM = -1,
     UNKNOWN_CHANNEL = -2,
-    UNKNOWN_USER = -3,
-    NOT_AUTH = -4,
-    DOUBLE_AUTH = -5,
-    SYSTEM_ERROR = -6
+    UNKNOWN_THREAD = -3,
+    UNKNOWN_USER = -4,
+    NOT_AUTH = -5,
+    DOUBLE_AUTH = -6,
+    SYSTEM_ERROR = -7
 };
 
 // enum command_e {

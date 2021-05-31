@@ -7,13 +7,9 @@
 
 #include "commands.h"
 
-list_t *l;
-
 static bool find_by_uuid(void *it, void *data)
 {
     switch (*((enum data_type *) it)) {
-    case UNKNOWN:
-        return false;
     case USER:
         return !uuid_compare(((t_user *) it)->uid, ((t_user *) data)->uid);
     case TEAM:
@@ -35,46 +31,61 @@ static bool find_by_uuid(void *it, void *data)
     }
 }
 
+static enum command_return set_team(t_global *global, session_t *session,
+    char *target_uuid
+)
+{
+    list_t *tmp = node_find_fn(global->teams, find_by_uuid, target_uuid);
+    if (!tmp)
+        return UNKNOWN_TEAM;
+    session->current_team = (t_teams *) tmp->data;
+    session->current_channel = NULL;
+    session->current_thread = NULL;
+    return SUCCESS;
+}
+
+static enum command_return set_channel(t_global *global, session_t *session,
+    char *target_uuid
+)
+{
+    (void) global;
+    if (!session->current_team)
+        return UNKNOWN_TEAM;
+    list_t *channel = node_find_fn(session->current_team->channels,
+        find_by_uuid, target_uuid);
+    if (!channel)
+        return UNKNOWN_CHANNEL;
+    session->current_channel = (t_channel *) channel->data;
+    session->current_thread = NULL;
+    return SUCCESS;
+}
+
+static enum command_return set_thread(t_global *global, session_t *session,
+    char *target_uuid
+)
+{
+    (void) global;
+    if (!session->current_team)
+        return UNKNOWN_TEAM;
+    if (!session->current_channel)
+        return UNKNOWN_CHANNEL;
+    list_t *thread = node_find_fn(session->current_channel->messages,
+        find_by_uuid, target_uuid);
+    if (!thread)
+        return UNKNOWN_THREAD;
+    session->current_thread = (t_messages *) thread->data;
+    return SUCCESS;
+}
+
 enum command_return command_use(t_global *global, session_t *session,
     char **args
 )
 {
-    (void) session, (void) args, (void) global;
-    (void) find_by_uuid;
+    enum command_return (*fn[4])(t_global *, session_t *, char *
+    ) = {&set_team, &set_channel, &set_thread, NULL};
 
-//    enum order {
-//        team,
-//        channel,
-//        thread
-//    };
-//    list_t *prev = (void *) 1;
-//
-//    for (enum order i = team; args[i] && i <= thread; ++i) {
-//        list_t *buffer = NULL;
-//        // todo error management
-//        switch (i) {
-//        case team: {
-//            buffer = node_find_fn(global->teams, find_by_uuid, args[i]);
-//            session->current_team = buffer ? ((t_teams *) buffer->data) : NULL;
-//            prev = buffer;
-//        }
-//            break;
-//        case channel: {
-//            buffer = node_find_fn(prev, find_by_uuid, args[i]);
-//            session->current_channel =
-//                buffer && prev ? ((t_channel *) buffer->data) : NULL;
-//            prev = buffer;
-//        }
-//            break;
-//        case thread: {
-//            buffer = node_find_fn(prev, find_by_uuid, args[i]);
-//            session->current_thread =
-//                buffer && prev ? ((t_messages *) buffer->data) : NULL;
-//            prev = buffer;
-//        }
-//            break;
-//        }
-//    }
-
-    return SUCCESS;
+    enum command_return status = SUCCESS;
+    for (int i = 0; fn[i] && args[i] && status == SUCCESS; ++i)
+        status = fn[i](global, session, args[i]);
+    return status;
 }
