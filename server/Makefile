@@ -13,7 +13,8 @@ SRC					=	server.c			\
 						commands/help.c		\
 						commands/use.c		\
 						commands/create.c	\
-						str_to_word_array.c	\
+						commands/login.c	\
+						str_to_word_array.c
 
 TRC					=	test_basic.c
 MAIN				= 	main.c

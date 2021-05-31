@@ -74,6 +74,7 @@ typedef struct global {
     list_t *all_user;  // list of all users
     list_t *teams;     // list of all the teams
     list_t *private_message;   //
+    list_t *sessions;
 } t_global;
 
 #endif /* !STRUCT_H_ */
