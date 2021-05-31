@@ -14,6 +14,7 @@
 typedef uuid_t uuid;
 
 enum data_type {
+    UNKNOWN,
     USER,
     TEAM,
     CHANNEL,
@@ -41,6 +42,8 @@ typedef struct __attribute__((__packed__)) channel {
     enum data_type type;
     uuid uid;               // uuid of channel
     list_t *messages;  // list of all channel messages
+    char *desc;
+    char *name;
 } t_channel;
 
 typedef struct __attribute__((__packed__)) dm {

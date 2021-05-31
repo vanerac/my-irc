@@ -12,6 +12,8 @@ list_t *l;
 static bool find_by_uuid(void *it, void *data)
 {
     switch (*((enum data_type *) it)) {
+    case UNKNOWN:
+        return false;
     case USER:
         return !uuid_compare(((t_user *) it)->uid, ((t_user *) data)->uid);
     case TEAM:
