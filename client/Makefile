@@ -5,7 +5,7 @@
 ## Makefile ...
 ##
 
-NAME				=	../myteams_client
+NAME				=	../myteams_cli
 TNAME				=	unit_test
 
 SRC					=	manager.c				\
