@@ -22,9 +22,8 @@ int main(int ac, char **ag)
     message_info_t ok;
 
     while (1) {
-        if (read(var->server_fd, var->buffer_server, 200) != 0){
-            printf("buffer server => %s\n", var->buffer_server);
-            // printf("%d\n", read_message(&ok, var->server_fd));
+        if (read_message(&ok, var->server_fd)){
+            printf("buffer server => %s\n", ok.args);
             server_handler(var);
             memset(var->buffer_server, 0, 200);
             printf("SERVER\n");
@@ -32,7 +31,7 @@ int main(int ac, char **ag)
 
         if (read(0, var->buffer_client, 200) != 0){
             printf("buffer client => %s\n", var->buffer_client);
-            write(var->server_fd, var->buffer_client, strlen(var->buffer_client));
+            send_message(var->server_fd, var->buffer_client, COMMAND, INVALID);
             memset(var->buffer_client, 0, 200);
             printf("CLIENT\n");
         }

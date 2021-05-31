@@ -11,7 +11,7 @@ int search_command(char *cmd[], char *handle_cmd)
 {
     int return_value = -1;
 
-    for (int i = 0; i < 29; i++){
+    for (int i = 0; i < 14; i++){
         if (strcmp(handle_cmd, cmd[i]) == 0)
             return_value = i;
     }
