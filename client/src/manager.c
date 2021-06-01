@@ -9,33 +9,19 @@
 
 void server_handler(message_info_t *info, lib_func_client_t *lib_client)
 {
-    char **args = NULL;
+    char *code = NULL;
+    char *args = NULL;
     
     if (info->args) {
-        if (!(args = str_to_word_array(info->args, ' ')))
-            return;
+        code = strtok(info->args, " ");
+        args = strtok(NULL, "\0");
     }
+    if (!code)
+        return;
     for (int i = 0; i < 15; i++) {
-        if (func_ptr_client[i].command == info->command)
-            (*func_ptr_client[i].func)(args, lib_client);
+        if (func_ptr_client[i].command == info->command) {
+            (*func_ptr_client[i].func)(code, args, lib_client);
             return;
+        }
     }
-
-    // char *cmd[] = {"/help", "/login", "/logout", "/user", "/users", "/send",
-    //             "/messages", "/subscribe", "/subscribed", "/unsubscribe",
-    //             "/use", "/create", "/info", "/list"};
-
-    // char **splitted_cmd = str_to_word_array(var->buffer_server, ' ');
-    // int to_point = search_command(cmd, info->command);
-
-    // if (to_point == -1){
-        // printf("Unkwown Command\n");
-        // return;
-    // } else {
-        // void (*fun_ptr_arr[])(struct data *) = {help, login , logout, user,
-        // users,send, messages, subscribe, subscribed, unsubscribe, use, create,
-        // info, list};
-
-        // (*fun_ptr_arr[to_point])(var);
-    // }
 }

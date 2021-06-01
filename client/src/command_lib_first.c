@@ -7,14 +7,20 @@
 
 #include "client.h"
 
-void help(char **args, lib_func_client_t *lib_client)
+void help(char *code, char *allargs, lib_func_client_t *lib_client)
 {
+    if (strcmp(code, "200") == 0)
+        printf("%s", allargs);
     // void (*func)() = dlsym(var->handle, "client_event_logged_in");
     // func("test1234", "test");
 }
 
-void login(char **args, lib_func_client_t *lib_client)
+void login(char *code, char *allargs, lib_func_client_t *lib_client)
 {
+    char **args = str_to_word_array(allargs, ' ');
+
+    if (!args)
+        return;
     if (array_size(args) < 0){
         switch (atoi(args[0])) {
             case 200:
@@ -27,8 +33,12 @@ void login(char **args, lib_func_client_t *lib_client)
     }
 }
 
-void logout(char **args, lib_func_client_t *lib_client)
+void logout(char *code, char *allargs, lib_func_client_t *lib_client)
 {
+    char **args = str_to_word_array(allargs, ' ');
+
+    if (!args)
+        return;
     if (array_size(args) < 3){
         switch (atoi(args[0])) {
             case 201:
@@ -41,12 +51,16 @@ void logout(char **args, lib_func_client_t *lib_client)
     }
 }
 
-void user(char **args, lib_func_client_t *lib_client)
+void user(char *code, char *allargs, lib_func_client_t *lib_client)
 {
 }
 
-void users(char **args, lib_func_client_t *lib_client) // Every logged user should receive this event (the creator of the team too)
+void users(char *code, char *allargs, lib_func_client_t *lib_client) // Every logged user should receive this event (the creator of the team too)
 {
+    char **args = str_to_word_array(allargs, ' ');
+
+    if (!args)
+        return;
     if (array_size(args) < 0){
         switch (atoi(args[0])) {
             case 207:

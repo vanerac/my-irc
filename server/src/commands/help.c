@@ -11,7 +11,7 @@
 
 const command_t commands_list[] = {
     {INVALID, NULL, NULL, NULL},
-    {HELP, NULL, &command_help, NULL},
+    {HELP, NULL, &command_help, &is_logged},
     {LOGIN, NULL, &command_login, NULL},
     {LOGOUT, NULL, &command_logout, &is_logged},
     {USERS, NULL, &command_users, &is_logged},
@@ -38,7 +38,7 @@ enum command_return command_help(t_global *global, session_t *session,
 )
 {
     (void) session, (void) args, (void) global;
-    char *h = "/help -> show help\n/login 'user' -> set the user used by"
+    char *h = "200 /help -> show help\n/login 'user' -> set the user used by"
     " client\n/logout -> disconnect the client from the server\n"
     "/users -> list of all users that exist\n/user 'user_uuid' -> get"
     " information about a user\n/send 'user_uuid' 'message_body' -> send"
