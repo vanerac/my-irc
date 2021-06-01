@@ -9,7 +9,7 @@
 
 void use(char *code, char *allargs, lib_func_client_t *lib_client)
 {
-    // void (*func)() = dlsym(var->handle, "client_channel_print_threads");
+    // utile ?
 }
 
 void create(char *code, char *allargs, lib_func_client_t *lib_client)
@@ -19,21 +19,21 @@ void create(char *code, char *allargs, lib_func_client_t *lib_client)
     if (!args)
         return;
     if (array_size(args) < 0){
-        switch (atoi(args[0])) {
-            case 203:
-                lib_client[4].func(args[1], args[2], args[3], args[4]);
-                break;
-            case 204:
-                lib_client[3].func(args[1], args[2], args[3]);
-                break;
+        switch (atoi(code)) {
             case 205:
-                lib_client[8].func(args[1], args[2], args[3]);
+                create_team(args, lib_client);
                 break;
             case 206:
-                lib_client[5].func(args[1], args[2], args[3]);
+                create_channel(args, lib_client);
+                break;
+            case 207:
+                create_thread(args, lib_client);
+                break;
+            case 208:
+                create_reply_to_thread(args, lib_client);
                 break;
             default:
-                printf("Error thread reply received !\n");
+                printf("Error create !\n");
                 break;
         }
     }
@@ -41,7 +41,41 @@ void create(char *code, char *allargs, lib_func_client_t *lib_client)
 
 void info(char *code, char *allargs, lib_func_client_t *lib_client)
 {
-    // void (*func)() = dlsym(var->handle, "client_private_message_print_messages");
+    char **args = str_to_word_array(allargs, ' ');
+
+    if (!args)
+        return;
+    if (array_size(args) < 0){
+        switch (atoi(code)) {
+            case 205:
+                // client_print_user
+                break;
+            case 206:
+                // client_print_team
+                break;
+            case 207:
+                // client_print_channel
+                break;
+            case 208:
+                // client_print_thread
+                break;
+            case 402:
+                // client_error_unknown_team
+                break;
+            case 403:
+                // client_error_unknown_channel
+                break;
+            case 404:
+                // client_error_unknown_thread
+                break;
+            case 400:
+                // client_error_unauthorized
+                break;
+            default:
+                printf("Error Info !\n");
+                break;
+        }
+    }
 }
 
 void list(char *code, char *allargs, lib_func_client_t *lib_client)
@@ -52,17 +86,29 @@ void list(char *code, char *allargs, lib_func_client_t *lib_client)
         return;
     if (array_size(args) < 0){
         switch (atoi(args[0])) {
-            case 208:
-                lib_client[11].func(args[1], args[2], args[3]);
+            case 201:
+                // client_print_teams
                 break;
-            case 209:
-                lib_client[21].func(args[1], args[2], args[3]);
+            case 202:
+                // client_team_print_channels
                 break;
-            case 210:
-                lib_client[19].func(args[1], args[2], args[3], args[4], args[5]);
+            case 203:
+                // client_channel_print_threads
                 break;
-            case 211:
-                lib_client[19].func(args[1], args[2], args[3], args[4], args[5]);
+            case 204:
+                // client_thread_print_replies
+                break;
+            case 402:
+                // client_error_unknown_team
+                break;
+            case 403:
+                // client_error_unknown_channel
+                break;
+            case 404:
+                // client_error_unknown_thread
+                break;
+            case 400:
+                // client_error_unauthorized
                 break;
             default:
                 printf("Error while listing !\n");
@@ -73,5 +119,5 @@ void list(char *code, char *allargs, lib_func_client_t *lib_client)
 
 void invalid(char *code, char *allargs, lib_func_client_t *lib_client)
 {
-    // void (*func)() = dlsym(var->handle, "client_error_unknown_team");
+    printf("Invalid Command !\n");
 }
