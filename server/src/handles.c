@@ -13,6 +13,8 @@
 #include "server.h"
 #include "message.h"
 
+int asprintf(char **strp, const char *fmt, ...);
+
 command_t parse_command(char *buffer, enum command_e command)
 {
     command_t new_command = commands_list[command];
@@ -24,7 +26,7 @@ int reply_to_client(session_t *session, enum command_e command,
     enum command_return status)
 {
     char *buffer = NULL;
-    sprintf(buffer, "%d\n", status);
+    asprintf(&buffer, "%d\n", status);
     if (status < 0)
         send_message(session->socket, buffer, RESPONSE, command);
     return status;
@@ -67,4 +69,5 @@ void handle_connections(list_t *sessions, int server_socket)
     data->current_channel = NULL;
     data->current_thread = NULL;
     node_append_data(sessions, data);
+    send_message(client, "220 Welcome", RESPONSE, INVALID);
 }
