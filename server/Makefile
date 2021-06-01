@@ -16,6 +16,8 @@ SRC					=	server.c					\
 						commands/login.c			\
 						file_parser/file_parser.c	\
 						file_parser/write_file.c	\
+						file_parser/read_file.c		\
+						file_parser/file_tools.c	\
 						str_to_word_array.c
 
 TRC					=	test_basic.c

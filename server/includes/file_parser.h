@@ -26,12 +26,12 @@ void write_user(int fd, t_user *user);
 char **get_args(int fd, bool read);
 bool check_type(char **args, enum data_type expected_type);
 
-//// returns null if code doesnt correspond
-//t_teams *read_team(int fd, int recursion_level);
-//t_channel *read_channel(int fd, int recursion_level);
-//t_messages *read_thread(int fd, int recursion_level);
-//t_messages *read_message(int fd);
-//t_user *read_user(int fd);
+// returns null if code doesnt correspond
+t_teams *read_team(int fd, int recursion_level);
+t_channel *read_channel(int fd, int recursion_level);
+t_messages *read_thread(int fd, int recursion_level);
+t_messages *read_message(int fd);
+t_user *read_user(int fd);
 //
 //
 //// selective reads, only parses selected data types
