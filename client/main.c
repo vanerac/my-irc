@@ -54,13 +54,13 @@ int main(int ac, char **ag)
     char *handle = dlopen("./libs/myteams/libmyteams.so", RTLD_LAZY);
     struct data *var = malloc(sizeof(struct data));
 
-    if (ac < 2 || !handle || !var)
+    if (ac < 3 || !handle || !var)
         return 84;
     lib_func_client_t *lib_client = load_client_lib(handle);
     if (!lib_client)
         return 84;
 
-    var->server_fd = client_create(atoi(ag[1]), "127.0.0.1");
+    var->server_fd = client_create(atoi(ag[2]), ag[1]);
     var->buffer_client = calloc(sizeof(char), 200);
     var->buffer_server = calloc(sizeof(char), 200);
 
@@ -70,7 +70,7 @@ int main(int ac, char **ag)
         if (read_message(&ok, var->server_fd)){
             printf("buffer server => %s\n", ok.args);
             server_handler(&ok, lib_client);
-            memset(var->buffer_server, 0, 200);
+            memset(ok.args, 0, 200);
             printf("SERVER\n");
         }
 

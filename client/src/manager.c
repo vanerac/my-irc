@@ -20,7 +20,7 @@ void server_handler(message_info_t *info, lib_func_client_t *lib_client)
             (*func_ptr_client[i].func)(args, lib_client);
             return;
     }
-    
+
     // char *cmd[] = {"/help", "/login", "/logout", "/user", "/users", "/send",
     //             "/messages", "/subscribe", "/subscribed", "/unsubscribe",
     //             "/use", "/create", "/info", "/list"};
