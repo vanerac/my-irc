@@ -82,9 +82,12 @@ int myteams_server(int server_socket)
     void *handle = dlopen("libs/myteams/libmyteams.so", RTLD_LAZY);
     //    int server_socket = server_create(port);
 
-    int *data = malloc(sizeof(int));
-    *data = server_socket;
-    list_t *sessions = node_list_create(data);
+    session_t *server_session = malloc(sizeof(session_t));
+    if (!server_session)
+        return 84;
+    server_session->socket = server_socket;
+    server_session->user_data = NULL;
+    list_t *sessions = node_list_create(server_session);
     t_global global = {.all_user = NULL, .private_message = NULL, .teams =
     NULL, .sessions = sessions};
     if (!sessions || !handle)

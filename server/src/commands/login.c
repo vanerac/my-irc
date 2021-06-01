@@ -35,7 +35,10 @@ static t_user *create_user(t_global *global, char *username)
 
 static bool find_by_username(void *it, void *data)
 {
-    return !strcmp(((t_user *) it)->username, (char *) data);
+    session_t *tmp = ((session_t *) it);
+    if (!tmp || !tmp->user_data)
+        return false;
+    return !strcmp(tmp->user_data->username, (char *) data);
 }
 
 enum command_return command_login(t_global *global, session_t *session,
