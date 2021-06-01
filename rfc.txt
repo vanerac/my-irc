@@ -1,0 +1,119 @@
+
+
+/help
+    -> 200      printf help
+    -> 400      client_error_unauthorized
+
+/login "user_name"
+    -> 200      client_event_logged_in
+
+/logout
+    -> 200      client_event_logged_out
+    -> 400      client_error_unauthorized
+
+/users
+    -> 200      client_print_users
+    -> 400      client_error_unauthorized
+
+/user "user_uuid"
+    -> 200      client_print_user
+    -> 401      client_error_unknown_user
+    -> 400      client_error_unauthorized
+
+/send "user_uuid" "message_body"
+    -> 200      client_event_private_message_received
+    -> 401      client_error_unknown_user
+    -> 400      client_error_unauthorized
+
+/messages "user_uuid"
+    -> 200      client_private_message_print_messages
+    -> 401      client_error_unknown_user
+    -> 400      client_error_unauthorized
+
+/subscribe "team_uuid"
+    -> 200      client_print_subscribed
+    -> 402      client_error_unknown_team
+    -> 400      client_error_unauthorized
+
+/subscribed
+    -> 201      client_print_teams
+    -> 400      client_error_unauthorized
+
+/subscribed "team_uuid"
+    -> 202      client_print_users
+    -> 402      client_error_unknown_team
+    -> 400      client_error_unauthorized
+
+/unsubscribe "team_uuid"
+    -> 200      client_print_unsubscribed
+    -> 402      client_error_unknown_team
+    -> 400      client_error_unauthorized
+
+/create "team_name" "team_description"
+    -> 205      client_event_team_created
+    -> 205      client_print_team_created
+    -> 405      client_error_already_exist
+    -> 400      client_error_unauthorized
+
+/create "channel_name" "channel_description"
+    -> 206      client_event_channel_created
+    -> 206      client_print_channel_created
+    -> 402      client_error_unknown_team
+    -> 405      client_error_already_exist
+    -> 400      client_error_unauthorized
+
+/create "thread_title" "thread_body"
+    -> 207      client_event_thread_created
+    -> 207      client_print_thread_created
+    -> 402      client_error_unknown_team
+    -> 403      client_error_unknown_channel
+    -> 405      client_error_already_exist
+    -> 400      client_error_unauthorized
+
+/create "reply_body"
+    -> 208      client_event_thread_reply_received
+    -> 208      client_print_reply_created
+    -> 402      client_error_unknown_team
+    -> 403      client_error_unknown_channel
+    -> 404      client_error_unknown_thread
+    -> 400      client_error_unauthorized
+
+/list
+    -> 201      client_print_teams
+    -> 202      client_team_print_channels
+    -> 203      client_channel_print_threads
+    -> 204      client_thread_print_replies
+    -> 402      client_error_unknown_team
+    -> 403      client_error_unknown_channel
+    -> 404      client_error_unknown_thread
+    -> 400      client_error_unauthorized
+
+    
+
+/info
+    -> 205      client_print_user
+    -> 206      client_print_team
+    -> 207      client_print_channel
+    -> 208      client_print_thread
+    -> 402      client_error_unknown_team
+    -> 404      client_error_unknown_channel
+    -> 404      client_error_unknown_thread
+    -> 400      client_error_unauthorized
+
+
+
+
+/messages
+    -> 400      client_error_unauthorized
+
+/unsubscribe
+    -> 400      client_error_unauthorized
+
+/subscribe
+    -> 400      client_error_unauthorized
+
+/use
+    -> 400      client_error_unauthorized
+
+/user
+    -> 400      client_error_unauthorized
