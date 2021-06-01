@@ -21,6 +21,11 @@ void write_thread(int fd, t_messages *thread, int recursion_levels);
 void write_message(int fd, t_messages *messages);
 void write_user(int fd, t_user *user);
 
+
+// tools
+char **get_args(int fd, bool read);
+bool check_type(char **args, enum data_type expected_type);
+
 //// returns null if code doesnt correspond
 //t_teams *read_team(int fd, int recursion_level);
 //t_channel *read_channel(int fd, int recursion_level);

@@ -26,3 +26,12 @@ void write_structure(int fd, void *data, int recursion_levels)
         return write_message(fd, data);
     }
 }
+
+
+bool check_type(char **args, enum data_type expected_type) {
+    if (!args)
+        return false;
+    if (((enum data_type) atoi(args[0])) != expected_type)
+        return false;
+    return true;
+}
