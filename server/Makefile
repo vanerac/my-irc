@@ -8,12 +8,14 @@
 NAME				=	../myteams_server
 TNAME				=	unit_test
 
-SRC					=	server.c			\
-						handles.c			\
-						commands/help.c		\
-						commands/use.c		\
-						commands/create.c	\
-						commands/login.c	\
+SRC					=	server.c					\
+						handles.c					\
+						commands/help.c				\
+						commands/use.c				\
+						commands/create.c			\
+						commands/login.c			\
+						file_parser/file_parser.c	\
+						file_parser/write_file.c	\
 						str_to_word_array.c
 
 TRC					=	test_basic.c
