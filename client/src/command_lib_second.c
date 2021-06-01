@@ -7,8 +7,12 @@
 
 #include "client.h"
 
-void send(char **args, lib_func_client_t *lib_client)
+void send(char *code, char *allargs, lib_func_client_t *lib_client)
 {
+    char **args = str_to_word_array(allargs, ' ');
+
+    if (!args)
+        return;
     if (array_size(args) < 0){
         switch (atoi(args[0])) {
             case 202:
@@ -21,18 +25,22 @@ void send(char **args, lib_func_client_t *lib_client)
     }
 }
 
-void messages(char **args, lib_func_client_t *lib_client)
+void messages(char *code, char *allargs, lib_func_client_t *lib_client)
 {
     // void (*func)() = dlsym(var->handle, "client_event_thread_created");
 }
 
-void subscribe(char **args, lib_func_client_t *lib_client)
+void subscribe(char *code, char *allargs, lib_func_client_t *lib_client)
 {
     // void (*func)() = dlsym(var->handle, "client_print_users");
 }
 
-void subscribed(char **args, lib_func_client_t *lib_client)
+void subscribed(char *code, char *allargs, lib_func_client_t *lib_client)
 {
+    char **args = str_to_word_array(allargs, ' ');
+
+    if (!args)
+        return;
     if (array_size(args) < 0){
         switch (atoi(args[0])) {
             case 207:
@@ -48,7 +56,7 @@ void subscribed(char **args, lib_func_client_t *lib_client)
     }
 }
 
-void unsubscribe(char **args, lib_func_client_t *lib_client)
+void unsubscribe(char *code, char *allargs, lib_func_client_t *lib_client)
 {
     // void (*func)() = dlsym(var->handle, "client_team_print_channels");
 }

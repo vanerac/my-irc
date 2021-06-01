@@ -7,13 +7,17 @@
 
 #include "client.h"
 
-void use(char **args, lib_func_client_t *lib_client)
+void use(char *code, char *allargs, lib_func_client_t *lib_client)
 {
     // void (*func)() = dlsym(var->handle, "client_channel_print_threads");
 }
 
-void create(char **args, lib_func_client_t *lib_client)
+void create(char *code, char *allargs, lib_func_client_t *lib_client)
 {
+    char **args = str_to_word_array(allargs, ' ');
+
+    if (!args)
+        return;
     if (array_size(args) < 0){
         switch (atoi(args[0])) {
             case 203:
@@ -35,13 +39,17 @@ void create(char **args, lib_func_client_t *lib_client)
     }
 }
 
-void info(char **args, lib_func_client_t *lib_client)
+void info(char *code, char *allargs, lib_func_client_t *lib_client)
 {
     // void (*func)() = dlsym(var->handle, "client_private_message_print_messages");
 }
 
-void list(char **args, lib_func_client_t *lib_client)
+void list(char *code, char *allargs, lib_func_client_t *lib_client)
 {
+    char **args = str_to_word_array(allargs, ' ');
+
+    if (!args)
+        return;
     if (array_size(args) < 0){
         switch (atoi(args[0])) {
             case 208:
@@ -63,7 +71,7 @@ void list(char **args, lib_func_client_t *lib_client)
     }
 }
 
-void invalid(char **args, lib_func_client_t *lib_client)
+void invalid(char *code, char *allargs, lib_func_client_t *lib_client)
 {
     // void (*func)() = dlsym(var->handle, "client_error_unknown_team");
 }
