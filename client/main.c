@@ -5,6 +5,7 @@
 ** main
 */
 
+#include <string.h>
 #include "sockets.h"
 #include "client.h"
 
@@ -23,8 +24,13 @@ char **get_all_func(void)
     "client_print_channel_created", "client_error_unauthorized",
     "client_print_thread_created", "client_print_team_created",
     "client_print_reply_created", "client_print_unsubscribed"};
+    char **ret = malloc(sizeof(char *) * 29);
 
-    return all;
+    for (int i = 0; i < 29; i++) {
+        if (!ret || (ret[i] = strdup(all[i])) == NULL)
+            return NULL;
+    }
+    return ret;
 }
 
 lib_func_client_t *load_client_lib(char *handle)
