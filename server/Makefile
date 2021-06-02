@@ -36,7 +36,7 @@ OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
 # ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 
-CFLAGS				+=	-Wall -Wextra -Werror -g
+CFLAGS				+=	-W -Wall -Wextra -Werror -g
 
 CPPFLAGS			+=	-Iincludes/ -I../includes/ -I../libs/myteams/
 

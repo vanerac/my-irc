@@ -40,13 +40,7 @@ int handle_command(t_global *global, session_t *session)
         return SYSTEM_ERROR;
     if (!read_message(&info, session->socket))
         return SYSTEM_ERROR;
-    // char *buffer = socket_read(session->socket);
-    // if (!buffer)
-    // return SYSTEM_ERROR;
     command_t cmd = parse_command(info.args, info.command);
-
-    // envoie de info.args dans la fonction parse_command a la place du buffer
-
     enum command_return status =
         cmd.check_fn ? cmd.check_fn(global, session, cmd.args) : SUCCESS;
     if (!status)

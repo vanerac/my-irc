@@ -26,12 +26,8 @@ TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
 CFLAGS				+=	-Iincludes/ -Wall -Wextra -Werror
 
 RM					=	rm -rf
-#LD					=	gcc
-
-
 
 all:				$(NAME)
-
 
 $(NAME):			$(OBJECTS)
 					ar rc $(NAME) $(OBJECTS)
