@@ -42,7 +42,7 @@ int handle_command(t_global *global, session_t *session)
         return SYSTEM_ERROR;
     command_t cmd = parse_command(info.args, info.command);
     enum command_return status = SUCCESS;
-    for (command_ptr *fn = cmd.check_fn; status == SUCCESS && fn; ++fn)
+    for (command_ptr *fn = cmd.check_fn; status == SUCCESS && *fn; ++fn)
         status = (*fn)(global, session, cmd.args);
 
 //        cmd.check_fn ? cmd.check_fn(global, session, cmd.args) : SUCCESS;
