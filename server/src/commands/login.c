@@ -16,9 +16,10 @@ enum command_return command_logout(t_global *global, session_t *session,
     char **args
 )
 {
-    (void) args, (void) global;
-//    global->lib_func[0].func((char const *)session->user_data->uid);
-//    server_event_user_logged_out((char const *)session->user_data->uid);
+    (void) global, (void) args;
+    char *uuid = NULL;
+    uuid_unparse(session->user_data->uid, uuid);
+    server_event_user_logged_out(uuid);
     session->user_data = NULL;
     return SUCCESS;
 }
@@ -32,7 +33,9 @@ static t_user *create_user(t_global *global, char *username)
     ret->type = USER;
     ret->username = strdup(username);
     node_append_data(global->all_user, ret);
-//    server_event_user_created((char const *) ret->uid, ret->username);
+    char *uuid = NULL;
+    uuid_unparse(ret->uid, uuid);
+    server_event_user_created(uuid, ret->username);
     return ret;
 }
 
@@ -48,7 +51,7 @@ enum command_return command_login(t_global *global, session_t *session,
     char **args
 )
 {
-    printf("login\n");
+    char *uuid = NULL;
     char *ret = NULL;
     char *username = args[0];
     if (session->user_data) {
@@ -64,8 +67,9 @@ enum command_return command_login(t_global *global, session_t *session,
 
     if (!session->user_data)
         return SYSTEM_ERROR;
-    // server_event_user_logged_in((char const *) session->user_data->uid);
-    asprintf(&ret, "200 %s %s", session->user_data->uid, username);
+    uuid_unparse(session->user_data->uid, uuid);
+    server_event_user_logged_in(uuid);
+    asprintf(&ret, "200 %s %s", uuid, username);
     send_message(session->socket, ret, RESPONSE, LOGIN);
     return SUCCESS;
 }
