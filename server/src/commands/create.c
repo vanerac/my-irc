@@ -14,7 +14,7 @@ static enum command_return create_team(t_global *global, char *name, char *desc
 )
 {
     t_teams *team = malloc(sizeof(t_teams));
-    char *uuid = NULL;
+    char uuid[37];
     if (!team)
         return SYSTEM_ERROR;
     uuid_generate(team->uid);
@@ -35,7 +35,7 @@ static enum command_return create_team(t_global *global, char *name, char *desc
 static enum command_return create_channel(t_teams *team, char *arg, char *arg1)
 {
     t_channel *channel = malloc(sizeof(t_channel));
-    char *uuid = NULL;
+    char uuid[37];
     if (!channel)
         return SYSTEM_ERROR;
     channel->type = CHANNEL;
@@ -59,7 +59,7 @@ static enum command_return create_tread(t_channel *pChannel,
 )
 {
     t_messages *thread = malloc(sizeof(t_messages));
-    char *uuid_t = NULL, *uuid_s = NULL;
+    char uuid_t[37], uuid_s[37];
     if (!thread)
         return SYSTEM_ERROR;
     uuid_generate(thread->uid);
@@ -87,7 +87,7 @@ static enum command_return create_comment(t_messages *pMessages,
 )
 {
     t_messages *thread = malloc(sizeof(t_messages));
-    char *uuid_m = NULL, *uuid_s = NULL;
+    char uuid_m[37], uuid_s[37];
     if (!thread)
         return SYSTEM_ERROR;
     uuid_generate(thread->uid);
