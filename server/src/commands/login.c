@@ -48,6 +48,7 @@ enum command_return command_login(t_global *global, session_t *session,
     char **args
 )
 {
+    printf("login\n");
     char *ret = NULL;
     char *username = args[0];
     if (session->user_data) {
@@ -63,7 +64,7 @@ enum command_return command_login(t_global *global, session_t *session,
 
     if (!session->user_data)
         return SYSTEM_ERROR;
-//    server_event_user_logged_in((char const *) session->user_data->uid);
+    // server_event_user_logged_in((char const *) session->user_data->uid);
     asprintf(&ret, "200 %s %s", session->user_data->uid, username);
     send_message(session->socket, ret, RESPONSE, LOGIN);
     return SUCCESS;
