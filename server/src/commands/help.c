@@ -10,21 +10,21 @@
 #include "message.h"
 
 const command_t commands_list[] = {
-    {INVALID, NULL, NULL, NULL},
-    {HELP, NULL, &command_help, &is_logged},
-    {LOGIN, NULL, &command_login, NULL},
-    {LOGOUT, NULL, &command_logout, &is_logged},
-    {USERS, NULL, &command_users, &is_logged},
-    {USR, NULL, &command_usr, &is_logged},
-    {SEND, NULL, &command_send, &is_logged},
-    {MESSAGES, NULL, &command_messages, &is_logged},
-    {SUBSCRIBE, NULL, &command_subscribe, &is_logged},
-    {SUBSCRIBED, NULL, &command_subscribed, &is_logged},
-    {UNSUBSCRIBE, NULL, &command_unsubscribe, &is_logged},
-    {USE, NULL, &command_use, &is_logged},
-    {CREATE, NULL, &command_create, &is_logged},
-    {LIST, NULL, &command_list, &is_logged},
-    {INFO, NULL, &command_info, &is_logged},
+    {INVALID, NULL, NULL, {NULL}},
+    {HELP, NULL, &command_help, {&is_logged, NULL}},
+    {LOGIN, NULL, &command_login, {NULL}},
+    {LOGOUT, NULL, &command_logout, {&is_logged, NULL}},
+    {USERS, NULL, &command_users, {&is_logged, NULL}},
+    {USR, NULL, &command_usr, {&is_logged, NULL}},
+    {SEND, NULL, &command_send, {&is_logged, NULL}},
+    {MESSAGES, NULL, &command_messages, {&is_logged, NULL}},
+    {SUBSCRIBE, NULL, &command_subscribe, {&is_logged, NULL}},
+    {SUBSCRIBED, NULL, &command_subscribed, {&is_logged, NULL}},
+    {UNSUBSCRIBE, NULL, &command_unsubscribe, {&is_logged, NULL}},
+    {USE, NULL, &command_use, {&is_logged, NULL}},
+    {CREATE, NULL, &command_create, {&is_logged, NULL}},
+    {LIST, NULL, &command_list, {&is_logged, NULL}},
+    {INFO, NULL, &command_info, {&is_logged, NULL}},
 };
 
 enum command_return is_logged(t_global *global, session_t *session, char **args)

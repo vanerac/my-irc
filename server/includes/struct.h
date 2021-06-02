@@ -11,6 +11,11 @@
 #include <uuid/uuid.h>
 #include "list.h"
 
+// todo error management
+#define MAX_NAME_LENGTH 32
+#define MAX_DESCRIPTION_LENGTH 255
+#define MAX_BODY_LENGTH 512
+
 typedef uuid_t uuid;
 
 enum data_type {

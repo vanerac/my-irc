@@ -20,6 +20,7 @@ enum command_return {
     UNKNOWN_THREAD = 404,
     ALREADY_EXISTS =  405,
     SYSTEM_ERROR = 500,
+    FATAL_ERROR = 666,
     DOUBLE_AUTH = -6,
 };
 
@@ -55,13 +56,15 @@ enum command_return command_info(t_global *global, session_t *session,
 enum command_return is_logged(t_global *global, session_t *session,
 char **args);
 
+typedef enum command_return (*command_ptr)(t_global *global,
+    session_t *session, char **
+);
 
 typedef struct command_s {
     enum command_e command_id;
     char **args;
-    enum command_return (*fn)(t_global *global, session_t *session, char **);
-    enum command_return (*check_fn)(t_global *global, session_t *session,
-        char **args);
+    command_ptr fn;
+    command_ptr check_fn[3];
 } command_t;
 
 extern const command_t commands_list[];

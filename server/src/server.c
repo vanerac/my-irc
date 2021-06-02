@@ -9,6 +9,7 @@
 #include "logging_server.h"
 #include <sys/socket.h>
 #include <sys/select.h>
+#include <commands.h>
 #include "struct.h"
 #include "sockets.h"
 #include "handles.h"
@@ -59,7 +60,7 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
             status = handle_command(global, n ? n->data : NULL);
         } else if (FD_ISSET(i, rfds) && i == server_socket)
             handle_connections(sessions, server_socket);
-    return 0;
+    return status;
 }
 
 int myteams_server(int server_socket)
@@ -79,7 +80,7 @@ int myteams_server(int server_socket)
     if (server_socket < 0)
         return 84;
     int status = 0;
-    while (status == 0)
+    while (status != FATAL_ERROR)
         status = listen_updates(server_socket, sessions, &global, &rfds);
-    return 0;
+    return status;
 }
