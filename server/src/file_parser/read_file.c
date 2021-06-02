@@ -32,14 +32,14 @@ t_teams *file_read_team(int fd, int recursion_level)
     uuid_parse(args[1], ret->uid);
     ret->name = args[2], ret->desc = args[3];
     // read channels
-//    list_t *channels = NULL;
-//    list_t *users = NULL;
-//    for () {
-//    }
-//    ret->channels = channels;
-//    for () {
-//    }
-//    ret->users = users;
+    //    list_t *channels = NULL;
+    //    list_t *users = NULL;
+    //    for () {
+    //    }
+    //    ret->channels = channels;
+    //    for () {
+    //    }
+    //    ret->users = users;
 
     return ret;
 }
@@ -58,10 +58,10 @@ t_channel *file_read_channel(int fd, int recursion_level)
     // todo check size
     ret->type = CHANNEL;
     uuid_parse(args[1], ret->uid);
-     ret->name = args[2], ret->desc = args[3];
+    ret->name = args[2], ret->desc = args[3];
 
-     //todo // for recursion level, read threads
-//     ret->messages;
+    //todo // for recursion level, read threads
+    //     ret->messages;
 
     return ret;
 }
@@ -80,10 +80,12 @@ t_messages *file_read_thread(int fd, int recursion_level)
     // todo check size
     ret->type = MESSAGE;
     uuid_parse(args[2], ret->uid);
-    ret->title = args[3], ret->body = args[3], ret->m_type = atoi(args[1]);
+    ret->created_at = atoll(
+        args[3]), ret->title = args[4], ret->body = args[5], ret->m_type = atoi(
+        args[1]);
 
     //todo
-//    ret->replies;
+    //    ret->replies;
 
     return ret;
 }
@@ -102,8 +104,9 @@ t_messages *file_read_message(int fd)
     // read meta data
     ret->type = MESSAGE;
     uuid_parse(args[2], ret->uid);
-    ret->title = args[3], ret->body = args[4],
-    ret->m_type = atoi(args[1]);
+    ret->created_at = atoll(
+        args[3]), ret->title = args[4], ret->body = args[5], ret->m_type = atoi(
+        args[1]);
     return ret;
 }
 

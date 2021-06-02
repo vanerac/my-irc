@@ -59,13 +59,15 @@ enum message_type {
     M_DM = 2
 };
 
-typedef struct __attribute__((__packed__)) messages {
+// todo demande a troncy
+typedef struct /*__attribute__((__packed__)) */messages {
     enum data_type type;
     uuid uid;
-    struct user *source;
+    struct user *author;
     void *destination;
     char *body;
     char *title;
+    time_t created_at;
     list_t *replies;
     enum message_type m_type;
 } t_messages;

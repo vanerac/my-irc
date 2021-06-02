@@ -18,16 +18,17 @@ void write_message(int fd, t_messages *messages)
 {
     char *uuid = NULL;
     uuid_unparse(messages->uid, uuid);
-    dprintf(fd, "%d %u %s \"%s\" \"%s\"\n", messages->type, messages->m_type,
-        uuid, messages->title, messages->body);
+    dprintf(fd, "%d %u %s %lud \"%s\" \"%s\"\n", messages->type,
+        messages->m_type,
+        uuid, messages->created_at, messages->title, messages->body);
 }
 
 void write_thread(int fd, t_messages *thread, int recursion_levels)
 {
     char *uuid = NULL;
     uuid_unparse(thread->uid, uuid);
-    dprintf(fd, "%d %u %s \"%s\" \"%s\"\n", thread->type, thread->m_type,
-        uuid, thread->title, thread->body);
+    dprintf(fd, "%d %u %s %lud \"%s\" \"%s\"\n", thread->type, thread->m_type,
+        uuid, thread->created_at, thread->title, thread->body);
     for (list_t *message = thread->replies;
         message && recursion_levels > 0; message = message->next) {
         write_message(fd, message->data);

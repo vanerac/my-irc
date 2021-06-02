@@ -10,6 +10,8 @@
 #include <string.h>
 #include <logging_server.h>
 
+// todo handle duplicates
+
 static enum command_return create_team(t_global *global, char *name, char *desc
 )
 {
@@ -68,8 +70,9 @@ static enum command_return create_tread(t_channel *pChannel,
     thread->body = arg1;
     thread->title = arg;
     thread->destination = pChannel;
-    thread->source = session->user_data;
+    thread->author = session->user_data;
     thread->replies = NULL;
+    time(&thread->created_at); // todo demande a troncy
     uuid_unparse(thread->uid, uuid_t);
     uuid_unparse(session->user_data->uid, uuid_s);
     server_event_thread_created((char const *) pChannel->uid, uuid_t, uuid_s,
@@ -96,8 +99,9 @@ static enum command_return create_comment(t_messages *pMessages,
     thread->title = NULL;
     thread->body = arg;
     thread->destination = pMessages;
-    thread->source = session->user_data;
+    thread->author = session->user_data;
     thread->replies = NULL;
+    time(&thread->created_at); // todo demande a troncy
     uuid_unparse(pMessages->uid, uuid_m);
     uuid_unparse(session->user_data->uid, uuid_s);
     server_event_thread_new_reply(uuid_m, uuid_s, thread->body);

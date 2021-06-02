@@ -14,6 +14,7 @@ SRC					=	server.c					\
 						commands/use.c				\
 						commands/create.c			\
 						commands/login.c			\
+						commands/list.c			\
 						file_parser/file_parser.c	\
 						file_parser/write_file.c	\
 						file_parser/read_file.c		\

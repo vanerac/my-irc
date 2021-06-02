@@ -11,7 +11,7 @@
 
 const command_t commands_list[] = {
     {INVALID, NULL, NULL, NULL},
-    {HELP, NULL, &command_help, NULL},
+    {HELP, NULL, &command_help, &is_logged},
     {LOGIN, NULL, &command_login, NULL},
     {LOGOUT, NULL, &command_logout, &is_logged},
     {USERS, NULL, &command_users, &is_logged},
@@ -30,6 +30,7 @@ const command_t commands_list[] = {
 enum command_return is_logged(t_global *global, session_t *session, char **args)
 {
     (void) global, (void) args;
+    printf("checking log status\n");
     return session->user_data ? SUCCESS : NOT_AUTH;
 }
 
@@ -113,13 +114,6 @@ enum command_return command_unsubscribe(t_global *global, session_t *session,
     return SUCCESS;
 }
 
-enum command_return command_list(t_global *global, session_t *session,
-    char **args
-)
-{
-    (void) session, (void) args, (void) global;
-    return SUCCESS;
-}
 
 enum command_return command_info(t_global *global, session_t *session,
     char **args
