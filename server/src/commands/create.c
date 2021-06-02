@@ -114,7 +114,7 @@ enum command_return command_create(t_global *global, session_t *session,
 )
 {
     (void) args; // todo parse args
-    char *first_arg = NULL, *second_arg = NULL; // todo
+    char *first_arg = args[0], *second_arg = args[1]; // todo
     if (!session->current_team) {
         return create_team(global, first_arg, second_arg);;
     } else if (!session->current_channel) {
