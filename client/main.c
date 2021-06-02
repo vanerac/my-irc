@@ -23,19 +23,11 @@ int main(int ac, char **ag)
     message_info_t ok;
 
     while (1) {
-        if (read_message(&ok, var->server_fd)){
-            printf("buffer server => %s\n", ok.args);
+        if (read_message(&ok, var->server_fd))
             server_handler(&ok);
-            // memset(ok.args, 0, 200);
-            printf("SERVER\n");
-        }
 
-        if (read(0, var->buffer_client, 200) != 0){
-            printf("buffer client => %s\n", var->buffer_client);
+        if (read(0, var->buffer_client, 200) != 0)
             send_message(var->server_fd, var->buffer_client, COMMAND, INVALID);
-            // memset(var->buffer_client, 0, 200);
-            printf("CLIENT\n");
-        }
     }
     dlclose(var->handle);
 }
