@@ -12,14 +12,15 @@
 #include "command_enum.h"
 
 enum command_return {
-    SUCCESS = 0,
-    UNKNOWN_TEAM = -1,
-    UNKNOWN_CHANNEL = -2,
-    UNKNOWN_THREAD = -3,
-    UNKNOWN_USER = -4,
-    NOT_AUTH = -5,
+    SUCCESS = 200,
+    UNAUTHORISED = 400,
+    UNKNOWN_USER = 401,
+    UNKNOWN_TEAM = 402,
+    UNKNOWN_CHANNEL = 403,
+    UNKNOWN_THREAD = 404,
+    ALREADY_EXISTS =  405,
+    SYSTEM_ERROR = 500,
     DOUBLE_AUTH = -6,
-    SYSTEM_ERROR = -7
 };
 
 enum command_return command_help(t_global *global, session_t *session,

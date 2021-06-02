@@ -26,7 +26,7 @@ int reply_to_client(session_t *session, enum command_e command,
     enum command_return status)
 {
     char *buffer = NULL;
-    asprintf(&buffer, "%d\n", status);
+    asprintf(&buffer, "%d ERROR\n", status);
     if (status < 0)
         send_message(session->socket, buffer, RESPONSE, command);
     return status;
@@ -43,7 +43,7 @@ int handle_command(t_global *global, session_t *session)
     command_t cmd = parse_command(info.args, info.command);
     enum command_return status =
         cmd.check_fn ? cmd.check_fn(global, session, cmd.args) : SUCCESS;
-    if (!status)
+    if (status == SUCCESS)
         status = cmd.fn(global, session, cmd.args);
     return reply_to_client(session, cmd.command_id, status);
 }
