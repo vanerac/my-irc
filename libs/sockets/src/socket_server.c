@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** create a server 
+** create a server
 ** File description:
 ** socket_server
 */

@@ -30,12 +30,12 @@ $(NAME):			$(OBJECTS)
 					ar rc $(NAME) $(OBJECTS)
 
 clean:
-					$(RM) 	$(OBJECTS) 			\
-                    		$(TOBJECTS)			\
-                    		$(OBJECTS:.o=.gcno) \
-                    		$(OBJECTS:.o=.gcda) \
-                    		$(TOBJECTS:.o=.gcno)\
-                    		$(TOBJECTS:.o=.gcda)
+					$(RM) 	$(OBJECTS)				\
+							$(TOBJECTS)				\
+							$(OBJECTS:.o=.gcno)		\
+							$(OBJECTS:.o=.gcda)		\
+							$(TOBJECTS:.o=.gcno)	\
+							$(TOBJECTS:.o=.gcda)
 
 fclean:				clean
 					$(RM) $(NAME) $(TNAME)

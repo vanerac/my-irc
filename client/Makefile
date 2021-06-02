@@ -24,14 +24,8 @@ OBJ					=	$(SRC:.c=.o)
 TOBJ				=	$(TRC:.c=.o)
 OMAIN				=	$(MAIN:.c=.o)
 
-# LIBS				=	../libnode.a 		\
-# 						../libsockets.a		\
-# 						../libmessage.a		\
-# 						../libs/myteams/libmyteams.so
-
 OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
-# ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 
 CFLAGS				+=	-W -Wall -Wextra -g
 
@@ -40,8 +34,6 @@ CPPFLAGS			+=	-Iincludes/ -I../includes/ -I../libs/myteams/
 LDFLAGS				+=	-L../libs/myteams/ -L../
 
 LDLIBS				+=	-luuid -lmyteams -lnode -lsockets -lmessage
-
-#-Wall -Wextra    // a décommenter plus tard, flemme du warning "unused variables" la
 
 RM					=	rm -rf
 
@@ -67,7 +59,7 @@ clean:
 tests_run:			CFLAGS += -g
 tests_run:			$(TOBJECTS) $(OBJECTS)
 					$(CC) -o $(TNAME) $(TOBJECTS) $(OBJECTS) $(LIBS)\
- 						-lgcov -lcriterion
+						-lgcov -lcriterion
 					./$(TNAME)
 
 re:					fclean all
