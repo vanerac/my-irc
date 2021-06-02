@@ -30,9 +30,6 @@ void login(char *code, char *allargs)
             case 200:
                 client_event_logged_in(args[0], args[1]);
                 break;
-            default:
-                printf("Error while logging !\n");
-                break;
         }
     }
 }
@@ -48,9 +45,6 @@ void logout(char *code, char *allargs)
             case 200:
                 client_event_logged_out(args[0], args[1]);
                 break;
-            default:
-                printf("Error while logout !\n");
-                break;
         }
     }
 }
@@ -65,9 +59,6 @@ void user(char *code, char *allargs)
             break;
         case 401:
             client_error_unknown_user(allargs);
-            break;
-        default:
-            printf("Error user !\n");
             break;
     }
 }
@@ -85,8 +76,6 @@ void users(char *code, char *allargs)
                 break;
             case 400:
                 client_error_unauthorized();
-            default:
-                printf("Error printing userS !\n");
                 break;
         }
     }

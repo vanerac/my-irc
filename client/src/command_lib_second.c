@@ -24,9 +24,6 @@ void send(char *code, char *allargs)
             case 400:
                 client_error_unauthorized();
                 break;
-            default:
-                printf("Error send !\n");
-                break;
         }
     }
 }
@@ -48,9 +45,6 @@ void messages(char *code, char *allargs)
             case 400:
                 client_error_unauthorized();
                 break;
-            default:
-                printf("Error messages !\n");
-                break;
         }
     }
 }
@@ -71,9 +65,6 @@ void subscribe(char *code, char *allargs)
                 break;
             case 400:
                 client_error_unauthorized();
-                break;
-            default:
-                printf("Error subscribe !\n");
                 break;
         }
     }
@@ -97,9 +88,6 @@ void subscribed(char *code, char *allargs)
                 case 400:
                     client_error_unauthorized();
                     break;
-                default:
-                    printf("Error printing users !\n");
-                    break;
             }
         } else if (atoi(code) == 202){
             switch (atoi(code)) {
@@ -108,9 +96,6 @@ void subscribed(char *code, char *allargs)
                     break;
                 case 400:
                     client_error_unauthorized();
-                    break;
-                default:
-                    printf("Error printing users !\n");
                     break;
             }
         }
@@ -133,9 +118,6 @@ void unsubscribe(char *code, char *allargs)
                 break;
             case 400:
                     client_error_unauthorized();
-                break;
-            default:
-                printf("Error unsubscribe !\n");
                 break;
         }
     }
