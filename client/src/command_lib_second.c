@@ -13,17 +13,16 @@ void send(char *code, char *allargs)
 
     if (!args)
         return;
-    if (array_size(args) < 0){
+    if (array_size(args) > 0){
         switch (atoi(code)) {
             case 200:
-                // lib_client[2].func(args[1], args[2]);
-                // client_event_private_message_received
+                client_event_private_message_received(args[0], args[1]);
                 break;
             case 401:
-                // client_error_unknown_user
+                client_error_unknown_user(args[0]);
                 break;
             case 400:
-                // client_error_unauthorized
+                client_error_unauthorized();
                 break;
             default:
                 printf("Error send !\n");
@@ -38,17 +37,16 @@ void messages(char *code, char *allargs)
 
     if (!args)
         return;
-    if (array_size(args) < 0){
+    if (array_size(args) > 0){
         switch (atoi(code)) {
             case 200:
-                // lib_client[2].func(args[1], args[2]);
-                // client_private_message_print_messages
+                client_private_message_print_messages(args[0], args[1], args[2]);
                 break;
             case 401:
-                // client_error_unknown_user
+                client_error_unknown_user(args[0]);
                 break;
             case 400:
-                // client_error_unauthorized
+                client_error_unauthorized();
                 break;
             default:
                 printf("Error messages !\n");
@@ -63,16 +61,16 @@ void subscribe(char *code, char *allargs)
 
     if (!args)
         return;
-    if (array_size(args) < 0){
+    if (array_size(args) > 0){
         switch (atoi(code)) {
             case 200:
-                // client_print_subscribed
+                client_print_subscribed(args[0], args[1]);
                 break;
             case 402:
-                // client_error_unknown_team
+                client_error_unknown_team(args[0]);
                 break;
             case 400:
-                // client_error_unauthorized
+                client_error_unauthorized();
                 break;
             default:
                 printf("Error subscribe !\n");
@@ -87,37 +85,35 @@ void subscribed(char *code, char *allargs)
 
     if (!args)
         return;
-    if (array_size(args) < 0){
-        // A mettre au clair
-
-        // if (array_size(args) == 1){
-        //     switch (atoi(code)) {
-        //         case 202:
-        //             // client_print_users
-        //             break;
-        //         case 402:
-        //             // client_error_unknown_team
-        //             break;
-        //         case 400:
-        //             // client_error_unauthorized
-        //             break;
-        //         default:
-        //             printf("Error printing users !\n");
-        //             break;
-        //     }
-        // } else {
-        //     switch (atoi(code)) {
-        //         case 201:
-        //             // client_print_teams
-        //             break;
-        //         case 400:
-        //             // client_error_unauthorized
-        //             break;
-        //         default:
-        //             printf("Error printing users !\n");
-        //             break;
-        //     }
-        // }
+    if (array_size(args) > 0){
+        if (atoi(code) == 201){
+            switch (atoi(code)) {
+                case 202:
+                    client_print_users(args[0], args[1], atoi(args[2]));
+                    break;
+                case 402:
+                    client_error_unknown_team(args[0]);
+                    break;
+                case 400:
+                    client_error_unauthorized();
+                    break;
+                default:
+                    printf("Error printing users !\n");
+                    break;
+            }
+        } else if (atoi(code) == 202){
+            switch (atoi(code)) {
+                case 201:
+                    client_print_teams(args[0], args[1], args[2]);
+                    break;
+                case 400:
+                    client_error_unauthorized();
+                    break;
+                default:
+                    printf("Error printing users !\n");
+                    break;
+            }
+        }
     }
 }
 
@@ -127,16 +123,16 @@ void unsubscribe(char *code, char *allargs)
 
     if (!args)
         return;
-    if (array_size(args) < 0){
+    if (array_size(args) > 0){
         switch (atoi(code)) {
             case 200:
-                // client_print_unsubscribed
+                client_print_unsubscribed(args[0], args[1]);
                 break;
             case 402:
-                // client_error_unknown_team
+                    client_error_unknown_team(args[0]);
                 break;
             case 400:
-                // client_error_unauthorized
+                    client_error_unauthorized();
                 break;
             default:
                 printf("Error unsubscribe !\n");

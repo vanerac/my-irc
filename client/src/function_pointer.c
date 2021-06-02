@@ -54,10 +54,6 @@ const client_func_ptr_t func_ptr_client[15] =
         .func = &unsubscribe
     },
     {
-        .command = USE,
-        .func = &use
-    },
-    {
         .command = CREATE,
         .func = &create
     },

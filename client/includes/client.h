@@ -16,6 +16,7 @@
 
 #include "command_enum.h"
 #include "message.h"
+#include "logging_client.h"
 
 typedef struct data
 {
@@ -55,7 +56,6 @@ void messages(char *code, char *allargs);
 void subscribe(char *code, char *allargs);
 void subscribed(char *code, char *allargs);
 void unsubscribe(char *code, char *allargs);
-void use(char *code, char *allargs);
 void create(char *code, char *allargs);
 void list(char *code, char *allargs);
 void info(char *code, char *allargs);
