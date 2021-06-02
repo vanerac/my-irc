@@ -60,4 +60,10 @@ void create(char *code, char *allargs, lib_func_client_t *lib_client);
 void list(char *code, char *allargs, lib_func_client_t *lib_client);
 void info(char *code, char *allargs, lib_func_client_t *lib_client);
 
+void create_team(char **args, lib_func_client_t *lib_client);
+void create_channel(char **args, lib_func_client_t *lib_client);
+void create_thread(char **args, lib_func_client_t *lib_client);
+void create_reply_to_thread(char **args, lib_func_client_t *lib_client);
+
+
 #endif /* !CLIENT_H_ */

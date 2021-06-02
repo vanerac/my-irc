@@ -96,7 +96,7 @@
     -> 207      client_print_channel
     -> 208      client_print_thread
     -> 402      client_error_unknown_team
-    -> 404      client_error_unknown_channel
+    -> 403      client_error_unknown_channel
     -> 404      client_error_unknown_thread
     -> 400      client_error_unauthorized
 

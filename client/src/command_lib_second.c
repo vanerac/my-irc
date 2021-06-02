@@ -14,12 +14,19 @@ void send(char *code, char *allargs, lib_func_client_t *lib_client)
     if (!args)
         return;
     if (array_size(args) < 0){
-        switch (atoi(args[0])) {
-            case 202:
-                lib_client[2].func(args[1], args[2]);
+        switch (atoi(code)) {
+            case 200:
+                // lib_client[2].func(args[1], args[2]);
+                // client_event_private_message_received
+                break;
+            case 401:
+                // client_error_unknown_user
+                break;
+            case 400:
+                // client_error_unauthorized
                 break;
             default:
-                printf("Error DM received !\n");
+                printf("Error send !\n");
                 break;
         }
     }
@@ -27,12 +34,51 @@ void send(char *code, char *allargs, lib_func_client_t *lib_client)
 
 void messages(char *code, char *allargs, lib_func_client_t *lib_client)
 {
-    // void (*func)() = dlsym(var->handle, "client_event_thread_created");
+    char **args = str_to_word_array(allargs, ' ');
+
+    if (!args)
+        return;
+    if (array_size(args) < 0){
+        switch (atoi(code)) {
+            case 200:
+                // lib_client[2].func(args[1], args[2]);
+                // client_private_message_print_messages
+                break;
+            case 401:
+                // client_error_unknown_user
+                break;
+            case 400:
+                // client_error_unauthorized
+                break;
+            default:
+                printf("Error messages !\n");
+                break;
+        }
+    }
 }
 
 void subscribe(char *code, char *allargs, lib_func_client_t *lib_client)
 {
-    // void (*func)() = dlsym(var->handle, "client_print_users");
+    char **args = str_to_word_array(allargs, ' ');
+
+    if (!args)
+        return;
+    if (array_size(args) < 0){
+        switch (atoi(code)) {
+            case 200:
+                // client_print_subscribed
+                break;
+            case 402:
+                // client_error_unknown_team
+                break;
+            case 400:
+                // client_error_unauthorized
+                break;
+            default:
+                printf("Error subscribe !\n");
+                break;
+        }
+    }
 }
 
 void subscribed(char *code, char *allargs, lib_func_client_t *lib_client)
@@ -42,21 +88,60 @@ void subscribed(char *code, char *allargs, lib_func_client_t *lib_client)
     if (!args)
         return;
     if (array_size(args) < 0){
-        switch (atoi(args[0])) {
-            case 207:
-                lib_client[12].func(args[1], args[2], args[3]); // => params a convertir en int
-                break;
-            case 208:
-                lib_client[11].func(args[1], args[2], args[3]);
-                break;
-            default:
-                printf("Error printing users !\n");
-                break;
-        }
+        // A mettre au clair
+
+        // if (array_size(args) == 1){
+        //     switch (atoi(code)) {
+        //         case 202:
+        //             // client_print_users
+        //             break;
+        //         case 402:
+        //             // client_error_unknown_team
+        //             break;
+        //         case 400:
+        //             // client_error_unauthorized
+        //             break;
+        //         default:
+        //             printf("Error printing users !\n");
+        //             break;
+        //     }
+        // } else {
+        //     switch (atoi(code)) {
+        //         case 201:
+        //             // client_print_teams
+        //             break;
+        //         case 400:
+        //             // client_error_unauthorized
+        //             break;
+        //         default:
+        //             printf("Error printing users !\n");
+        //             break;
+        //     }
+        // }
     }
 }
 
 void unsubscribe(char *code, char *allargs, lib_func_client_t *lib_client)
 {
-    // void (*func)() = dlsym(var->handle, "client_team_print_channels");
+    char **args = str_to_word_array(allargs, ' ');
+
+    if (!args)
+        return;
+    if (array_size(args) < 0){
+        switch (atoi(code)) {
+            case 200:
+                // client_print_unsubscribed
+                break;
+            case 402:
+                // client_error_unknown_team
+                break;
+            case 400:
+                // client_error_unauthorized
+                break;
+            default:
+                printf("Error unsubscribe !\n");
+                break;
+        }
+    }
+
 }
