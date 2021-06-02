@@ -31,7 +31,6 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
     fd_set *rfds
 )
 {
-    server_event_team_created("a", "b", "c");
     set_ports(rfds, sessions);
     FD_SET(server_socket, rfds);
     if (select(FD_SETSIZE, rfds, NULL, NULL, NULL) == -1)
