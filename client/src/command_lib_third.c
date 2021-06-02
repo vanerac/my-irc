@@ -27,9 +27,6 @@ void create(char *code, char *allargs)
             case 208:
                 create_reply_to_thread(args);
                 break;
-            default:
-                printf("Error create !\n");
-                break;
         }
     }
 }
@@ -65,9 +62,6 @@ void info(char *code, char *allargs)
                 break;
             case 400:
                 client_error_unauthorized();
-                break;
-            default:
-                printf("Error Info !\n");
                 break;
         }
     }
@@ -105,21 +99,14 @@ void list(char *code, char *allargs)
             case 400:
                 client_error_unauthorized();
                 break;
-            default:
-                printf("Error while listing !\n");
-                break;
         }
     }
 }
 
 void invalid(char *code, char *allargs)
 {
-    switch (atoi(code)) {
-    case 220:
+    if (code != NULL && atoi(code) == 220){
         printf("%s\n", allargs);
-        break;
-    default:
-        printf("Invalid Command !\n");
-        break;
-    }
+    } else
+        printf("INVALID");
 }
