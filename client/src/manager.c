@@ -7,7 +7,7 @@
 
 #include "client.h"
 
-void server_handler(message_info_t *info, lib_func_client_t *lib_client)
+void server_handler(message_info_t *info)
 {
     char *code = NULL;
     char *args = NULL;
@@ -20,7 +20,7 @@ void server_handler(message_info_t *info, lib_func_client_t *lib_client)
         return;
     for (int i = 0; i < 15; i++) {
         if (func_ptr_client[i].command == info->command) {
-            (*func_ptr_client[i].func)(code, args, lib_client);
+            (*func_ptr_client[i].func)(code, args);
             return;
         }
     }

@@ -50,6 +50,7 @@ enum command_return command_help(t_global *global, session_t *session,
     "context team/channel/thread\n/create -> create a team/channel/thread\n"
     "/list -> list existing teams/channels/threads\n/info -> display info"
     " about users/team/channel/thread\n";
+
     send_message(session->socket, h, RESPONSE, HELP);
     return SUCCESS;
 }

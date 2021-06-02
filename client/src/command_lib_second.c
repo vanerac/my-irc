@@ -7,7 +7,7 @@
 
 #include "client.h"
 
-void send(char *code, char *allargs, lib_func_client_t *lib_client)
+void send(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 
@@ -32,7 +32,7 @@ void send(char *code, char *allargs, lib_func_client_t *lib_client)
     }
 }
 
-void messages(char *code, char *allargs, lib_func_client_t *lib_client)
+void messages(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 
@@ -57,7 +57,7 @@ void messages(char *code, char *allargs, lib_func_client_t *lib_client)
     }
 }
 
-void subscribe(char *code, char *allargs, lib_func_client_t *lib_client)
+void subscribe(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 
@@ -81,7 +81,7 @@ void subscribe(char *code, char *allargs, lib_func_client_t *lib_client)
     }
 }
 
-void subscribed(char *code, char *allargs, lib_func_client_t *lib_client)
+void subscribed(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 
@@ -121,7 +121,7 @@ void subscribed(char *code, char *allargs, lib_func_client_t *lib_client)
     }
 }
 
-void unsubscribe(char *code, char *allargs, lib_func_client_t *lib_client)
+void unsubscribe(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 

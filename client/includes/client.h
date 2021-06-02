@@ -27,43 +27,43 @@ typedef struct data
     int server_fd;
 } data;
 
-typedef struct __attribute__((__packed__)) lib_func_client {
-    char *name;
-    void (*func)();
-} lib_func_client_t;
+// typedef struct __attribute__((__packed__)) lib_func_client {
+    // char *name;
+    // void (*func)();
+// } lib_func_client_t;
 
 typedef struct client_func_ptr {
     enum command_e command;
-    void (*func)(char *code, char *args, lib_func_client_t *lib_client);
+    void (*func)(char *code, char *args);
 } client_func_ptr_t;
 
 extern const client_func_ptr_t func_ptr_client[15];
 
-void server_handler(message_info_t *info, lib_func_client_t *lib_client);
+void server_handler(message_info_t *info);
 char **str_to_word_array(char *str, char spliter_char);
 int search_command(char *cmd[], char *handle_cmd);
 int array_size(char **array);
 
-void invalid(char *code, char *allargs, lib_func_client_t *lib_client);
-void help(char *code, char *allargs, lib_func_client_t *lib_client);
-void login(char *code, char *allargs, lib_func_client_t *lib_client);
-void logout(char *code, char *allargs, lib_func_client_t *lib_client);
-void users(char *code, char *allargs, lib_func_client_t *lib_client);
-void user(char *code, char *allargs, lib_func_client_t *lib_client);
-void send(char *code, char *allargs, lib_func_client_t *lib_client);
-void messages(char *code, char *allargs, lib_func_client_t *lib_client);
-void subscribe(char *code, char *allargs, lib_func_client_t *lib_client);
-void subscribed(char *code, char *allargs, lib_func_client_t *lib_client);
-void unsubscribe(char *code, char *allargs, lib_func_client_t *lib_client);
-void use(char *code, char *allargs, lib_func_client_t *lib_client);
-void create(char *code, char *allargs, lib_func_client_t *lib_client);
-void list(char *code, char *allargs, lib_func_client_t *lib_client);
-void info(char *code, char *allargs, lib_func_client_t *lib_client);
+void invalid(char *code, char *allargs);
+void help(char *code, char *allargs);
+void login(char *code, char *allargs);
+void logout(char *code, char *allargs);
+void users(char *code, char *allargs);
+void user(char *code, char *allargs);
+void send(char *code, char *allargs);
+void messages(char *code, char *allargs);
+void subscribe(char *code, char *allargs);
+void subscribed(char *code, char *allargs);
+void unsubscribe(char *code, char *allargs);
+void use(char *code, char *allargs);
+void create(char *code, char *allargs);
+void list(char *code, char *allargs);
+void info(char *code, char *allargs);
 
-void create_team(char **args, lib_func_client_t *lib_client);
-void create_channel(char **args, lib_func_client_t *lib_client);
-void create_thread(char **args, lib_func_client_t *lib_client);
-void create_reply_to_thread(char **args, lib_func_client_t *lib_client);
+void create_team(char **args);
+void create_channel(char **args);
+void create_thread(char **args);
+void create_reply_to_thread(char **args);
 
 
 #endif /* !CLIENT_H_ */

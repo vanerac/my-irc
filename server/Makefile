@@ -27,17 +27,22 @@ OBJ					=	$(SRC:.c=.o)
 TOBJ				=	$(TRC:.c=.o)
 OMAIN				=	$(MAIN:.c=.o)
 
-LIBS				=	../libnode.a 		\
-						../libsockets.a		\
-						../libmessage.a		\
-						../libs/myteams/libmyteams.so
+# LIBS				=	../libnode.a 		\
+# 						../libsockets.a		\
+# 						../libmessage.a
 
 
 OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
-ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
+# ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 
-CFLAGS				+=	-Iincludes/ -I../includes/ -Wall -Wextra -Werror -g
+CFLAGS				+=	-Wall -Wextra -Werror -g
+
+CPPFLAGS			+=	-Iincludes/ -I../includes/ -I../libs/myteams/
+
+LDFLAGS				+=	-L../libs/myteams/ -L../
+
+LDLIBS				+=	-luuid -lmyteams -lnode -lsockets -lmessage
 
 RM					=	rm -rf
 
@@ -45,7 +50,7 @@ RM					=	rm -rf
 all:				$(NAME)
 
 $(NAME):			$(OMAIN) $(OBJECTS)
-					$(CC) -o $(NAME) $(OBJECTS) -ldl $(OMAIN) $(LIBS) -luuid
+					$(CC) -o $(NAME) $(OBJECTS) $(OMAIN) $(LDLIBS) $(LDFLAGS)
 
 fclean:				clean
 					$(RM) $(NAME) $(TNAME)

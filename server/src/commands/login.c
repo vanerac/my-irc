@@ -8,6 +8,9 @@
 #include <logging_server.h>
 #include <string.h>
 #include "commands.h"
+#include "message.h"
+
+int asprintf(char **strp, const char *fmt, ...);
 
 enum command_return command_logout(t_global *global, session_t *session,
     char **args
@@ -45,6 +48,7 @@ enum command_return command_login(t_global *global, session_t *session,
     char **args
 )
 {
+    char *ret = NULL;
     char *username = args[0];
     if (session->user_data) {
         // already logged in, error ?
@@ -60,7 +64,8 @@ enum command_return command_login(t_global *global, session_t *session,
     if (!session->user_data)
         return SYSTEM_ERROR;
 //    server_event_user_logged_in((char const *) session->user_data->uid);
-
+    asprintf(&ret, "200 %s %s", session->user_data->uid, username);
+    send_message(session->socket, ret, RESPONSE, LOGIN);
     return SUCCESS;
 }
 

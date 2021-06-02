@@ -7,12 +7,12 @@
 
 #include "client.h"
 
-void use(char *code, char *allargs, lib_func_client_t *lib_client)
+void use(char *code, char *allargs)
 {
     // utile ?
 }
 
-void create(char *code, char *allargs, lib_func_client_t *lib_client)
+void create(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 
@@ -21,16 +21,16 @@ void create(char *code, char *allargs, lib_func_client_t *lib_client)
     if (array_size(args) < 0){
         switch (atoi(code)) {
             case 205:
-                create_team(args, lib_client);
+                create_team(args);
                 break;
             case 206:
-                create_channel(args, lib_client);
+                create_channel(args);
                 break;
             case 207:
-                create_thread(args, lib_client);
+                create_thread(args);
                 break;
             case 208:
-                create_reply_to_thread(args, lib_client);
+                create_reply_to_thread(args);
                 break;
             default:
                 printf("Error create !\n");
@@ -39,7 +39,7 @@ void create(char *code, char *allargs, lib_func_client_t *lib_client)
     }
 }
 
-void info(char *code, char *allargs, lib_func_client_t *lib_client)
+void info(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 
@@ -78,7 +78,7 @@ void info(char *code, char *allargs, lib_func_client_t *lib_client)
     }
 }
 
-void list(char *code, char *allargs, lib_func_client_t *lib_client)
+void list(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 
@@ -117,7 +117,7 @@ void list(char *code, char *allargs, lib_func_client_t *lib_client)
     }
 }
 
-void invalid(char *code, char *allargs, lib_func_client_t *lib_client)
+void invalid(char *code, char *allargs)
 {
     printf("Invalid Command !\n");
 }

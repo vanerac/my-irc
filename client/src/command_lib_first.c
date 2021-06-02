@@ -7,7 +7,7 @@
 
 #include "client.h"
 
-void help(char *code, char *allargs, lib_func_client_t *lib_client)
+void help(char *code, char *allargs)
 {
     switch (atoi(code)) {
     case 200:
@@ -19,7 +19,7 @@ void help(char *code, char *allargs, lib_func_client_t *lib_client)
     }
 }
 
-void login(char *code, char *allargs, lib_func_client_t *lib_client)
+void login(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 
@@ -38,7 +38,7 @@ void login(char *code, char *allargs, lib_func_client_t *lib_client)
     }
 }
 
-void logout(char *code, char *allargs, lib_func_client_t *lib_client)
+void logout(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 
@@ -57,7 +57,7 @@ void logout(char *code, char *allargs, lib_func_client_t *lib_client)
     }
 }
 
-void user(char *code, char *allargs, lib_func_client_t *lib_client)
+void user(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 
@@ -81,7 +81,7 @@ void user(char *code, char *allargs, lib_func_client_t *lib_client)
 
 }
 
-void users(char *code, char *allargs, lib_func_client_t *lib_client) // Every logged user should receive this event (the creator of the team too)
+void users(char *code, char *allargs) // Every logged user should receive this event (the creator of the team too)
 {
     char **args = str_to_word_array(allargs, ' ');
 
