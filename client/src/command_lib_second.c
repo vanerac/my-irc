@@ -37,7 +37,8 @@ void messages(char *code, char *allargs)
     if (array_size(args) > 0){
         switch (atoi(code)) {
             case 200:
-                client_private_message_print_messages(args[0], (time_t)atol(args[1]), args[2]);
+                client_private_message_print_messages(args[0],
+                (time_t)atol(args[1]), args[2]);
                 break;
             case 401:
                 client_error_unknown_user(args[0]);
@@ -89,37 +90,19 @@ void subscribed(char *code, char *allargs)
                     client_error_unauthorized();
                     break;
             }
-        } else if (atoi(code) == 202){
-            switch (atoi(code)) {
-                case 201:
-                    client_print_teams(args[0], args[1], args[2]);
-                    break;
-                case 400:
-                    client_error_unauthorized();
-                    break;
-            }
-        }
+        } else if (atoi(code) == 202)
+            subscribed_bis(code, args);            
     }
 }
 
-void unsubscribe(char *code, char *allargs)
+void subscribed_bis(char *code, char **args)
 {
-    char **args = str_to_word_array(allargs, ' ');
-
-    if (!args)
-        return;
-    if (array_size(args) > 0){
-        switch (atoi(code)) {
-            case 200:
-                client_print_unsubscribed(args[0], args[1]);
-                break;
-            case 402:
-                    client_error_unknown_team(args[0]);
-                break;
-            case 400:
-                    client_error_unauthorized();
-                break;
-        }
+    switch (atoi(code)) {
+        case 201:
+            client_print_teams(args[0], args[1], args[2]);
+            break;
+        case 400:
+            client_error_unauthorized();
+            break;
     }
-
 }

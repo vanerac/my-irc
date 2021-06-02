@@ -55,10 +55,14 @@ void send(char *code, char *allargs);
 void messages(char *code, char *allargs);
 void subscribe(char *code, char *allargs);
 void subscribed(char *code, char *allargs);
+void subscribed_bis(char *code, char **args);
 void unsubscribe(char *code, char *allargs);
 void create(char *code, char *allargs);
+void create_bis(char *code, char **args);
 void list(char *code, char *allargs);
+void list_bis(char *code, char **args);
 void info(char *code, char *allargs);
+void info_bis(char *code, char **args);
 
 void create_team(char **args);
 void create_channel(char **args);

@@ -16,6 +16,7 @@ SRC					=	manager.c				\
 						command_lib_third.c		\
 						function_pointer.c		\
 						create_cmd.c			\
+						command_lib_fourth.c	\
 
 TRC					=
 MAIN				= 	main.c
