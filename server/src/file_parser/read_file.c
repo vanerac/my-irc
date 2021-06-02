@@ -16,7 +16,7 @@
 
 
 
-t_teams *read_team(int fd, int recursion_level)
+t_teams *file_read_team(int fd, int recursion_level)
 {
     (void) recursion_level;
     char **args = get_args(fd, false);
@@ -44,7 +44,7 @@ t_teams *read_team(int fd, int recursion_level)
     return ret;
 }
 
-t_channel *read_channel(int fd, int recursion_level)
+t_channel *file_read_channel(int fd, int recursion_level)
 {
     (void) recursion_level;
     char **args = get_args(fd, false);
@@ -66,7 +66,7 @@ t_channel *read_channel(int fd, int recursion_level)
     return ret;
 }
 
-t_messages *read_thread(int fd, int recursion_level)
+t_messages *file_read_thread(int fd, int recursion_level)
 {
     (void) recursion_level;
     char **args = get_args(fd, false);
@@ -88,7 +88,7 @@ t_messages *read_thread(int fd, int recursion_level)
     return ret;
 }
 
-t_messages *read_message(int fd)
+t_messages *file_read_message(int fd)
 {
     char **args = get_args(fd, false);
     t_messages *ret = malloc(sizeof(t_teams));
@@ -107,7 +107,7 @@ t_messages *read_message(int fd)
     return ret;
 }
 
-t_user *read_user(int fd)
+t_user *file_read_user(int fd)
 {
     char **args = get_args(fd, false);
     t_user *ret = malloc(sizeof(t_teams));
