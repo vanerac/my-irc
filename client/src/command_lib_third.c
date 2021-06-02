@@ -19,15 +19,15 @@ void create(char *code, char *allargs)
                 client_event_team_created(args[0], args[1], args[2]);
                 create_team(args);
                 break;
-            case 206:
+            case 207:
                 client_event_channel_created(args[0], args[1], args[2]);
                 create_channel(args);
                 break;
-            case 207:
+            case 209:
                 client_event_thread_created(args[0], args[1], (time_t)atol(args[2]), args[3], args[4]);
                 create_thread(args);
                 break;
-            case 208:
+            case 211:
                 client_event_thread_reply_received(args[0], args[1], args[2], args[3]);
                 create_reply_to_thread(args);
                 break;

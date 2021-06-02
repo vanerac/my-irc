@@ -13,7 +13,7 @@ void create_team(char **args)
         return;
     if (array_size(args) > 0){
         switch (atoi(args[0])) {
-            case 205:
+            case 206:
                 client_print_team_created(args[0], args[1], args[2]);
                 break;
             case 405:
@@ -32,7 +32,7 @@ void create_channel(char **args)
         return;
     if (array_size(args) > 0){
         switch (atoi(args[0])) {
-            case 206:
+            case 208:
                 client_print_channel_created(args[0], args[1], args[2]);
                 break;
             case 402:
@@ -54,7 +54,7 @@ void create_thread(char **args)
         return;
     if (array_size(args) < 0){
         switch (atoi(args[0])) {
-            case 207:
+            case 210:
                 client_print_thread_created(args[0], args[1], (time_t)atol(args[2]), args[3], args[4]);
                 break;
             case 402:
@@ -79,7 +79,7 @@ void create_reply_to_thread(char **args)
         return;
     if (array_size(args) < 0){
         switch (atoi(args[0])) {
-            case 208:
+            case 212:
                 client_print_reply_created(args[0], args[1], (time_t)atol(args[2]), args[3]);
                 break;
             case 402:
