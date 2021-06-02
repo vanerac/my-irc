@@ -6,6 +6,7 @@
 */
 
 #include <unistd.h>
+#include <logging_server.h>
 #include "file_parser.h"
 
 t_teams *file_read_team(int fd, int recursion_level)
@@ -138,5 +139,8 @@ t_user *file_read_user(int fd)
     ret->type = USER;
     uuid_parse(args[1], ret->uid);
     ret->username = args[2];
+    char uuid[37];
+    uuid_unparse(ret->uid, uuid);
+    server_event_user_loaded(uuid, ret->username); // todo maybe change place
     return NULL;
 }
