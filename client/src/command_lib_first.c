@@ -14,7 +14,7 @@ void help(char *code, char *allargs)
         printf("%s", allargs);
         break;
     case 400:
-        // client_error_unauthorized;
+        client_error_unauthorized();
         break;
     }
 }
@@ -25,11 +25,10 @@ void login(char *code, char *allargs)
 
     if (!args)
         return;
-    if (array_size(args) < 0){
+    if (array_size(args) > 0){
         switch (atoi(code)) {
             case 200:
-                // lib_client[0].func(args[1], args[2]);
-                // client_event_logged_in
+                client_event_logged_in(args[0], args[1]);
                 break;
             default:
                 printf("Error while logging !\n");
@@ -47,8 +46,7 @@ void logout(char *code, char *allargs)
     if (array_size(args) > 0){
         switch (atoi(code)) {
             case 200:
-                // lib_client[1].func(args[1], args[2]);
-                // client_event_logged_out
+                client_event_logged_out(args[0], args[1]);
                 break;
             default:
                 printf("Error while logout !\n");
@@ -59,29 +57,22 @@ void logout(char *code, char *allargs)
 
 void user(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
-
-    if (!args)
-        return;
-    if (array_size(args) > 0){
-        switch (atoi(code)) {
-            case 200:
-                break;
-            case 400:
-                // client_error_unauthorized
-                break;
-            case 401:
-                // client_error_unknown_user
-                break;
-            default:
-                printf("Error user !\n");
-                break;
-        }
+    switch (atoi(code)) {
+        case 200:
+            break;
+        case 400:
+            client_error_unauthorized();
+            break;
+        case 401:
+            client_error_unknown_user(allargs);
+            break;
+        default:
+            printf("Error user !\n");
+            break;
     }
-
 }
 
-void users(char *code, char *allargs) // Every logged user should receive this event (the creator of the team too)
+void users(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');
 
@@ -90,11 +81,10 @@ void users(char *code, char *allargs) // Every logged user should receive this e
     if (array_size(args) > 0){
         switch (atoi(code)) {
             case 200:
-                // lib_client[12].func(args[1], args[2], args[3]); // => params a convertir en int
-                // client_print_users
+                client_print_users(args[0], args[1], atoi(args[2]));
                 break;
             case 400:
-                // client_error_unauthorized
+                client_error_unauthorized();
             default:
                 printf("Error printing userS !\n");
                 break;

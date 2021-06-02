@@ -18,7 +18,7 @@ void server_handler(message_info_t *info)
     }
     if (!code)
         return;
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 14; i++) {
         if (func_ptr_client[i].command == info->command) {
             (*func_ptr_client[i].func)(code, args);
             return;
