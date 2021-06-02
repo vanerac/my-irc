@@ -108,5 +108,5 @@ void invalid(char *code, char *allargs)
     if (code != NULL && atoi(code) == 220){
         printf("%s\n", allargs);
     } else
-        printf("INVALID")
+        printf("INVALID");
 }
