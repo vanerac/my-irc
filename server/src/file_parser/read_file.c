@@ -8,14 +8,6 @@
 #include <unistd.h>
 #include "file_parser.h"
 
-// todo
-//  - handle corrupted file format
-//  - handle "" and "\n"
-//  functions parse current line, if current line doesnt correspond, error
-
-
-
-
 t_teams *file_read_team(int fd, int recursion_level)
 {
     (void) recursion_level;
@@ -31,15 +23,23 @@ t_teams *file_read_team(int fd, int recursion_level)
     // read meta data
     uuid_parse(args[1], ret->uid);
     ret->name = args[2], ret->desc = args[3];
-    // read channels
-    //    list_t *channels = NULL;
-    //    list_t *users = NULL;
-    //    for () {
-    //    }
-    //    ret->channels = channels;
-    //    for () {
-    //    }
-    //    ret->users = users;
+    list_t *channels = NULL;
+    list_t *users = NULL;
+    for (void *data = NULL; (data = file_read_channel(fd,
+        recursion_level - 1));)
+        if (!channels)
+            channels = node_list_create(data);
+        else
+            node_append_data(channels, data);
+
+    ret->channels = channels;
+    for (void *data = NULL; (data = file_read_user(fd));)
+        if (!users)
+            users = node_list_create(data);
+        else
+            node_append_data(users, data);
+
+    ret->users = users;
 
     return ret;
 }
@@ -60,8 +60,15 @@ t_channel *file_read_channel(int fd, int recursion_level)
     uuid_parse(args[1], ret->uid);
     ret->name = args[2], ret->desc = args[3];
 
-    //todo // for recursion level, read threads
-    //     ret->messages;
+    list_t *threads = NULL;
+    for (void *data = NULL; (data = file_read_thread(fd,
+        recursion_level - 1));)
+        if (!threads)
+            threads = node_list_create(data);
+        else
+            node_append_data(threads, data);
+
+    ret->messages = threads;
 
     return ret;
 }
@@ -84,8 +91,14 @@ t_messages *file_read_thread(int fd, int recursion_level)
         args[3]), ret->title = args[4], ret->body = args[5], ret->m_type = atoi(
         args[1]);
 
-    //todo
-    //    ret->replies;
+    list_t *replies = NULL;
+    for (void *data = NULL; (data = file_read_message(fd));)
+        if (!replies)
+            replies = node_list_create(data);
+        else
+            node_append_data(replies, data);
+
+    ret->replies = replies;
 
     return ret;
 }
