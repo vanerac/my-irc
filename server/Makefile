@@ -27,7 +27,9 @@ OMAIN				=	$(MAIN:.c=.o)
 
 LIBS				=	../libnode.a 		\
 						../libsockets.a		\
-						../libmessage.a
+						../libmessage.a		\
+						../libs/myteams/libmyteams.so
+
 
 OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
