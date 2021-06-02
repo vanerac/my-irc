@@ -37,7 +37,7 @@ void messages(char *code, char *allargs)
     if (array_size(args) > 0){
         switch (atoi(code)) {
             case 200:
-                client_private_message_print_messages(args[0], args[1], args[2]);
+                client_private_message_print_messages(args[0], (time_t)atol(args[1]), args[2]);
                 break;
             case 401:
                 client_error_unknown_user(args[0]);
