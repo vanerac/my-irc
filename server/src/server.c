@@ -9,7 +9,7 @@
 #include "logging_server.h"
 #include <sys/socket.h>
 #include <sys/select.h>
-#include <commands.h>
+#include "commands.h"
 #include "struct.h"
 #include "sockets.h"
 #include "handles.h"
