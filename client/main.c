@@ -43,7 +43,7 @@ int client(int client_fd)
 
 int main(int ac, char **ag)
 {
-    if (ac < 3 || !isdigit(ag[2]))
+    if (ac < 3)
         return (84);
 
     int server_fd = client_create(atoi(ag[2]), ag[1]);
