@@ -9,11 +9,6 @@
 #include "sockets.h"
 #include "client.h"
 
-#include <sys/select.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <unistd.h>
-
 void set_client_fd(fd_set *rfds, int client_fd)
 {
     FD_ZERO(rfds);
@@ -29,9 +24,8 @@ int client(int client_fd)
 
     while (1) {
         set_client_fd(&rfds, client_fd);
-        if (select(client_fd + 1, &rfds, NULL, NULL, NULL) == -1) {
+        if (select(client_fd + 1, &rfds, NULL, NULL, NULL) == -1)
             return 84;
-        }
         for (int i = 0; i < client_fd + 1; i++) {
             if (FD_ISSET(i, &rfds)) {
                 if (i == 0) {
@@ -47,17 +41,12 @@ int client(int client_fd)
     }
 }
 
-
 int main(int ac, char **ag)
 {
-    // struct data *var = malloc(sizeof(struct data));
-
-    if (ac < 3)
-        return 84;
+    if (ac < 3 || !isdigit(ag[2]))
+        return (84);
 
     int server_fd = client_create(atoi(ag[2]), ag[1]);
-    // var->buffer_client = calloc(sizeof(char), 200);
-    // var->buffer_server = calloc(sizeof(char), 200);
 
     client(server_fd);
 }

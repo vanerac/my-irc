@@ -11,7 +11,7 @@ void server_handler(message_info_t *info)
 {
     char *code = NULL;
     char *args = NULL;
-    
+
     if (info->args) {
         code = strtok(info->args, " ");
         args = strtok(NULL, "\0");

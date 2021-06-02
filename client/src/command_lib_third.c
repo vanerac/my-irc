@@ -7,7 +7,6 @@
 
 #include "client.h"
 
-
 void unsubscribe(char *code, char *allargs)
 {
     char **args = str_to_word_array(allargs, ' ');

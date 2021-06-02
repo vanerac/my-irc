@@ -44,6 +44,7 @@ void logout(char *code, char *allargs)
         switch (atoi(code)) {
             case 200:
                 client_event_logged_out(args[0], args[1]);
+                exit(0);
                 break;
         }
     }
@@ -79,4 +80,4 @@ void users(char *code, char *allargs)
                 break;
         }
     }
-} 
+}

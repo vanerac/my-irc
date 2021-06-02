@@ -13,6 +13,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <dlfcn.h>
+#include <sys/select.h>
+#include <sys/time.h>
+#include <sys/types.h>
 
 #include "command_enum.h"
 #include "message.h"
@@ -23,15 +26,9 @@ typedef struct data
     char *buffer_client;
     char *buffer_server;
     char **splitted_cmd;
-    // char *user_uuid; // to keep ?
     void *handle;
     int server_fd;
 } data;
-
-// typedef struct __attribute__((__packed__)) lib_func_client {
-    // char *name;
-    // void (*func)();
-// } lib_func_client_t;
 
 typedef struct client_func_ptr {
     enum command_e command;

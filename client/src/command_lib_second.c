@@ -91,7 +91,7 @@ void subscribed(char *code, char *allargs)
                     break;
             }
         } else if (atoi(code) == 202)
-            subscribed_bis(code, args);            
+            subscribed_bis(code, args);
     }
 }
 
