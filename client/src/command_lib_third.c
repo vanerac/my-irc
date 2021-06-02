@@ -16,15 +16,19 @@ void create(char *code, char *allargs)
     if (array_size(args) > 0){
         switch (atoi(code)) {
             case 205:
+                client_event_team_created(args[0], args[1], args[2]);
                 create_team(args);
                 break;
             case 206:
+                client_event_channel_created(args[0], args[1], args[2]);
                 create_channel(args);
                 break;
             case 207:
+                client_event_thread_created(args[0], args[1], (time_t)atol(args[2]), args[3], args[4]);
                 create_thread(args);
                 break;
             case 208:
+                client_event_thread_reply_received(args[0], args[1], args[2], args[3]);
                 create_reply_to_thread(args);
                 break;
         }
@@ -49,7 +53,7 @@ void info(char *code, char *allargs)
                 client_print_channel(args[0], args[1], args[2]);
                 break;
             case 208:
-                client_print_thread(args[0], args[1], args[2], args[3], args[4]);
+                client_print_thread(args[0], args[1], (time_t)atol(args[2]), args[3], args[4]);
                 break;
             case 402:
                 client_error_unknown_team(args[0]);
@@ -82,10 +86,10 @@ void list(char *code, char *allargs)
                 client_team_print_channels(args[0], args[1], args[2]);
                 break;
             case 203:
-                client_channel_print_threads(args[0], args[1], args[2], args[3], args[4]);
+                client_channel_print_threads(args[0], args[1], (time_t)atol(args[2]), args[3], args[4]);
                 break;
             case 204:
-                client_thread_print_replies(args[0], args[1], args[2], args[3]);
+                client_thread_print_replies(args[0], args[1], (time_t)atol(args[2]), args[3]);
                 break;
             case 402:
                 client_error_unknown_team(args[0]);

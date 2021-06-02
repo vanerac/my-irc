@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, XXXX
-** NWP_myteams_XXXX
+** EPITECH PROJECT, 2021
+** logging server
 ** File description:
-** a file containing libs functions that should be called in myteams_server
+** logging_server
 */
 
 #ifndef LIB_MYTEAMS_LOGGING_SERVER_H
@@ -90,7 +90,8 @@ int server_event_user_subscribed(char const *team_uuid, char const *user_uuid);
 ** Commands:
 ** /unsubscribe "team_uuid"
 **/
-int server_event_user_unsubscribed(char const *team_uuid, char const *user_uuid);
+int server_event_user_unsubscribed(char const *team_uuid,
+        char const *user_uuid);
 
 /**
 ** @brief Must be called when a user didn't existed in save and was created

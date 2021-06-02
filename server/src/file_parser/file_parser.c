@@ -27,7 +27,6 @@ void write_structure(int fd, void *data, int recursion_levels)
     }
 }
 
-
 bool check_type(char **args, enum data_type expected_type) {
     if (!args)
         return false;

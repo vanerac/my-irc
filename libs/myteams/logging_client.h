@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, XXXX
-** NWP_myteams_XXXX
+** EPITECH PROJECT, 2021
+** logging client
 ** File description:
-** a file containing libs functions that should be called in myteams_cli
+** logging_client
 */
 
 #ifndef LIB_MYTEAMS_LOGGING_CLIENT_H

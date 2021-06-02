@@ -22,9 +22,6 @@ void create_team(char **args)
             case 400:
                 client_error_unauthorized();
                 break;
-            default:
-                printf("Team Error !");
-                break;
         }
     }
 }
@@ -47,9 +44,6 @@ void create_channel(char **args)
             case 400:
                 client_error_unauthorized();
                 break;
-            default:
-                printf("Channel Error !");
-                break;
         }
     }
 }
@@ -61,7 +55,7 @@ void create_thread(char **args)
     if (array_size(args) < 0){
         switch (atoi(args[0])) {
             case 207:
-                client_print_thread_created(args[0], args[1], args[2], args[3], args[4]);
+                client_print_thread_created(args[0], args[1], (time_t)atol(args[2]), args[3], args[4]);
                 break;
             case 402:
                 client_error_unknown_team(args[0]);
@@ -75,9 +69,6 @@ void create_thread(char **args)
             case 400:
                 client_error_unauthorized();
                 break;
-            default:
-                printf("Thread Error !");
-                break;
         }
     }
 }
@@ -89,7 +80,7 @@ void create_reply_to_thread(char **args)
     if (array_size(args) < 0){
         switch (atoi(args[0])) {
             case 208:
-                client_print_reply_created(args[0], args[1], args[2], args[3]);
+                client_print_reply_created(args[0], args[1], (time_t)atol(args[2]), args[3]);
                 break;
             case 402:
                 client_error_unknown_team(args[0]);
@@ -102,9 +93,6 @@ void create_reply_to_thread(char **args)
                 break;
             case 400:
                 client_error_unauthorized();
-                break;
-            default:
-                printf("Reply Error !");
                 break;
         }
     }
