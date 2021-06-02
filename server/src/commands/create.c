@@ -14,6 +14,7 @@ static enum command_return create_team(t_global *global, char *name, char *desc
 )
 {
     t_teams *team = malloc(sizeof(t_teams));
+    char *uuid = NULL;
     if (!team)
         return SYSTEM_ERROR;
     uuid_generate(team->uid);
@@ -22,7 +23,8 @@ static enum command_return create_team(t_global *global, char *name, char *desc
     team->channels = NULL;
     team->type = TEAM;
     team->users = NULL;
-//    server_event_team_created((char const *) team->uid, name, desc);
+    uuid_unparse(team->uid, uuid);
+    server_event_team_created(uuid, name, desc);
     if (global->teams)
         return node_append_data(global->teams, team) ? SUCCESS : SYSTEM_ERROR;
     else
@@ -33,15 +35,17 @@ static enum command_return create_team(t_global *global, char *name, char *desc
 static enum command_return create_channel(t_teams *team, char *arg, char *arg1)
 {
     t_channel *channel = malloc(sizeof(t_channel));
+    char *uuid = NULL;
     if (!channel)
         return SYSTEM_ERROR;
     channel->type = CHANNEL;
     channel->name = arg;
     channel->desc = arg1;
     uuid_generate(channel->uid);
+    uuid_unparse(channel->uid, uuid);
     channel->messages = NULL;
-//    server_event_channel_created((char const *) team->uid,
-//        (char const *) channel->uid, channel->name);
+    server_event_channel_created((char const *) team->uid, uuid,
+        channel->name);
     if (team->channels)
         return node_append_data(team->channels, channel) ? SUCCESS :
             SYSTEM_ERROR;
@@ -55,6 +59,7 @@ static enum command_return create_tread(t_channel *pChannel,
 )
 {
     t_messages *thread = malloc(sizeof(t_messages));
+    char *uuid_t = NULL, *uuid_s = NULL;
     if (!thread)
         return SYSTEM_ERROR;
     uuid_generate(thread->uid);
@@ -65,9 +70,10 @@ static enum command_return create_tread(t_channel *pChannel,
     thread->destination = pChannel;
     thread->source = session->user_data;
     thread->replies = NULL;
-//    server_event_thread_created((char const *) pChannel->uid,
-//        (char const *) thread->uid, (char const *) session->user_data->uid,
-//        thread->title, thread->body);
+    uuid_unparse(thread->uid, uuid_t);
+    uuid_unparse(session->user_data->uid, uuid_s);
+    server_event_thread_created((char const *) pChannel->uid, uuid_t, uuid_s,
+        thread->title, thread->body);
     if (pChannel->messages)
         return node_append_data(pChannel->messages, thread) ? SUCCESS :
             SYSTEM_ERROR;
@@ -81,6 +87,7 @@ static enum command_return create_comment(t_messages *pMessages,
 )
 {
     t_messages *thread = malloc(sizeof(t_messages));
+    char *uuid_m = NULL, *uuid_s = NULL;
     if (!thread)
         return SYSTEM_ERROR;
     uuid_generate(thread->uid);
@@ -91,8 +98,9 @@ static enum command_return create_comment(t_messages *pMessages,
     thread->destination = pMessages;
     thread->source = session->user_data;
     thread->replies = NULL;
-//    server_event_thread_new_reply((char const *) pMessages->uid,
-//        (char const *) session->user_data->uid, thread->body);
+    uuid_unparse(pMessages->uid, uuid_m);
+    uuid_unparse(session->user_data->uid, uuid_s);
+    server_event_thread_new_reply(uuid_m, uuid_s, thread->body);
     if (pMessages->replies)
         return node_append_data(pMessages->replies, thread) ? SUCCESS :
             SYSTEM_ERROR;
