@@ -21,8 +21,13 @@ void help(char *code, char *allargs)
 
 void login(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
-
+    char **args = NULL;
+    
+    if (strcmp(code, "407") == 0) {
+        printf("%s\n", allargs);
+        return;
+    }
+    args = str_to_word_array(allargs, ' ');
     if (!args)
         return;
     if (array_size(args) > 0){
@@ -45,7 +50,6 @@ void logout(char *code, char *allargs)
         switch (atoi(code)) {
             case 200:
                 client_event_logged_out(args[0], args[1]);
-                exit(0);
                 break;
         }
     }
