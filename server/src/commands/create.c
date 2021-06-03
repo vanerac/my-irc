@@ -95,17 +95,6 @@ static enum command_return create_channel(t_teams *team, session_t *session,
     channel->messages = NULL;
     server_event_channel_created(t_uuid, uuid, channel->name);
     return create_channel_second_part(team, session, channel, uuid);
-    // if (team->channels) {
-    //     if (node_append_data(team->channels, channel))
-    //         return SUCCESS;
-    //     else
-    //         return SYSTEM_ERROR;
-    // } else {
-    //     if ((team->channels = node_list_create(channel)))
-    //         return SUCCESS;
-    //     else
-    //         return SYSTEM_ERROR;
-    // }
 }
 
 static enum command_return create_thread_second_part(t_channel *pchannel,
@@ -156,17 +145,6 @@ static enum command_return create_tread(t_channel *pchannel,
     server_event_thread_created(uuid_c, uuid_t, uuid_s,
         thread->title, thread->body);
     return create_thread_second_part(pchannel, session, thread);
-    // if (pChannel->messages) {
-    //     if (node_append_data(pChannel->messages, thread))
-    //         return SUCCESS;
-    //     else
-    //         return SYSTEM_ERROR;
-    // } else {
-    //     if ((pChannel->messages = node_list_create(thread)))
-    //         return SUCCESS;
-    //     else
-    //         return SYSTEM_ERROR;
-    // }
 }
 
 static enum command_return create_comment_second_part(session_t *session,
@@ -216,17 +194,6 @@ static enum command_return create_comment(t_messages *pmessages,
     uuid_unparse(session->user_data->uid, uuid_s);
     server_event_thread_new_reply(uuid_m, uuid_s, thread->body);
     return create_comment_second_part(session, pmessages, thread);
-    // if (pMessages->replies) {
-    //     if (node_append_data(pMessages->replies, thread))
-    //         return SUCCESS;
-    //     else
-    //         return SYSTEM_ERROR;
-    // } else {
-    //     if ((pMessages->replies = node_list_create(thread)))
-    //         return SUCCESS;
-    //     else
-    //         return SYSTEM_ERROR;
-    // }
 }
 
 enum command_return call_create(t_global *global, session_t *session,
