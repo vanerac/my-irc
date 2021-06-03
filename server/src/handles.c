@@ -40,7 +40,7 @@ int handle_command(t_global *global, session_t *session)
     if (!session)
         return SYSTEM_ERROR;
     if (!read_message(&info, session->socket))
-        return SYSTEM_ERROR;
+        return HANGUP;
     command_t cmd = parse_command(info.args, info.command);
     enum command_return status = SUCCESS;
     for (command_ptr *fn = cmd.check_fn; status == SUCCESS && *fn; ++fn)
@@ -67,6 +67,7 @@ void handle_connections(list_t *sessions, int server_socket)
     data->current_team = NULL;
     data->current_channel = NULL;
     data->current_thread = NULL;
+    data->connected = true;
     node_append_data(sessions, data);
     send_message(client, "220 Welcome", RESPONSE, INVALID);
 }

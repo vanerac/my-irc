@@ -22,6 +22,7 @@ enum command_return {
     SYSTEM_ERROR = 500,
     FATAL_ERROR = 666,
     UNKNOWN_COMMAND = 100,
+    HANGUP = 20,
     DOUBLE_AUTH = -6,
 };
 

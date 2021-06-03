@@ -37,7 +37,7 @@ void login(char *code, char *allargs)
                 break;
         }
     }
-    free(args);
+    free_table(args);
 }
 
 void logout(char *code, char *allargs)
@@ -53,7 +53,7 @@ void logout(char *code, char *allargs)
                 break;
         }
     }
-    free(args);
+    free_table(args);
 }
 
 void user(char *code, char *allargs)
@@ -86,5 +86,5 @@ void users(char *code, char *allargs)
                 break;
         }
     }
-    free(args);
+    free_table(args);
 }

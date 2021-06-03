@@ -33,6 +33,7 @@ typedef struct session_s {
     t_teams *current_team;
     t_channel *current_channel;
     t_messages *current_thread;
+    bool connected;
 } session_t;
 
 void send_error_to_client(session_t *session);
