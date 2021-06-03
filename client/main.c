@@ -16,29 +16,62 @@ void set_client_fd(fd_set *rfds, int client_fd)
     FD_SET(client_fd, rfds);
 }
 
+bool client_read(int i, int client_fd)
+{
+    message_info_t ok;
+    char reading[1024] = {0};
+    int total_read = 0;
+
+    if (i == 0) {
+        total_read = read(0, reading, 200);
+        if (total_read == 0)
+            return false;
+        if (total_read > 0)
+            send_message(client_fd, reading, COMMAND, INVALID);
+    }
+    if (i == client_fd) {
+        if (read_message(&ok, client_fd))
+            server_handler(&ok);
+    }
+    return true;
+}
+
+bool client_read_by_fd(int client_fd, fd_set *rfds)
+{
+    for (int i = 0; i < client_fd + 1; i++) {
+        if (FD_ISSET(i, rfds)) {
+            return client_read(i, client_fd);
+        }
+    }
+    return true;
+}
+
 int client(int client_fd)
 {
     fd_set rfds;
-    message_info_t ok;
-    char reading[1024] = {0};
+    bool status = true;
+    // char reading[1024] = {0};
 
-    while (1) {
+    while (status) {
         set_client_fd(&rfds, client_fd);
         if (select(client_fd + 1, &rfds, NULL, NULL, NULL) == -1)
             return 84;
-        for (int i = 0; i < client_fd + 1; i++) {
-            if (FD_ISSET(i, &rfds)) {
-                if (i == 0) {
-                    if (read(0, reading, 200) != 0)
-                        send_message(client_fd, reading, COMMAND, INVALID);
-                }
-                if (i == client_fd) {
-                    if (read_message(&ok, client_fd))
-                        server_handler(&ok);
-                }
-            }
-        }
+        status = client_read_by_fd(client_fd, &rfds);
+        // for (int i = 0; i < client_fd + 1; i++) {
+            // if (FD_ISSET(i, &rfds)) {
+                // client_read(i, client_fd);
+                // if (i == 0) {
+                    // if (read(0, reading, 200) != 0)
+                        // send_message(client_fd, reading, COMMAND, INVALID);
+                // }
+                // if (i == client_fd) {
+                    // if (read_message(&ok, client_fd))
+                        // server_handler(&ok);
+                // }
+            // }
+        // }
     }
+    return 0;
 }
 
 int main(int ac, char **ag)
@@ -48,5 +81,5 @@ int main(int ac, char **ag)
 
     int server_fd = client_create(atoi(ag[2]), ag[1]);
 
-    client(server_fd);
+    return client(server_fd);
 }
