@@ -63,6 +63,8 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
     return status;
 }
 
+// todo handle sig
+
 int myteams_server(int server_socket)
 {
     fd_set rfds;

@@ -77,7 +77,7 @@ static enum command_return set_thread(t_global *global, session_t *session,
     return SUCCESS;
 }
 
-enum command_return command_use(t_global *global, session_t *session,
+void command_use(t_global *global, session_t *session,
     char **args
 )
 {
@@ -87,5 +87,5 @@ enum command_return command_use(t_global *global, session_t *session,
     enum command_return status = SUCCESS;
     for (int i = 0; fn[i] && args[i] && status == SUCCESS; ++i)
         status = fn[i](global, session, args[i]);
-    return status;
+//    return status;
 }

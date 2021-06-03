@@ -31,10 +31,10 @@ enum command_return is_logged(t_global *global, session_t *session, char **args)
 {
     (void) global, (void) args;
     printf("checking log status\n");
-    return session->user_data ? SUCCESS : UNAUTHORISED;
+    return session->logged ? SUCCESS : UNAUTHORISED;
 }
 
-enum command_return command_help(t_global *global, session_t *session,
+void command_help(t_global *global, session_t *session,
     char **args
 )
 {
@@ -54,71 +54,63 @@ enum command_return command_help(t_global *global, session_t *session,
     " about users/team/channel/thread\n";
 
     send_message(session->socket, h, RESPONSE, HELP);
-    return SUCCESS;
+//    return SUCCESS;
 }
 
 
-enum command_return command_users(t_global *global, session_t *session,
+void command_users(t_global *global, session_t *session,
     char **args
 )
 {
     (void) session, (void) args, (void) global;
-    return SUCCESS;
+//    return SUCCESS;
 }
 
-enum command_return command_usr(t_global *global, session_t *session,
+void command_usr(t_global *global, session_t *session,
     char **args
 )
 {
     (void) session, (void) args, (void) global;
-    return SUCCESS;
+//    return SUCCESS;
 }
 
-enum command_return command_send(t_global *global, session_t *session,
+void command_messages(t_global *global, session_t *session,
     char **args
 )
 {
     (void) session, (void) args, (void) global;
-    return SUCCESS;
+//    return SUCCESS;
 }
 
-enum command_return command_messages(t_global *global, session_t *session,
+void command_subscribe(t_global *global, session_t *session,
     char **args
 )
 {
     (void) session, (void) args, (void) global;
-    return SUCCESS;
+//    return SUCCESS;
 }
 
-enum command_return command_subscribe(t_global *global, session_t *session,
+void command_subscribed(t_global *global, session_t *session,
     char **args
 )
 {
     (void) session, (void) args, (void) global;
-    return SUCCESS;
+//    return SUCCESS;
 }
 
-enum command_return command_subscribed(t_global *global, session_t *session,
+void command_unsubscribe(t_global *global, session_t *session,
     char **args
 )
 {
     (void) session, (void) args, (void) global;
-    return SUCCESS;
+//    return SUCCESS;
 }
 
-enum command_return command_unsubscribe(t_global *global, session_t *session,
+
+void command_info(t_global *global, session_t *session,
     char **args
 )
 {
     (void) session, (void) args, (void) global;
-    return SUCCESS;
-}
-
-
-enum command_return command_info(t_global *global, session_t *session,
-    char **args
-)
-{
-    (void) session, (void) args, (void) global;
-    return SUCCESS;
+//    return SUCCESS;
 }
