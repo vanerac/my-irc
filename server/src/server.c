@@ -9,6 +9,7 @@
 #include "logging_server.h"
 #include <sys/socket.h>
 #include <sys/select.h>
+#include <unistd.h>
 #include "commands.h"
 #include "struct.h"
 #include "sockets.h"
@@ -21,6 +22,7 @@ void set_ports(fd_set *rfds, list_t *sessions)
     for (list_t *i = sessions; i; i = i->next) {
         FD_SET(((session_t *) i->data)->socket, rfds);
     }
+    FD_SET(0, rfds);
 }
 
 static bool find_session_by_fd(void *iterator, void *value)
@@ -42,6 +44,22 @@ int get_max_fd(list_t *sessions, int server_socket)
     return max_fd;
 }
 
+//t_global *load(int fd)
+//{
+//    return NULL;
+//}
+//
+//void save(int fd, t_global *data)
+//{
+//}
+
+int read_stdin()
+{
+    char buffer[5] = {0};
+    return !read(0, buffer, 5);
+    return 0;
+}
+
 int listen_updates(int server_socket, list_t *sessions, t_global *global,
     fd_set *rfds
 )
@@ -52,14 +70,28 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
 
     set_ports(rfds, sessions);
     FD_SET(server_socket, rfds);
-    if (select(max_fd + 1, rfds, NULL, NULL, NULL) == -1)
+    int ret = select(max_fd + 1, rfds, NULL, NULL, NULL);
+    if (ret == -1) {
+        perror("select == -1: ");
         return 84;
-    for (int i = 0; i < max_fd + 1 && status == 0; ++i)
-        if (FD_ISSET(i, rfds) && i != server_socket) {
-            n = node_find_fn(sessions, &find_session_by_fd, &i);
-            status = handle_command(global, n ? n->data : NULL);
-        } else if (FD_ISSET(i, rfds) && i == server_socket)
+    }
+    if (ret == 0) {
+        perror("select == 0 ");
+        return 84;
+    }
+    for (int i = 0; i < max_fd + 1 && status == 0; ++i) {
+        if (!FD_ISSET(i, rfds))
+            continue;
+        if (i == 0) {
+            status = read_stdin();
+        } else if (i == server_socket)
             handle_connections(sessions, server_socket);
+        else {
+            n = node_find_fn(sessions, &find_session_by_fd, &i);
+            handle_command(global, n ? n->data : NULL);
+        }
+    }
+
     return status;
 }
 
@@ -82,7 +114,7 @@ int myteams_server(int server_socket)
     if (server_socket < 0)
         return 84;
     int status = 0;
-    while (status != FATAL_ERROR)
+    while (status == 0)
         status = listen_updates(server_socket, sessions, &global, &rfds);
-    return status;
+    return status == 84 ? 84 : 0;
 }

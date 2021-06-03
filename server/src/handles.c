@@ -35,7 +35,7 @@ command_t parse_command(char *buffer, enum command_e command)
 int handle_command(t_global *global, session_t *session)
 {
     message_info_t info;
-    printf("comamnd on => %d\n", session->socket);
+//    printf("comamnd on => %d\n", session->socket);
 
     if (!session)
         return SYSTEM_ERROR;
