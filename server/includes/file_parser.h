@@ -34,11 +34,11 @@ t_messages *file_read_message(int fd);
 t_user *file_read_user(int fd);
 //
 //
-//// selective reads, only parses selected data types
-//list_t *read_teams(int fd, int recursion_level);
-//list_t *read_channels(int fd, int recursion_level);
-//list_t *read_threads(int fd, int recursion_level);
-//list_t *read_messages(int fd, int recursion_level);
-//list_t *read_users(int fd, int recursion_level);
+// selective reads, only parses selected data types
+list_t *read_all_teams(int fd, int recursion_level);
+list_t *read_all_channels(int fd, int recursion_level);
+list_t *read_all_threads(int fd, int recursion_level);
+list_t *read_all_messages(int fd, int recursion_level);
+list_t *read_all_users(int fd, int recursion_level);
 
 #endif //C_FILE_PARSER_H

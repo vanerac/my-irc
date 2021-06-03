@@ -10,6 +10,8 @@
 #include <sys/socket.h>
 #include <sys/select.h>
 #include <unistd.h>
+#include <file_parser.h>
+#include <signal.h>
 #include "commands.h"
 #include "struct.h"
 #include "sockets.h"
@@ -43,15 +45,6 @@ int get_max_fd(list_t *sessions, int server_socket)
     }
     return max_fd;
 }
-
-//t_global *load(int fd)
-//{
-//    return NULL;
-//}
-//
-//void save(int fd, t_global *data)
-//{
-//}
 
 int read_stdin()
 {
@@ -97,6 +90,44 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
 
 // todo handle sig
 
+void load(t_global *global)
+{
+    (void) global;
+//    int fd = 0;
+//    global->teams = read_all_teams(fd, 4);
+//    global->all_user = read_all_users(fd, 4);
+//    data->private_message = read_all_messages(fd, 1);
+    return;
+}
+
+
+
+void save(t_global *data, bool write)
+{
+
+    static t_global *data_save = NULL;
+    if (!write) {
+        data_save = data;
+        return;
+    }
+
+    (void) data_save;
+    // save teams
+//    int fd = 1; // todo
+
+    // save all users on one file
+
+    // save dms
+
+}
+
+void sig_save(int blc)
+{
+    (void) blc;
+    printf("%s\n", "program killed by sig");
+    save(NULL, true);
+}
+
 int myteams_server(int server_socket)
 {
     fd_set rfds;
@@ -109,6 +140,12 @@ int myteams_server(int server_socket)
     list_t *sessions = node_list_create(server_session);
     t_global global = {.all_user = NULL, .private_message = NULL, .teams =
     NULL, .sessions = sessions};
+    load(&global);
+    // todo load global
+    save(&global, false); // save ptr;
+    signal(SIGTERM, sig_save);
+    signal(SIGINT, sig_save);
+    signal(SIGSEGV, sig_save);
     if (!sessions)
         return 84;
     if (server_socket < 0)
@@ -116,5 +153,7 @@ int myteams_server(int server_socket)
     int status = 0;
     while (status == 0)
         status = listen_updates(server_socket, sessions, &global, &rfds);
+    // todo // save global
+    save(&global, true);
     return status == 84 ? 84 : 0;
 }
