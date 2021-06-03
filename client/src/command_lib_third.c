@@ -9,7 +9,7 @@
 
 void unsubscribe(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
+    char **args = split_by_quote(allargs);
 
     if (!args)
         return;
@@ -31,7 +31,7 @@ void unsubscribe(char *code, char *allargs)
 
 void create(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
+    char **args = split_by_quote(allargs);
 
     if (!args)
         return;
@@ -80,7 +80,7 @@ void create_bis(char *code, char **args)
 
 void info(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
+    char **args = split_by_quote(allargs);
 
     if (!args)
         return;

@@ -27,7 +27,7 @@ void login(char *code, char *allargs)
         printf("%s\n", allargs);
         return;
     }
-    args = str_to_word_array(allargs, ' ');
+    args = split_by_quote(allargs);
     if (!args)
         return;
     if (array_size(args) > 0){
@@ -42,7 +42,7 @@ void login(char *code, char *allargs)
 
 void logout(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
+    char **args = split_by_quote(allargs);
 
     if (!args)
         return;
@@ -72,7 +72,7 @@ void user(char *code, char *allargs)
 
 void users(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
+    char **args = split_by_quote(allargs);
 
     if (!args)
         return;

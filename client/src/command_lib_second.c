@@ -9,7 +9,7 @@
 
 void send(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
+    char **args = split_by_quote(allargs);
 
     if (!args)
         return;
@@ -31,7 +31,7 @@ void send(char *code, char *allargs)
 
 void messages(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
+    char **args = split_by_quote(allargs);
 
     if (!args)
         return;
@@ -54,7 +54,7 @@ void messages(char *code, char *allargs)
 
 void subscribe(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
+    char **args = split_by_quote(allargs);
 
     if (!args)
         return;
@@ -76,7 +76,7 @@ void subscribe(char *code, char *allargs)
 
 void subscribed(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
+    char **args = split_by_quote(allargs);
 
     if (!args)
         return;

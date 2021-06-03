@@ -29,7 +29,7 @@ static enum command_return create_team_second_part(t_global *global,
             (global->teams = node_list_create(team)) ? SUCCESS : SYSTEM_ERROR;
     if (ret_val != SUCCESS)
         return SYSTEM_ERROR;
-    asprintf(&ret, "206 %s %s %s", uuid, team->name, team->desc);
+    asprintf(&ret, "206 \"%s\" \"%s\" \"%s\"", uuid, team->name, team->desc);
     send_message(session->socket, ret, RESPONSE, CREATE);
     free(ret);
     // to do notify all user subscribed to this team
@@ -71,7 +71,7 @@ static enum command_return create_channel_second_part(t_teams *team,
             SYSTEM_ERROR;
     if (ret_val != SUCCESS)
         return SYSTEM_ERROR;
-    asprintf(&ret, "208 %s %s %s", uuid, channel->name, channel->desc);
+    asprintf(&ret, "208 \"%s\" \"%s\" \"%s\"", uuid, channel->name, channel->desc);
     send_message(session->socket, ret, RESPONSE, CREATE);
     free(ret);
     return SUCCESS;
@@ -115,8 +115,8 @@ static enum command_return create_thread_second_part(t_channel *pchannel,
         return SYSTEM_ERROR;
     uuid_unparse(((t_user *) session->user_data)->uid, s_uuid);
     uuid_unparse(thread->uid, t_uuid);
-    asprintf(&ret, "210 %s %s %ld %s %s", t_uuid, s_uuid, thread->created_at,
-        thread->title, thread->body);
+    asprintf(&ret, "210 \"%s\" \"%s\" \"%ld\" \"%s\" \"%s\"", t_uuid, s_uuid,
+        thread->created_at, thread->title, thread->body);
     send_message(session->socket, ret, RESPONSE, CREATE);
     free(ret);
     return SUCCESS;
@@ -165,7 +165,7 @@ static enum command_return create_comment_second_part(session_t *session,
     char t_uuid[37], s_uuid[37];
     uuid_unparse(((t_user *) session->user_data)->uid, s_uuid);
     uuid_unparse(thread->uid, t_uuid);
-    asprintf(&ret, "212 %s %s %ld %s", t_uuid,
+    asprintf(&ret, "212 \"%s\" \"%s\" \"%ld\" \"%s\"", t_uuid,
         s_uuid, pmessages->created_at,
         pmessages->body);
     send_message(session->socket, ret, RESPONSE, CREATE);
@@ -229,6 +229,6 @@ void command_create(t_global *global, session_t *session, char **args
     }
     return_val = call_create(global, session, args);
     if (return_val != SUCCESS) {
-        send_message(session->socket, "666 system error", RESPONSE, LIST);
+        send_message(session->socket, "666 \"system error\"", RESPONSE, LIST);
     }
 }

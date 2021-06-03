@@ -20,7 +20,7 @@ void command_logout(t_global *global, session_t *session, char **args
     char *ret = NULL;
     uuid_unparse(session->user_data->uid, uuid);
     server_event_user_logged_out(uuid);
-    asprintf(&ret, "200 %s %s", uuid,
+    asprintf(&ret, "200 \"%s\" \"%s\"", uuid,
             ((t_user *)session->user_data)->username);
     send_message(session->socket, ret, RESPONSE, LOGOUT);
     session->logged = false;
@@ -71,7 +71,7 @@ void command_login(t_global *global, session_t *session, char **args
         // already logged in, error ?
     }
     if (session->logged || node_find_fn(global->sessions, &find_by_username_session, username)) {
-        send_message(session->socket, "407 already logged", RESPONSE, LOGIN);
+        send_message(session->socket, "407 \"already logged\"", RESPONSE, LOGIN);
         return; // todo
     }
 
@@ -86,7 +86,7 @@ void command_login(t_global *global, session_t *session, char **args
     //        return SYSTEM_ERROR;
     session->logged = true;
     uuid_unparse(session->user_data->uid, uuid);
-    asprintf(&ret, "200 %s %s", uuid, username);
+    asprintf(&ret, "200 \"%s\" \"%s\"", uuid, username);
     server_event_user_logged_in(uuid);
     send_message(session->socket, ret, RESPONSE, LOGIN);
     //    return SUCCESS;

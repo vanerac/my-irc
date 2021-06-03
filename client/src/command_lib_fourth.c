@@ -9,7 +9,7 @@
 
 void list(char *code, char *allargs)
 {
-    char **args = str_to_word_array(allargs, ' ');
+    char **args = split_by_quote(allargs);
 
     if (!args)
         return;

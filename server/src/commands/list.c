@@ -15,7 +15,7 @@ static enum command_return dump_messages(t_global *global, session_t *session)
 {
     (void) global;
     char *buffer = NULL;
-    char *print = strdup("204 ");
+    char *print = strdup("204");
 
     if (!print)
         return SYSTEM_ERROR;
@@ -24,10 +24,10 @@ static enum command_return dump_messages(t_global *global, session_t *session)
         char uuid[37];
         uuid_unparse(channel->uid, uuid);
         if (print)
-            asprintf(&buffer, "%s%s \"%s\" \"%s\"\n", print, uuid,
+            asprintf(&buffer, "%s \"%s\" \"%s\" \"%s\"\n", print, uuid,
                 channel->name, channel->desc);
         else
-            asprintf(&buffer, "202 %s \"%s\" \"%s\"\n", uuid, channel->name,
+            asprintf(&buffer, "202 \"%s\" \"%s\" \"%s\"\n", uuid, channel->name,
                 channel->desc);
         free(print);
         if (!(print = strdup(buffer)))
@@ -41,7 +41,7 @@ static enum command_return dump_threads(t_global *global, session_t *session)
 {
     (void) global, (void) session;
     char *buffer = NULL;
-    char *print = strdup("203 ");
+    char *print = strdup("203");
 
     if (!print)
         return SYSTEM_ERROR;
@@ -50,11 +50,10 @@ static enum command_return dump_threads(t_global *global, session_t *session)
         char t_uuid[37];
         char u_uuid[37];
         uuid_unparse(thread->uid, t_uuid);
-        asprintf(&buffer, "%s%s %s %lud \"%s\" \"%s\"\n", print, t_uuid,
+        asprintf(&buffer, "%s \"%s\" \"%s\" \"%ld\" \"%s\" \"%s\"\n", print, t_uuid,
             u_uuid, thread->created_at, thread->title, thread->body);
 
         free(print);
-        print = strdup(buffer);
         if (!(print = strdup(buffer)))
             return SYSTEM_ERROR;
     }
@@ -66,7 +65,7 @@ static enum command_return dump_channels(t_global *global, session_t *session)
 {
     (void) global;
     char *buffer = NULL;
-    char *print = strdup("202 ");
+    char *print = strdup("202");
     if (!print)
         return SYSTEM_ERROR;
     for (list_t *node = session->current_team->channels; node; node = node->next) {
@@ -74,7 +73,7 @@ static enum command_return dump_channels(t_global *global, session_t *session)
         char uuid[37];
         uuid_unparse(channel->uid, uuid);
 
-        asprintf(&buffer, "%s%s \"%s\" \"%s\"\n", print, uuid, channel->name,
+        asprintf(&buffer, "%s \"%s\" \"%s\" \"%s\"\n", print, uuid, channel->name,
             channel->desc);
         free(print);
         if (!(print = strdup(buffer)))
@@ -87,7 +86,7 @@ static enum command_return dump_channels(t_global *global, session_t *session)
 static enum command_return dump_teams(t_global *global, session_t *session)
 {
     char *buffer = NULL;
-    char *print = strdup("201 ");
+    char *print = strdup("201");
 
     if (!print)
         return SYSTEM_ERROR;
@@ -96,7 +95,7 @@ static enum command_return dump_teams(t_global *global, session_t *session)
         char uuid[37];
         uuid_unparse(team->uid, uuid);
 
-        asprintf(&buffer, "%s%s \"%s\" \"%s\"\n", print, uuid, team->name,
+        asprintf(&buffer, "%s \"%s\" \"%s\" \"%s\"\n", print, uuid, team->name,
             team->desc);
 
         free(print);
@@ -132,5 +131,5 @@ void command_list(t_global *global, session_t *session, char **args
     }
     return_val = call_list(global, session);
     if (return_val == SYSTEM_ERROR)
-        send_message(session->socket, "666 system error", RESPONSE, LIST);
+        send_message(session->socket, "666 \"system error\"", RESPONSE, LIST);
 }
