@@ -32,6 +32,7 @@ void login(char *code, char *allargs)
                 break;
         }
     }
+    free(args);
 }
 
 void logout(char *code, char *allargs)
@@ -48,6 +49,7 @@ void logout(char *code, char *allargs)
                 break;
         }
     }
+    free(args);
 }
 
 void user(char *code, char *allargs)
@@ -80,4 +82,5 @@ void users(char *code, char *allargs)
                 break;
         }
     }
+    free(args);
 }

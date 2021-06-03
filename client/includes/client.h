@@ -56,15 +56,10 @@ void subscribed_bis(char *code, char **args);
 void unsubscribe(char *code, char *allargs);
 void create(char *code, char *allargs);
 void create_bis(char *code, char **args);
+void create_error_response(char *code, char **args);
 void list(char *code, char *allargs);
 void list_bis(char *code, char **args);
 void info(char *code, char *allargs);
 void info_bis(char *code, char **args);
-
-void create_team(char **args);
-void create_channel(char **args);
-void create_thread(char **args);
-void create_reply_to_thread(char **args);
-
 
 #endif /* !CLIENT_H_ */

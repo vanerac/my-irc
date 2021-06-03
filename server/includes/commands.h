@@ -21,6 +21,7 @@ enum command_return {
     ALREADY_EXISTS =  405,
     SYSTEM_ERROR = 500,
     FATAL_ERROR = 666,
+    UNKNOWN_COMMAND = 100,
     DOUBLE_AUTH = -6,
 };
 
