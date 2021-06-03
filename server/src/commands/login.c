@@ -12,7 +12,7 @@
 
 int asprintf(char **strp, const char *fmt, ...);
 
-enum command_return command_logout(t_global *global, session_t *session,
+void command_logout(t_global *global, session_t *session,
     char **args
 )
 {
@@ -20,12 +20,15 @@ enum command_return command_logout(t_global *global, session_t *session,
     char uuid[37];
     uuid_unparse(session->user_data->uid, uuid);
     server_event_user_logged_out(uuid);
-    session->user_data = NULL;
-    return SUCCESS;
+    session->logged = false;
+//    session->user_data = NULL; todo
+//    return SUCCESS;
 }
 
 static t_user *create_user(t_global *global, char *username)
 {
+    if (!username)
+        return NULL;
     t_user *ret = malloc(sizeof(t_user));
     char uuid[37];
     if (!ret)
@@ -33,7 +36,10 @@ static t_user *create_user(t_global *global, char *username)
     uuid_generate(ret->uid);
     ret->type = USER;
     ret->username = strdup(username);
-    node_append_data(global->all_user, ret);
+    if (!global->all_user)
+        global->all_user = node_list_create(ret);
+    else
+        node_append_data(global->all_user, ret);
 
     uuid_unparse(ret->uid, uuid);
     server_event_user_created(uuid, ret->username);
@@ -45,10 +51,12 @@ static bool find_by_username(void *it, void *data)
     session_t *tmp = ((session_t *) it);
     if (!tmp || !tmp->user_data)
         return false;
-    return !strcmp(tmp->user_data->username, (char *) data);
+    printf("tmp : %s\n", tmp->user_data->username);
+    return !strcmp(tmp->user_data->username,
+        (char *) data);
 }
 
-enum command_return command_login(t_global *global, session_t *session,
+void command_login(t_global *global, session_t *session,
     char **args
 )
 {
@@ -58,20 +66,24 @@ enum command_return command_login(t_global *global, session_t *session,
     if (session->user_data) {
         // already logged in, error ?
     }
-    if (node_find_fn(global->sessions, &find_by_username, username))
-        return DOUBLE_AUTH;
+//    if (node_find_fn(global->sessions, &find_by_username, username))
+//        return DOUBLE_AUTH; // todo
+
+    printf("finding by username (%s)\n", username);
     list_t *user = node_find_fn(global->all_user, &find_by_username, username);
+
     if (user)
         session->user_data = (t_user *) user->data;
     else
         session->user_data = create_user(global, username);
 
-    if (!session->user_data)
-        return SYSTEM_ERROR;
+//    if (!session->user_data) todo
+//        return SYSTEM_ERROR;
+    session->logged = true;
     uuid_unparse(session->user_data->uid, uuid);
     server_event_user_logged_in(uuid);
     asprintf(&ret, "200 %s %s", uuid, username);
     send_message(session->socket, ret, RESPONSE, LOGIN);
-    return SUCCESS;
+//    return SUCCESS;
 }
 

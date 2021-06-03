@@ -35,6 +35,7 @@ int reply_to_client(session_t *session, enum command_e command,
 int handle_command(t_global *global, session_t *session)
 {
     message_info_t info;
+    printf("comamnd on => %d\n", session->socket);
 
     if (!session)
         return SYSTEM_ERROR;
@@ -47,7 +48,7 @@ int handle_command(t_global *global, session_t *session)
 
 //        cmd.check_fn ? cmd.check_fn(global, session, cmd.args) : SUCCESS;
     if (status == SUCCESS)
-        status = cmd.fn(global, session, cmd.args);
+        cmd.fn(global, session, cmd.args);
     return reply_to_client(session, cmd.command_id, status);
 }
 

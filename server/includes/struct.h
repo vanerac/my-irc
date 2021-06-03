@@ -28,13 +28,13 @@ enum data_type {
     MESSAGE
 };
 
-typedef struct __attribute__((__packed__)) user {
+typedef struct user {
     enum data_type type;
     uuid uid;
     char *username;
 } t_user;
 
-typedef struct __attribute__((__packed__)) teams {
+typedef struct teams {
     enum data_type type;
     uuid uid;
     char *name;
@@ -43,7 +43,7 @@ typedef struct __attribute__((__packed__)) teams {
     list_t *channels;
 } t_teams;
 
-typedef struct __attribute__((__packed__)) channel {
+typedef struct channel {
     enum data_type type;
     uuid uid;
     list_t *messages;
@@ -51,7 +51,7 @@ typedef struct __attribute__((__packed__)) channel {
     char *name;
 } t_channel;
 
-typedef struct __attribute__((__packed__)) dm {
+typedef struct dm {
     enum data_type type;
     uuid user_first;
     uuid user_second;
@@ -64,8 +64,7 @@ enum message_type {
     M_DM = 2
 };
 
-// todo demande a troncy
-typedef struct /*__attribute__((__packed__)) */messages {
+typedef struct messages {
     enum data_type type;
     uuid uid;
     struct user *author;

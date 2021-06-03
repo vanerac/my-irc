@@ -92,16 +92,16 @@ static enum command_return dump_teams(t_global *global, session_t *session)
     return SUCCESS;
 }
 
-enum command_return command_list(t_global *global, session_t *session,
-    char **args
+void command_list(t_global *global, session_t *session, char **args
 )
 {
-    (void) args;
-    if (session->current_thread)
-        return dump_messages(global, session);
-    if (session->current_channel)
-        return dump_threads(global, session);
-    if (session->current_team)
-        return dump_channels(global, session);
-    return dump_teams(global, session);
+    (void) args, (void) global, (void) session;
+    (void) dump_channels, (void) dump_messages, (void) dump_teams, (void) dump_threads;
+    //    if (session->current_thread)
+    //        return dump_messages(global, session);
+    //    if (session->current_channel)
+    //        return dump_threads(global, session);
+    //    if (session->current_team)
+    //        return dump_channels(global, session);
+    //    return dump_teams(global, session);
 }

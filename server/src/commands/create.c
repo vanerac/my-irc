@@ -12,13 +12,13 @@
 
 // todo handle duplicates
 
-static enum command_return create_team(t_global *global, char *name, char *desc
+static void create_team(t_global *global, char *name, char *desc
 )
 {
     t_teams *team = malloc(sizeof(t_teams));
     char uuid[37];
-    if (!team)
-        return SYSTEM_ERROR;
+    //    if (!team)
+    //        return SYSTEM_ERROR;
     uuid_generate(team->uid);
     team->name = strdup(name);
     team->desc = strdup(desc);
@@ -28,18 +28,17 @@ static enum command_return create_team(t_global *global, char *name, char *desc
     uuid_unparse(team->uid, uuid);
     server_event_team_created(uuid, name, desc);
     if (global->teams)
-        return node_append_data(global->teams, team) ? SUCCESS : SYSTEM_ERROR;
+        node_append_data(global->teams, team);
     else
-        return (global->teams = node_list_create(team)) ? SUCCESS :
-            SYSTEM_ERROR;
+        (global->teams = node_list_create(team));
 }
 
-static enum command_return create_channel(t_teams *team, char *arg, char *arg1)
+static void create_channel(t_teams *team, char *arg, char *arg1)
 {
     t_channel *channel = malloc(sizeof(t_channel));
     char uuid[37];
-    if (!channel)
-        return SYSTEM_ERROR;
+    //    if (!channel)
+    //        return SYSTEM_ERROR;
     channel->type = CHANNEL;
     channel->name = arg;
     channel->desc = arg1;
@@ -49,21 +48,19 @@ static enum command_return create_channel(t_teams *team, char *arg, char *arg1)
     server_event_channel_created((char const *) team->uid, uuid,
         channel->name);
     if (team->channels)
-        return node_append_data(team->channels, channel) ? SUCCESS :
-            SYSTEM_ERROR;
+        node_append_data(team->channels, channel);
     else
-        return (team->channels = node_list_create(channel)) ? SUCCESS :
-            SYSTEM_ERROR;
+        (team->channels = node_list_create(channel));
 }
 
-static enum command_return create_tread(t_channel *pChannel,
-    session_t *session, char *arg, char *arg1
+static void create_tread(t_channel *pChannel, session_t *session, char *arg,
+    char *arg1
 )
 {
     t_messages *thread = malloc(sizeof(t_messages));
     char uuid_t[37], uuid_s[37];
-    if (!thread)
-        return SYSTEM_ERROR;
+    //    if (!thread)
+    //        return SYSTEM_ERROR;
     uuid_generate(thread->uid);
     thread->type = THREAD;
     thread->m_type = M_THREAD;
@@ -72,27 +69,24 @@ static enum command_return create_tread(t_channel *pChannel,
     thread->destination = pChannel;
     thread->author = session->user_data;
     thread->replies = NULL;
-    time(&thread->created_at); // todo demande a troncy
+    time(&thread->created_at);
     uuid_unparse(thread->uid, uuid_t);
     uuid_unparse(session->user_data->uid, uuid_s);
     server_event_thread_created((char const *) pChannel->uid, uuid_t, uuid_s,
         thread->title, thread->body);
     if (pChannel->messages)
-        return node_append_data(pChannel->messages, thread) ? SUCCESS :
-            SYSTEM_ERROR;
+        node_append_data(pChannel->messages, thread);
     else
-        return (pChannel->messages = node_list_create(thread)) ? SUCCESS :
-            SYSTEM_ERROR;
+        (pChannel->messages = node_list_create(thread));
 }
 
-static enum command_return create_comment(t_messages *pMessages,
-    session_t *session, char *arg
+static void create_comment(t_messages *pMessages, session_t *session, char *arg
 )
 {
     t_messages *thread = malloc(sizeof(t_messages));
     char uuid_m[37], uuid_s[37];
-    if (!thread)
-        return SYSTEM_ERROR;
+    //    if (!thread)
+    //        return SYSTEM_ERROR;
     uuid_generate(thread->uid);
     thread->type = REPLY;
     thread->m_type = M_REPLY;
@@ -101,33 +95,34 @@ static enum command_return create_comment(t_messages *pMessages,
     thread->destination = pMessages;
     thread->author = session->user_data;
     thread->replies = NULL;
-    time(&thread->created_at); // todo demande a troncy
+    time(&thread->created_at);
     uuid_unparse(pMessages->uid, uuid_m);
     uuid_unparse(session->user_data->uid, uuid_s);
     server_event_thread_new_reply(uuid_m, uuid_s, thread->body);
     if (pMessages->replies)
-        return node_append_data(pMessages->replies, thread) ? SUCCESS :
-            SYSTEM_ERROR;
+        node_append_data(pMessages->replies, thread);
     else
-        return (pMessages->replies = node_list_create(thread)) ? SUCCESS :
-            SYSTEM_ERROR;
+        (pMessages->replies = node_list_create(thread));
 }
 
-enum command_return command_create(t_global *global, session_t *session,
+void command_create(t_global *global, session_t *session,
     char **args
 )
 {
-    (void) args; // todo parse args
-    char *first_arg = args[0], *second_arg = args[1]; // todo
-    if (!session->current_team) {
-        return create_team(global, first_arg, second_arg);;
-    } else if (!session->current_channel) {
-        return create_channel(session->current_team, first_arg, second_arg);
-    }
-    if (!session->current_thread) {
-        return create_tread(session->current_channel, session, first_arg,
-            second_arg);
-    } else {
-        return create_comment(session->current_thread, session, first_arg);
-    }
+    (void) args, (void) global, (void) session; // todo parse args
+    (void) create_channel, (void) create_comment, (void) create_team, (void)
+    create_tread;
+//    char *first_arg = args[0], *second_arg = args[1]; // todo
+//    if (!session->current_team) {
+//        return create_team(global, first_arg, second_arg);;
+//    } else if (!session->current_channel) {
+//        return create_channel(session->current_team, first_arg, second_arg);
+//    }
+//    if (!session->current_thread) {
+//        return create_tread(session->current_channel, session, first_arg,
+//            second_arg);
+//    } else {
+//        return create_comment(session->current_thread, session, first_arg);
+//    }
+
 }
