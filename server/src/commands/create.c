@@ -12,8 +12,8 @@
 
 // todo handle duplicates
 
-static enum command_return create_team(t_global *global, char *name, char *desc
-)
+static enum command_return create_team(t_global *global, session_t *session,
+    char *name, char *desc)
 {
     t_teams *team = malloc(sizeof(t_teams));
     char uuid[37];
@@ -26,7 +26,8 @@ static enum command_return create_team(t_global *global, char *name, char *desc
     team->type = TEAM;
     team->users = NULL;
     uuid_unparse(team->uid, uuid);
-    server_event_team_created(uuid, name, desc);
+    server_event_team_created(uuid, name,
+        ((t_user *)session->user_data)->username);
     if (global->teams)
         return node_append_data(global->teams, team) ? SUCCESS : SYSTEM_ERROR;
     else
@@ -117,17 +118,17 @@ enum command_return command_create(t_global *global, session_t *session,
     char **args
 )
 {
-    (void) args; // todo parse args
-    char *first_arg = args[0], *second_arg = args[1]; // todo
-    if (!session->current_team) {
-        return create_team(global, first_arg, second_arg);;
-    } else if (!session->current_channel) {
-        return create_channel(session->current_team, first_arg, second_arg);
-    }
-    if (!session->current_thread) {
-        return create_tread(session->current_channel, session, first_arg,
-            second_arg);
-    } else {
-        return create_comment(session->current_thread, session, first_arg);
-    }
+    // (void) args; // todo parse args
+    // char *first_arg = args[0], *second_arg = args[1]; // todo
+    // if (!session->current_team) {
+    //     return create_team(global, session, first_arg, second_arg);;
+    // } else if (!session->current_channel) {
+    //     return create_channel(session->current_team, first_arg, second_arg);
+    // }
+    // if (!session->current_thread) {
+    //     return create_tread(session->current_channel, session, first_arg,
+    //         second_arg);
+    // } else {
+    //     return create_comment(session->current_thread, session, first_arg);
+    // }
 }

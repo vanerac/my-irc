@@ -39,6 +39,9 @@ static enum command_return dump_threads(t_global *global, session_t *session)
     (void) global, (void) session;
     char *buffer = NULL;
     char *print = strdup("203 ");
+
+    if (!print)
+        return SYSTEM_ERROR;
     for (list_t *node = session->current_channel->messages; node; node = node->next) {
         t_messages *thread = node->data;
         char t_uuid[37];
@@ -49,6 +52,8 @@ static enum command_return dump_threads(t_global *global, session_t *session)
 
         free(print);
         print = strdup(buffer);
+        if (!print)
+            return SYSTEM_ERROR;
     }
     send_message(session->socket, print, RESPONSE, LIST);
     return SUCCESS;
@@ -97,11 +102,16 @@ enum command_return command_list(t_global *global, session_t *session,
 )
 {
     (void) args;
-    if (session->current_thread)
-        return dump_messages(global, session);
-    if (session->current_channel)
-        return dump_threads(global, session);
-    if (session->current_team)
-        return dump_channels(global, session);
-    return dump_teams(global, session);
+    // if (session->use != 200) {
+        // gestion d'erreur unknow ....
+    // }
+    // if (session->current_thread)
+        // return dump_messages(global, session);
+    // if (session->current_channel)
+        // return dump_threads(global, session);
+    // if (session->current_team)
+        // return dump_channels(global, session);
+    // if (res == SYSTEM_ERROR)
+        // send message error
+    // return dump_teams(global, session);
 }

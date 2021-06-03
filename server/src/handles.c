@@ -22,15 +22,15 @@ command_t parse_command(char *buffer, enum command_e command)
     return new_command;
 }
 
-int reply_to_client(session_t *session, enum command_e command,
-    enum command_return status)
-{
-    char *buffer = NULL;
-    asprintf(&buffer, "%d ERROR\n", status);
-    if (status < 0)
-        send_message(session->socket, buffer, RESPONSE, command);
-    return status;
-}
+// int reply_to_client(session_t *session, enum command_e command,
+    // enum command_return status)
+// {
+    // char *buffer = NULL;
+    // asprintf(&buffer, "%d ERROR\n", status);
+    // if (status < 0)
+        // send_message(session->socket, buffer, RESPONSE, command);
+    // return status;
+// }
 
 int handle_command(t_global *global, session_t *session)
 {
@@ -48,7 +48,8 @@ int handle_command(t_global *global, session_t *session)
 //        cmd.check_fn ? cmd.check_fn(global, session, cmd.args) : SUCCESS;
     if (status == SUCCESS)
         status = cmd.fn(global, session, cmd.args);
-    return reply_to_client(session, cmd.command_id, status);
+    return 0;
+    // return reply_to_client(session, cmd.command_id, status);
 }
 
 void handle_connections(list_t *sessions, int server_socket)
