@@ -26,7 +26,7 @@ void unsubscribe(char *code, char *allargs)
                 break;
         }
     }
-    free(args);
+    free_table(args);
 }
 
 void create(char *code, char *allargs)
@@ -50,7 +50,7 @@ void create(char *code, char *allargs)
     }
     create_bis(code, args);
     create_error_response(code, args);
-    free(args);
+    free_table(args);
 }
 
 void create_bis(char *code, char **args)
@@ -98,7 +98,7 @@ void info(char *code, char *allargs)
         }
     }
     info_bis(code, args);
-    free(args);
+    free_table(args);
 }
 
 void info_bis(char *code, char **args)

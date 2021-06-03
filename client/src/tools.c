@@ -15,3 +15,11 @@ int array_size(char **array)
 
     return (inc);
 }
+
+
+void free_table(char **table)
+{
+    for(int i = 0; i < array_size(table); i++)
+        free(table[i]);
+    free(table);
+}

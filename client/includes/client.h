@@ -41,6 +41,7 @@ void server_handler(message_info_t *info);
 char **str_to_word_array(char *str, char spliter_char);
 int search_command(char *cmd[], char *handle_cmd);
 int array_size(char **array);
+void free_table(char **table);
 
 void invalid(char *code, char *allargs);
 void help(char *code, char *allargs);

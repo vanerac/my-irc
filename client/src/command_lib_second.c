@@ -26,7 +26,7 @@ void send(char *code, char *allargs)
                 break;
         }
     }
-    free(args);
+    free_table(args);
 }
 
 void messages(char *code, char *allargs)
@@ -49,7 +49,7 @@ void messages(char *code, char *allargs)
                 break;
         }
     }
-    free(args);
+    free_table(args);
 }
 
 void subscribe(char *code, char *allargs)
@@ -71,7 +71,7 @@ void subscribe(char *code, char *allargs)
                 break;
         }
     }
-    free(args);
+    free_table(args);
 }
 
 void subscribed(char *code, char *allargs)
@@ -96,7 +96,7 @@ void subscribed(char *code, char *allargs)
         } else if (atoi(code) == 202)
             subscribed_bis(code, args);
     }
-    free(args);
+    free_table(args);
 }
 
 void subscribed_bis(char *code, char **args)
