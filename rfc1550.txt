@@ -1,0 +1,376 @@
+                                                            Experimental
+                                                            Errata exist
+Network Working Group                                        K. Planchot
+Request for Comments: 1550                                        C. Mas
+                                                             A. Quenelle
+                                                               Juin 2021
+
+
+                        Teams Protocol Chat (TPC)
+
+
+1.  INTRODUCTION
+
+    Le protocole TPC (Teams Protocol Chat) à été conçu pour des
+    échanges de messages.  Ce document décrit le protocole TPC actuel.
+
+2.  MESSAGES
+
+    Les clients envoie des messages au serveur qui génèrent une réponse.
+    Si le message contient une commande valide, il devrait s'attendre à
+    une réponse spéifique comme le montre ce document.
+
+    2.1.    L'ENVOI DE MESSAGE
+
+        L'envoi de message se fait via une fonction utilisant le
+        prototype ci-dessous
+
+        int send_message(int fd, char *buffer, enum info_data data,
+            enum command_e command);
+
+        Send_message prend en paramètre:
+            - fd        -> le file descripteur sur lequel devra être 
+                            envoyé le message
+            - buffer    -> le message qui devras être envoyé
+            - data      -> (RESPONSE / COMMAND) indique si il s'agit
+                            d'une réponse ou d'une commande
+            - command   -> (HELP / LOGIN / LOGOUT / ...) indique de
+                            quel fonction vient le message
+
+        Return value:
+            Send_message return -1 en cas d'erreur ou 0 si tout s'est
+            bien passé.
+
+
+    2.2.    LA RECEPTION DE MESSAGE
+
+        La réception de message se fait via une fonction utilisant le
+        prototype ci-dessous
+
+        bool read_message(message_info_t *info, int fd);
+
+
+
+Planchot, Mas & Quenelle                                        [Page 1]
+------------------------------------------------------------------------
+RFC 1550                                                       Juin 2021
+Teams Protocol Chat
+
+        read_message prend en paramètre:
+            - info      -> un pointeur sur une structure message_info_t
+            - client_fd -> le file descripteur sur lequel le message
+                            devra être lu
+
+
+        La structure message_info_t correspond à cela:
+
+            typedef struct message_info
+            {
+                enum info_data is_command;
+                enum command_e command;
+                char *args;
+            } message_info_t;
+
+            - is_command    -> (RESPONSE / COMMAND) indique si il s'agit
+                                d'une réponse ou d'une commande
+            - command       -> indique de quel fonction vient le message
+            - args          -> contient les arguments du message
+
+        Return value:
+            En cas d'échec la fonction read_message return false et la
+            structure message_info_t n'est pas remplie.
+            En cas de succès, la fonction return true et la structure
+            est correctement remplie.
+
+    2.3.    LE FORMAT DES MESSAGES
+
+        Les messages du protocole ne sont pas délimités à l'aide d'un
+        CRLF.
+
+        Les messages sont envoyé avec un header qui contient toutes les
+        informations concernant le message envoyé.  Le header à une
+        taille de 4 octet qui correspondent chacun à une information
+        spécifique.
+
+        Le premier octet permet de savoir si le message envoyé est une
+        commande ou une réponse.  Le second permet de savoir de quel
+        commande vient le message.  Les 2 derniers permettent de
+        connaitre la taille du message à l'aide d'un calcul détaillé
+        ci-dessous.
+
+            taille du message = (octet n°3 * 256) + octet n°4
+
+        Si la taille du message est supérieure à 0, il suffit de faire
+        un read de la taille du message pour obtenir le message complet.
+
+3.  COMMANDES
+
+    La suite de ce document détaille les commandes implémentés dans le
+    protocol TPC.
+
+
+Planchot, Mas & Quenelle                                        [Page 2]
+------------------------------------------------------------------------
+RFC 1550                                                       Juin 2021
+Teams Protocol Chat
+
+    3.1.    HELP
+
+        Command: /help
+        Paramètre: aucun
+
+        La comande help est utilisé pour afficher toutes les commandes
+        disponibles et une courte description de ces dernières.
+
+        Réponse numériques:
+            200     400
+
+    3.2.    LOGIN
+
+        Command: /login
+        Paramètre: <username>
+
+        La comande login est utilisé pour donner un nom au client.
+
+        Réponse numériques:
+            200     407
+
+    3.3.    LOGOUT
+
+        Command: /logout
+        Paramètre: aucun
+
+        La comande logout est utilisé pour deconnecter un client.
+
+        Réponse numériques:
+            200     400
+
+    3.4.    USERS
+
+        Command: /users
+        Paramètre: aucun
+
+        Affiche la liste de tous les utilisateurs qui existent.
+
+        Réponse numériques:
+            200     400
+
+    3.5.    USER
+
+        Command: /user
+        Paramètre: <user_uuid>
+
+        Affiche les informations d'un utilisateur.
+
+        Réponse numériques:
+            200     400
+   	                401
+
+Planchot, Mas & Quenelle                                        [Page 3]
+------------------------------------------------------------------------
+RFC 1550                                                       Juin 2021
+Teams Protocol Chat
+
+    3.6.    SEND
+
+        Command: /send
+        Paramètre: <user_uuid> <message_body>
+
+        Envoie un message (message_body) à l'utilisateur spécifié
+        (user_uuid).
+
+        Réponse numériques:
+            200     400
+   	                401
+
+    3.7.    MESSAGES
+
+        Command: /messages
+        Paramètre: <user_uuid>
+
+        Affiche tous les messages envoyé avec un utilisateur.
+
+        Réponse numériques:
+            200     400
+                    401
+
+    3.8.    SUBSCRIBE
+
+        Command: /subscribe
+        Paramètre: <team_uuid>
+
+        Permet de s'abonner à une team.
+
+        Réponse numériques:
+            200     400
+	                402
+
+    3.9.    SUBSCRIBED
+
+        Command: /subscribed
+        Paramètre: aucun
+        Paramètre: <team_uuid>
+
+        Si aucun paramètre n'est spécifié, affiche toutes les teams
+        auquel le client est abonné.  Si une team est spécifié, liste
+        les utilisateurs abonné à une team.
+
+        Réponse numériques:
+            201     400
+            202     402
+
+
+Planchot, Mas & Quenelle                                        [Page 4]
+------------------------------------------------------------------------
+RFC 1550                                                       Juin 2021
+Teams Protocol Chat
+
+    3.10.    UNSUBSCRIBE
+
+        Command: /unsubscribe
+        Paramètre: <team_uuid>
+
+        Permet de se désabonner d'une team.
+
+        Réponse numériques:
+            200     400
+                    402
+
+    3.11.   USE
+
+        Command: /use
+        Paramètre: aucun
+        Paramètre: <team_uuid>
+        Paramètre: <team_uuid> <channel_uuid>
+        Paramètre: <team_uuid> <channel_uuid> <thread_uuid>
+
+        Permet de préciser si une team doit être crée, un channel, un
+        thread, ou une réponse et ainsi de le crée là ou il faut.
+
+        Réponse numériques:
+            200
+
+    3.12.   CREATE
+
+        Command: /create
+        Paramètre: <team_name> <team_description>
+        Paramètre: <channel_name> <team_description>
+        Paramètre: <thread_name> <team_description>
+        Paramètre: <reply_body>
+
+        Permet de créé une team, un channel, un thread ou une réponse en
+        fonction de ce qui a été envoye à la commande use juste avant.
+
+        Réponse numériques:
+            205     400
+            206     402
+            207     403
+            208     404
+	        209     405
+            210
+            211
+            212
+
+    3.13.   LIST
+
+        Command: /list
+        Paramètre: aucun
+        Paramètre: <team_uuid>
+        Paramètre: <team_uuid> <channel_uuid>
+        Paramètre: <team_uuid> <channel_uuid> <thread_uuid>
+
+        Permet de lister toutes les teams, les channels d'une team, les
+        thread d'un channel ou les reponses d'un thread.
+
+        Réponse numériques:
+            201     400
+            202     402
+            203     403
+            204     404
+
+Planchot, Mas & Quenelle                                        [Page 5]
+------------------------------------------------------------------------
+RFC 1550                                                       Juin 2021
+Teams Protocol Chat
+
+    3.14.   INFO
+
+        Command: /info
+        Paramètre: aucun
+        Paramètre: <team_uuid>
+        Paramètre: <team_uuid> <channel_uuid>
+        Paramètre: <team_uuid> <channel_uuid> <thread_uuid>
+
+        Permet de d'afficher les infos du client connecté, d'une team,
+        d'un channel ou d'un thread.
+
+        Réponse numériques:
+            213     400
+            214     402
+            215     403
+            216     404
+
+4.  REPONSES
+
+    Ce qui suit est une liste des codes numériques qui sont renvoyées
+    au client comme réponses au commande detaillées ci-dessus.  Chaque
+    code numérique correspond à un type de réponse.
+
+    4.1.    REPONSES D'ERREURS
+
+        400     -> client non authentifié.
+        401     -> le paramètre **<user_uuid>** spécifié est invalide.
+        402     -> le paramètre **<team_uuid>** spécifié est invalide.
+        403     -> le paramètre **<channel_uuid>** spécifié est invalide.
+        404     -> le paramètre **<thread_uuid>** spécifié est invalide.
+        405     -> il y a déja une ressources possédant ce nom.
+        406     -> il y a trop ou pas assez d'arguments.
+        407     -> l'utilisateur est déjà connecté
+
+    4.2.    REPONSES AUX COMMANDES
+
+        200     -> commande réussie.
+        201     -> affiche toutes les teams.
+        202     -> affiche les channels d'une team.
+        203     -> affiches les threads d'un channel.
+        204     -> affiches les réponses d'un thread.
+        205     -> notification de création d'une team réussie.
+        206     -> création d'une team réussie.
+        207     -> notification de création d'un channel réussi.
+        208     -> création d'un channel réussi.
+        209     -> notification de création d'une thread réussie.
+        210     -> création d'une thread réussie.
+        211     -> notification de creation d'une réponse réussie.
+        212     -> creation d'une réponse réussie.
+        213     -> affiche les informations d'un utilisateur.
+        214     -> affiche les informations d'une team.
+        215     -> affiche les informations d'un channel.
+        216     -> affiche les informations d'un thread.
+
+Planchot, Mas & Quenelle                                        [Page 6]
+------------------------------------------------------------------------
+RFC 1550                                                       Juin 2021
+Teams Protocol Chat
+
+5.  AUTHENTIFICATION D'UN CLIENT
+
+    L'utilisation d'un mot de passe n'est pas demandé pour
+    s'authentifier.  Cependant, un client non authentifié aura accès
+    qu'à une seule commande qui est /login.
+
+
+Planchot, Mas & Quenelle                                        [Page 7]
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+/use
+ 200 only ?
+ unknow team
+ unknow channel
+ unknow thread
