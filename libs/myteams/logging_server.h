@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, 2021
-** logging server
+** EPITECH PROJECT, XXXX
+** NWP_myteams_XXXX
 ** File description:
-** logging_server
+** a file containing libs functions that should be called in myteams_server
 */
 
 #ifndef LIB_MYTEAMS_LOGGING_SERVER_H
@@ -67,7 +67,7 @@ int server_event_thread_created(
 ** Commands:
 ** /create "reply_body"
 **/
-int server_event_thread_new_reply(
+int server_event_reply_created(
     char const *thread_uuid,
     char const *user_uuid,
     char const *reply_body);
@@ -90,8 +90,7 @@ int server_event_user_subscribed(char const *team_uuid, char const *user_uuid);
 ** Commands:
 ** /unsubscribe "team_uuid"
 **/
-int server_event_user_unsubscribed(char const *team_uuid,
-        char const *user_uuid);
+int server_event_user_unsubscribed(char const *team_uuid, char const *user_uuid);
 
 /**
 ** @brief Must be called when a user didn't existed in save and was created
@@ -143,7 +142,7 @@ int server_event_user_logged_out(char const *user_uuid);
 ** Commands:
 ** /send "user_uuid" "message_body"
 **/
-int server_event_private_message_sent(
+int server_event_private_message_sended(
     char const *sender_uuid,
     char const *receiver_uuid,
     char const *message_body);

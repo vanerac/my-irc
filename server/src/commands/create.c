@@ -192,7 +192,7 @@ static enum command_return create_comment(t_messages *pmessages,
     time(&thread->created_at);
     uuid_unparse(pmessages->uid, uuid_m);
     uuid_unparse(session->user_data->uid, uuid_s);
-    server_event_thread_new_reply(uuid_m, uuid_s, thread->body);
+    server_event_reply_created(uuid_m, uuid_s, thread->body);
     return create_comment_second_part(session, pmessages, thread);
 }
 
