@@ -9,23 +9,21 @@
 
 static bool find_by_uuid(void *it, void *data)
 {
+    uuid tmp;
+    uuid_parse(data, tmp);
     switch (*((enum data_type *) it)) {
     case USER:
-        return !uuid_compare(((t_user *) it)->uid, ((t_user *) data)->uid);
+        return !uuid_compare(((t_user *) it)->uid, tmp);
     case TEAM:
-        return !uuid_compare(((t_teams *) it)->uid, ((t_teams *) data)->uid);
+        return !uuid_compare(((t_teams *) it)->uid, tmp);
     case CHANNEL:
-        return !uuid_compare(((t_channel *) it)->uid,
-            ((t_channel *) data)->uid);
+        return !uuid_compare(((t_channel *) it)->uid, tmp);
     case THREAD:
-        return !uuid_compare(((t_messages *) it)->uid,
-            ((t_messages *) data)->uid);
+        return !uuid_compare(((t_messages *) it)->uid, tmp);
     case REPLY:
-        return !uuid_compare(((t_messages *) it)->uid,
-            ((t_messages *) data)->uid);
+        return !uuid_compare(((t_messages *) it)->uid, tmp);
     case MESSAGE:
-        return !uuid_compare(((t_messages *) it)->uid,
-            ((t_messages *) data)->uid);
+        return !uuid_compare(((t_messages *) it)->uid, tmp);
     default:
         return false;
     }
@@ -86,8 +84,7 @@ static enum command_return set_thread(t_global *global, session_t *session,
     return SUCCESS;
 }
 
-void command_use(t_global *global, session_t *session,
-    char **args
+void command_use(t_global *global, session_t *session, char **args
 )
 {
     enum command_return (*fn[4])(t_global *, session_t *, char *
@@ -98,5 +95,5 @@ void command_use(t_global *global, session_t *session,
         status = fn[i](global, session, args[i]);
     if (status == SUCCESS)
         session->error = NO_ERROR;
-//    return status;
+    //    return status;
 }
