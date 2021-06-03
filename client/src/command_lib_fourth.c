@@ -28,6 +28,7 @@ void list(char *code, char *allargs)
         }
     }
     list_bis(code, args);
+    free(args);
 }
 
 void list_bis(char *code, char **args)

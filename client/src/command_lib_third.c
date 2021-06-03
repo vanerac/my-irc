@@ -26,7 +26,7 @@ void unsubscribe(char *code, char *allargs)
                 break;
         }
     }
-
+    free(args);
 }
 
 void create(char *code, char *allargs)
@@ -39,29 +39,41 @@ void create(char *code, char *allargs)
         switch (atoi(code)) {
             case 205:
                 client_event_team_created(args[0], args[1], args[2]);
-                create_team(args);
+                break;
+            case 206:
+                client_print_team_created(args[0], args[1], args[2]);
                 break;
             case 207:
                 client_event_channel_created(args[0], args[1], args[2]);
-                create_channel(args);
-                break;
+                break;   
         }
     }
     create_bis(code, args);
+    create_error_response(code, args);
+    free(args);
 }
 
 void create_bis(char *code, char **args)
 {
     switch (atoi(code)) {
+        case 208:
+            client_print_channel_created(args[0], args[1], args[2]);
+            break;
         case 209:
             client_event_thread_created(args[0], args[1],
             (time_t)atol(args[2]), args[3], args[4]);
-            create_thread(args);
+            break;
+        case 210:
+            client_print_thread_created(args[0], args[1],
+            (time_t)atol(args[2]), args[3], args[4]);
             break;
         case 211:
             client_event_thread_reply_received(args[0],
             args[1], args[2], args[3]);
-            create_reply_to_thread(args);
+            break;
+        case 212:
+            client_print_reply_created(args[0], args[1],
+            (time_t)atol(args[2]), args[3]);
             break;
     }
 }
@@ -83,18 +95,19 @@ void info(char *code, char *allargs)
             case 207:
                 client_print_channel(args[0], args[1], args[2]);
                 break;
-            case 208:
-                client_print_thread(args[0], args[1],
-                (time_t)atol(args[2]), args[3], args[4]);
-                break;
         }
     }
     info_bis(code, args);
+    free(args);
 }
 
 void info_bis(char *code, char **args)
 {
     switch (atoi(code)) {
+        case 208:
+            client_print_thread(args[0], args[1],
+            (time_t)atol(args[2]), args[3], args[4]);
+            break;
         case 402:
             client_error_unknown_team(args[0]);
             break;
