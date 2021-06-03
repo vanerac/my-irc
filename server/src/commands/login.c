@@ -12,8 +12,7 @@
 
 int asprintf(char **strp, const char *fmt, ...);
 
-void command_logout(t_global *global, session_t *session,
-    char **args
+void command_logout(t_global *global, session_t *session, char **args
 )
 {
     (void) global, (void) args;
@@ -21,8 +20,8 @@ void command_logout(t_global *global, session_t *session,
     uuid_unparse(session->user_data->uid, uuid);
     server_event_user_logged_out(uuid);
     session->logged = false;
-//    session->user_data = NULL; todo
-//    return SUCCESS;
+    session->user_data = NULL;
+    //    return SUCCESS;
 }
 
 static t_user *create_user(t_global *global, char *username)
@@ -48,16 +47,11 @@ static t_user *create_user(t_global *global, char *username)
 
 static bool find_by_username(void *it, void *data)
 {
-    session_t *tmp = ((session_t *) it);
-    if (!tmp || !tmp->user_data)
-        return false;
-    printf("tmp : %s\n", tmp->user_data->username);
-    return !strcmp(tmp->user_data->username,
-        (char *) data);
+
+    return !strcmp(((t_user *) it)->username, (char *) data);
 }
 
-void command_login(t_global *global, session_t *session,
-    char **args
+void command_login(t_global *global, session_t *session, char **args
 )
 {
     char uuid[37];
@@ -66,10 +60,9 @@ void command_login(t_global *global, session_t *session,
     if (session->user_data) {
         // already logged in, error ?
     }
-//    if (node_find_fn(global->sessions, &find_by_username, username))
-//        return DOUBLE_AUTH; // todo
+    //    if (node_find_fn(global->sessions, &find_by_username, username))
+    //        return DOUBLE_AUTH; // todo
 
-    printf("finding by username (%s)\n", username);
     list_t *user = node_find_fn(global->all_user, &find_by_username, username);
 
     if (user)
@@ -77,13 +70,13 @@ void command_login(t_global *global, session_t *session,
     else
         session->user_data = create_user(global, username);
 
-//    if (!session->user_data) todo
-//        return SYSTEM_ERROR;
+    //    if (!session->user_data) todo
+    //        return SYSTEM_ERROR;
     session->logged = true;
     uuid_unparse(session->user_data->uid, uuid);
     server_event_user_logged_in(uuid);
     asprintf(&ret, "200 %s %s", uuid, username);
     send_message(session->socket, ret, RESPONSE, LOGIN);
-//    return SUCCESS;
+    //    return SUCCESS;
 }
 

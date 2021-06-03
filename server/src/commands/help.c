@@ -31,7 +31,7 @@ enum command_return is_logged(t_global *global, session_t *session, char **args)
 {
     (void) global, (void) args;
     printf("checking log status\n");
-    return session->logged ? SUCCESS : UNAUTHORISED;
+    return session->logged && session->user_data ? SUCCESS : UNAUTHORISED;
 }
 
 void command_help(t_global *global, session_t *session,
