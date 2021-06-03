@@ -18,7 +18,7 @@ int asprintf(char **strp, const char *fmt, ...);
 command_t parse_command(char *buffer, enum command_e command)
 {
     command_t new_command = commands_list[command];
-    new_command.args = str_to_word_array(buffer, ' ');
+    new_command.args = split_by_quote(buffer);
     return new_command;
 }
 
@@ -42,6 +42,8 @@ int handle_command(t_global *global, session_t *session)
     if (!read_message(&info, session->socket))
         return HANGUP;
     command_t cmd = parse_command(info.args, info.command);
+    if (!cmd.args)
+        return SYSTEM_ERROR;
     enum command_return status = SUCCESS;
     for (command_ptr *fn = cmd.check_fn; status == SUCCESS && *fn; ++fn)
         status = (*fn)(global, session, cmd.args);

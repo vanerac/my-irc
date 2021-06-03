@@ -16,6 +16,7 @@
 
 int myteams_server(int server_socket);
 char **str_to_word_array(char *str, char spliter_char);
+char **split_by_quote(char *str);
 
 enum error_use {
     NO_ERROR,
