@@ -119,6 +119,7 @@ void save(t_global *data, bool write)
 
     // save dms
 
+
 }
 
 void sig_save(int blc)
@@ -126,6 +127,7 @@ void sig_save(int blc)
     (void) blc;
     printf("%s\n", "program killed by sig");
     save(NULL, true);
+    exit(0);
 }
 
 int myteams_server(int server_socket)
@@ -145,7 +147,7 @@ int myteams_server(int server_socket)
     save(&global, false); // save ptr;
     signal(SIGTERM, sig_save);
     signal(SIGINT, sig_save);
-    signal(SIGSEGV, sig_save);
+//    signal(SIGSEGV, sig_save);
     if (!sessions)
         return 84;
     if (server_socket < 0)
