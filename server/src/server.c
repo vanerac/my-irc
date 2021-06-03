@@ -22,7 +22,8 @@ void set_ports(fd_set *rfds, list_t *sessions)
 {
     FD_ZERO(rfds);
     for (list_t *i = sessions; i; i = i->next) {
-        FD_SET(((session_t *) i->data)->socket, rfds);
+        if (((session_t *) i->data)->connected)
+            FD_SET(((session_t *) i->data)->socket, rfds);
     }
     FD_SET(0, rfds);
 }
@@ -63,15 +64,9 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
 
     set_ports(rfds, sessions);
     FD_SET(server_socket, rfds);
-    int ret = select(max_fd + 1, rfds, NULL, NULL, NULL);
-    if (ret == -1) {
-        perror("select == -1: ");
+    if (select(max_fd + 1, rfds, NULL, NULL, NULL) == -1)
         return 84;
-    }
-    if (ret == 0) {
-        perror("select == 0 ");
-        return 84;
-    }
+
     for (int i = 0; i < max_fd + 1 && status == 0; ++i) {
         if (!FD_ISSET(i, rfds))
             continue;
@@ -81,7 +76,11 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
             handle_connections(sessions, server_socket);
         else {
             n = node_find_fn(sessions, &find_session_by_fd, &i);
-            handle_command(global, n ? n->data : NULL);
+            if (handle_command(global, n ? n->data : NULL) == HANGUP) {
+                printf("%s\n", "client left");
+                // todo remove session, its cleaner
+                ((session_t *) n->data)->connected = false;
+            }
         }
     }
 
@@ -93,14 +92,12 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
 void load(t_global *global)
 {
     (void) global;
-//    int fd = 0;
-//    global->teams = read_all_teams(fd, 4);
-//    global->all_user = read_all_users(fd, 4);
-//    data->private_message = read_all_messages(fd, 1);
+    //    int fd = 0;
+    //    global->teams = read_all_teams(fd, 4);
+    //    global->all_user = read_all_users(fd, 4);
+    //    data->private_message = read_all_messages(fd, 1);
     return;
 }
-
-
 
 void save(t_global *data, bool write)
 {
@@ -113,7 +110,7 @@ void save(t_global *data, bool write)
 
     (void) data_save;
     // save teams
-//    int fd = 1; // todo
+    //    int fd = 1; // todo
 
     // save all users on one file
 
@@ -147,7 +144,7 @@ int myteams_server(int server_socket)
     save(&global, false); // save ptr;
     signal(SIGTERM, sig_save);
     signal(SIGINT, sig_save);
-//    signal(SIGSEGV, sig_save);
+    //    signal(SIGSEGV, sig_save);
     if (!sessions)
         return 84;
     if (server_socket < 0)
