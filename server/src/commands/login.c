@@ -51,8 +51,14 @@ static t_user *create_user(t_global *global, char *username)
 
 static bool find_by_username(void *it, void *data)
 {
-
     return !strcmp(((t_user *) it)->username, (char *) data);
+}
+
+static bool find_by_username_session(void *it, void *data)
+{
+    if (!((session_t *) it)->user_data)
+        return false;
+    return !strcmp(((session_t *) it)->user_data->username, (char *) data);
 }
 
 void command_login(t_global *global, session_t *session, char **args
@@ -61,11 +67,13 @@ void command_login(t_global *global, session_t *session, char **args
     char uuid[37];
     char *ret = NULL;
     char *username = args[0];
-    if (session->user_data) {
+    if (session->logged) {
         // already logged in, error ?
     }
-    //    if (node_find_fn(global->sessions, &find_by_username, username))
-    //        return DOUBLE_AUTH; // todo
+    if (session->logged || node_find_fn(global->sessions, &find_by_username_session, username)) {
+        send_message(session->socket, "407 already logged", RESPONSE, LOGIN);
+        return; // todo
+    }
 
     list_t *user = node_find_fn(global->all_user, &find_by_username, username);
 
