@@ -25,6 +25,7 @@ enum data_type {
     CHANNEL,
     THREAD,
     REPLY,
+    DM,
     MESSAGE,
     SESSION
 };

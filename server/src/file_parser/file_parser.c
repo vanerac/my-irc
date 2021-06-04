@@ -24,7 +24,7 @@ void write_structure(int fd, void *data, int recursion_levels)
         return write_message(fd, data);
     case MESSAGE:
         return write_message(fd, data);
-    case SESSION:
+    default:
         break;
     }
 }

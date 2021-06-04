@@ -20,7 +20,8 @@ static t_dm *create_dm(t_global *global, session_t *session, uuid target)
     t_dm *ret = malloc(sizeof(t_dm));
     uuid_copy(ret->user_first, session->user_data->uid);
     uuid_copy(ret->user_second, target);
-    if (global->private_message)
+    ret->type = DM;
+    if (!global->private_message)
         global->private_message = node_list_create(ret);
     else
         node_append_data(global->private_message, ret);
@@ -51,7 +52,7 @@ void command_send(t_global *global, session_t *session, char **args)
     uuid *uuids[2] = {&session->user_data->uid, &target};
 
     if (!node_find_fn(global->all_user, &find_by_uuid,
-        target)) {
+        args[0])) {
         return; // todo user doesnt exist
     }
 
@@ -62,7 +63,7 @@ void command_send(t_global *global, session_t *session, char **args)
     else
         dm = dms->data;
     t_messages *ret = init_message(session->user_data, dm, message);
-    if (dm->messages)
+    if (!dm->messages)
         dm->messages = node_list_create(ret);
     else
         node_append_data(dm->messages, ret);
