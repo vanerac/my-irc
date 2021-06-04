@@ -52,6 +52,7 @@ static enum command_return dump_threads(t_global *global, session_t *session)
 static enum command_return dump_channels(t_global *global, session_t *session)
 {
     char *buffer = NULL;
+    (void) global;
 
     for (list_t *node = session->current_team->channels; node; node = node->next) {
         t_channel *channel = node->data;
@@ -98,15 +99,15 @@ enum command_return call_list(t_global *global, session_t *session)
 
 void command_list(t_global *global, session_t *session, char **args)
 {
-    (void) args;
+    (void) args, (void) global;
     // (void) global, (void) session;
-    enum command_return return_val = SUCCESS;
+//    enum command_return return_val = SUCCESS;
     // (void) dump_channels, (void) dump_messages, (void) dump_teams, (void) dump_threads;
     if (session->error != NO_ERROR) {
         send_error_to_client(session);
         return;
     }
-    return_val = call_list(global, session);
+    /*return_val = */call_list(global, session);
 //    if (return_val == SYSTEM_ERROR)
 //        send_message(session->socket, "666 \"system error\"", RESPONSE, LIST);
 }
