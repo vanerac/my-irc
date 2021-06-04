@@ -63,6 +63,7 @@ void handle_connections(list_t *sessions, int server_socket)
     session_t *data = malloc(sizeof(session_t));
     if (!data)
         return;
+    data->type = SESSION;
     data->socket = client;
     data->logged = false;
     data->user_data = NULL;

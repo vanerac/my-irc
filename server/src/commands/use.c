@@ -24,6 +24,9 @@ bool find_by_uuid(void *it, void *data)
         return !uuid_compare(((t_messages *) it)->uid, tmp);
     case MESSAGE:
         return !uuid_compare(((t_messages *) it)->uid, tmp);
+    case SESSION:
+        return ((session_t *) it)->user_data &&
+            !uuid_compare(((session_t *) it)->user_data->uid, tmp);
     default:
         return false;
     }

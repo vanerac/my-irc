@@ -25,7 +25,8 @@ enum data_type {
     CHANNEL,
     THREAD,
     REPLY,
-    MESSAGE
+    MESSAGE,
+    SESSION
 };
 
 typedef struct user {
@@ -51,6 +52,7 @@ typedef struct channel {
     list_t *messages;
     char *desc;
     char *name;
+    t_teams *parent;
 } t_channel;
 
 typedef struct dm {

@@ -26,6 +26,7 @@ enum error_use {
 };
 
 typedef struct session_s {
+    enum data_type type;
     int socket;
     bool logged;
     char *fail_uid;
