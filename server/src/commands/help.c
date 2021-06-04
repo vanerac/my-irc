@@ -11,7 +11,9 @@
 
 int asprintf(char **restrict strp, const char *restrict fmt, ...);
 
-enum command_return return_invalid(t_global *global, session_t *session, char **args);
+enum command_return return_invalid(t_global *global, session_t *session,
+    char **args
+);
 
 const command_t commands_list[] = {
     {INVALID, NULL, NULL, {&return_invalid, NULL}},
@@ -28,164 +30,116 @@ const command_t commands_list[] = {
     {USE, NULL, &command_use, {&is_logged, NULL}},
     {CREATE, NULL, &command_create, {&is_logged, NULL}},
     {LIST, NULL, &command_list, {&is_logged, NULL}},
-    {INFO, NULL, &command_info, {&is_logged, NULL}},
-};
+    {INFO, NULL, &command_info, {&is_logged, NULL}},};
 
-enum command_return return_invalid(t_global *global, session_t *session, char **args)
-{  
-    (void)session;
+enum command_return return_invalid(t_global *global, session_t *session,
+    char **args)
+{
+    (void) session;
     (void) global, (void) args;
     send_message(session->socket, "220 Invalid Command", RESPONSE, INVALID);
     return UNKNOWN_COMMAND;
 }
 
-enum command_return is_logged(t_global *global, session_t *session, char **args)
+enum command_return is_logged(t_global *global, session_t *session, char **args
+)
 {
     (void) global, (void) args;
     printf("checking log status\n");
     return session->logged && session->user_data ? SUCCESS : UNAUTHORISED;
 }
 
-void command_help(t_global *global, session_t *session,
-    char **args
-)
+void command_help(t_global *global, session_t *session, char **args)
 {
     (void) session, (void) args, (void) global;
 
     char *h = "200 /help -> show help\n/login 'user' -> set the user used by"
-    " client\n/logout -> disconnect the client from the server\n"
-    "/users -> list of all users that exist\n/user 'user_uuid' -> get"
-    " information about a user\n/send 'user_uuid' 'message_body' -> send"
-    " a message to a user\n/messages 'user_uuid' -> list all messages with a"
-    " user\n/subscribe 'team_uuid' -> subscribe to a team\n/subscribed ?"
-    "'team_uuid' -> list all subscribed teams or list all users subscribed"
-    " to a team\n/unsubscribe 'team_uuid' -> unsubscribe from a team\n"
-    "/use ? 'team_uuid' ?'channel_uuid' ?'thread_uuid' -> use specify a "
-    "context team/channel/thread\n/create -> create a team/channel/thread\n"
-    "/list -> list existing teams/channels/threads\n/info -> display info"
-    " about users/team/channel/thread\n";
+              " client\n/logout -> disconnect the client from the server\n"
+              "/users -> list of all users that exist\n/user 'user_uuid' -> get"
+              " information about a user\n/send 'user_uuid' 'message_body' -> send"
+              " a message to a user\n/messages 'user_uuid' -> list all messages with a"
+              " user\n/subscribe 'team_uuid' -> subscribe to a team\n/subscribed ?"
+              "'team_uuid' -> list all subscribed teams or list all users subscribed"
+              " to a team\n/unsubscribe 'team_uuid' -> unsubscribe from a team\n"
+              "/use ? 'team_uuid' ?'channel_uuid' ?'thread_uuid' -> use specify a "
+              "context team/channel/thread\n/create -> create a team/channel/thread\n"
+              "/list -> list existing teams/channels/threads\n/info -> display info"
+              " about users/team/channel/thread\n";
 
     send_message(session->socket, h, RESPONSE, HELP);
-//    return SUCCESS;
+    //    return SUCCESS;
 }
 
-
-void command_users(t_global *global, session_t *session,
-    char **args
-)
+void command_users(t_global *global, session_t *session, char **args)
 {
     (void) session, (void) args, (void) global;
     list_t *all_users = global->all_user;
     t_user *cur = NULL;
-    char *print = strdup("200 ");
     char *buffer = NULL;
     char uuid[37];
 
-    if (!print) {
-        send_message(session->socket, "666 \"system error\"", RESPONSE, USERS);
-        return;
-    }
     for (; all_users; all_users = all_users->next) {
-        cur = (t_user *)all_users->data;
+        cur = (t_user *) all_users->data;
         if (!cur)
             continue;
         uuid_unparse(cur->uid, uuid);
-        asprintf(&buffer, "%s\"%s\" \"%s\" \"%d\"\n",
-            print,
-            uuid,
-            cur->username,
+        asprintf(&buffer, "200 \"%s\" \"%s\" \"%d\"\n", uuid, cur->username,
             (cur->logged) ? 1 : 0);
-        free(print);
-        if (!(print = strdup(buffer))) {
-            send_message(session->socket, "666 \"system error\"",
-                RESPONSE, USERS);
-            return;
-        }
+        send_message(session->socket, buffer, RESPONSE, USERS);
     }
-    send_message(session->socket, buffer, RESPONSE, USERS);
-    // list_t *all_sess = global->sessions;
-    // char *print = strdup("200 ");
-    // char *buffer = NULL;
-
-    // if (!print) {
-        // send_message(session->socket, "666 \"system error\"", RESPONSE, USERS);
-        // return;
-    // }
-    // for (list_t *tmp = all_sess; ; tmp = tmp->next) {
-        // user = (t_user *)tmp;
-        // asprintf(&buffer, "%s\"%s\" \"%s\" \"%s\"\n", user->uid, user->username);
-// 
-        // free(print);
-        // if (!(print = strdup(buffer))) {
-            // send_message(session->socket, "666 \"system error\"",
-                // RESPONSE, USERS);
-            // return;
-        // }
-    // }
-    // send_message(session->socket, buffer, RESPONSE, USERS);
 }
 
-void command_usr(t_global *global, session_t *session,
-    char **args
-)
+void command_usr(t_global *global, session_t *session, char **args)
 {
     (void) session, (void) args, (void) global;
     list_t *node = node_find_fn(global->sessions, find_by_uuid, args[0]);
     char *buffer;
     char uuid[37];
-    session_t *user = (session_t *)node->data;
 
     if (!node) {
         asprintf(&buffer, "401 \"%s\"", args[0]);
         send_message(session->socket, buffer, RESPONSE, USR);
         return;
     }
+    session_t *user = (session_t *) node->data;
 
-    uuid_unparse(((t_user *)user->user_data)->uid, uuid);
+    uuid_unparse(((t_user *) user->user_data)->uid, uuid);
     asprintf(&buffer, "200 \"%s\" \"%s\" \"%i\"", uuid,
-        ((t_user *)user->user_data)->username, user->logged ? 1 : 0);
+        ((t_user *) user->user_data)->username, user->logged ? 1 : 0);
     send_message(session->socket, buffer, RESPONSE, USR);
     free(buffer);
-//    return SUCCESS;
+    //    return SUCCESS;
 }
 
-void command_messages(t_global *global, session_t *session,
-    char **args
-)
+void command_messages(t_global *global, session_t *session, char **args)
 {
     (void) session, (void) args, (void) global;
-//    return SUCCESS;
+    //    return SUCCESS;
 }
 
-void command_subscribe(t_global *global, session_t *session,
-    char **args
-)
+void command_subscribe(t_global *global, session_t *session, char **args)
 {
     (void) session, (void) args, (void) global;
-//    return SUCCESS;
+    //    return SUCCESS;
 }
 
-void command_subscribed(t_global *global, session_t *session,
-    char **args
-)
+void command_subscribed(t_global *global, session_t *session, char **args)
 {
     (void) session, (void) args, (void) global;
-//    return SUCCESS;
+    //    return SUCCESS;
 }
 
-void command_unsubscribe(t_global *global, session_t *session,
-    char **args
-)
+void command_unsubscribe(t_global *global, session_t *session, char **args)
 {
     (void) session, (void) args, (void) global;
-//    return SUCCESS;
+    //    return SUCCESS;
 }
 
 
 // void command_info(t_global *global, session_t *session,
-    // char **args
+// char **args
 // )
 // {
-    // (void) session, (void) args, (void) global;
+// (void) session, (void) args, (void) global;
 //    return SUCCESS;
 // }
