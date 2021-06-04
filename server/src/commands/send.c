@@ -7,6 +7,7 @@
 
 #include <commands.h>
 #include <message.h>
+#include <logging_server.h>
 
 int asprintf(char **restrict strp, const char *restrict fmt, ...);
 
@@ -78,13 +79,15 @@ void command_send(t_global *global, session_t *session, char **args)
     // todo write to client OK
     list_t *target_session = node_find_fn(global->sessions, &find_by_uuid,
         target);
+    char tmp[37];
+    uuid_unparse(session->user_data->uid, tmp);
     if (target_session && ((session_t *)target_session->data)->logged && ((session_t *)
         target_session->data)->connected) {
         char *buffer = NULL;
-        char tmp[37];
-        uuid_unparse(session->user_data->uid, tmp);
+
         asprintf(&buffer, "200 \"%s\" \"%s\"", tmp, ret->body);
         return;
     }
+    server_event_private_message_sended(tmp, args[0], args[1]);
 
 }
