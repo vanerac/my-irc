@@ -17,7 +17,8 @@ SRC					=	manager.c				\
 						function_pointer.c		\
 						create_cmd.c			\
 						command_lib_fourth.c	\
-						split_by_quote.c
+						split_by_quote.c		\
+						error.c
 
 TRC					=
 MAIN				= 	main.c
