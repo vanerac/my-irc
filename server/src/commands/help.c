@@ -9,6 +9,8 @@
 #include "commands.h"
 #include "message.h"
 
+int asprintf(char **restrict strp, const char *restrict fmt, ...);
+
 enum command_return return_invalid(t_global *global, session_t *session, char **args);
 
 const command_t commands_list[] = {
@@ -73,7 +75,50 @@ void command_users(t_global *global, session_t *session,
 )
 {
     (void) session, (void) args, (void) global;
-//    return SUCCESS;
+    list_t *all_users = global->all_user;
+    session_t *cur = NULL;
+    char *print = strdup("200 ");
+    char *buffer = NULL;
+
+    if (!print) {
+        send_message(session->socket, "666 \"system error\"", RESPONSE, USERS);
+        return;
+    }
+    for (; all_users; all_users = all_users->next) {
+        cur = (session_t *)all_users->data;
+        asprintf(&buffer, "%s\"%s\" \"%s\" \"%i\"\n",
+            ((t_user *)cur->user_data)->uid,
+            ((t_user *)cur->user_data)->username,
+            cur->logged ? 1 : 0);
+
+        free(print);
+        if (!(print = strdup(buffer))) {
+            send_message(session->socket, "666 \"system error\"",
+                RESPONSE, USERS);
+            return;
+        }
+    }
+    send_message(session->socket, buffer, RESPONSE, USERS);
+    // list_t *all_sess = global->sessions;
+    // char *print = strdup("200 ");
+    // char *buffer = NULL;
+
+    // if (!print) {
+        // send_message(session->socket, "666 \"system error\"", RESPONSE, USERS);
+        // return;
+    // }
+    // for (list_t *tmp = all_sess; ; tmp = tmp->next) {
+        // user = (t_user *)tmp;
+        // asprintf(&buffer, "%s\"%s\" \"%s\" \"%s\"\n", user->uid, user->username);
+// 
+        // free(print);
+        // if (!(print = strdup(buffer))) {
+            // send_message(session->socket, "666 \"system error\"",
+                // RESPONSE, USERS);
+            // return;
+        // }
+    // }
+    // send_message(session->socket, buffer, RESPONSE, USERS);
 }
 
 void command_usr(t_global *global, session_t *session,
@@ -117,10 +162,10 @@ void command_unsubscribe(t_global *global, session_t *session,
 }
 
 
-void command_info(t_global *global, session_t *session,
-    char **args
-)
-{
-    (void) session, (void) args, (void) global;
+// void command_info(t_global *global, session_t *session,
+    // char **args
+// )
+// {
+    // (void) session, (void) args, (void) global;
 //    return SUCCESS;
-}
+// }

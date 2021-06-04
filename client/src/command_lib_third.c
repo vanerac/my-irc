@@ -86,13 +86,13 @@ void info(char *code, char *allargs)
         return;
     if (array_size(args) > 0){
         switch (atoi(code)) {
-            case 205:
+            case 213:
                 client_print_user(args[0], args[1], atoi(args[2]));
                 break;
-            case 206:
+            case 214:
                 client_print_team(args[0], args[1], args[2]);
                 break;
-            case 207:
+            case 215:
                 client_print_channel(args[0], args[1], args[2]);
                 break;
         }
@@ -104,7 +104,7 @@ void info(char *code, char *allargs)
 void info_bis(char *code, char **args)
 {
     switch (atoi(code)) {
-        case 208:
+        case 216:
             client_print_thread(args[0], args[1],
             (time_t)atol(args[2]), args[3], args[4]);
             break;

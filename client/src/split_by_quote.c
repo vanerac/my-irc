@@ -56,7 +56,7 @@ char **split_by_quote(char *str)
     if (!str)
         return NULL;
     nb_param = count_param_with_quote(str);
-    if ((nb_param % 2) != 0)
+    if (nb_param == 0 || (nb_param % 2) != 0)
         return NULL;
     if (!(params = malloc(sizeof(char *) * (nb_param / 2) + 1)))
         return NULL;

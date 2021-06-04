@@ -47,6 +47,19 @@ char *get_param(char *str, int *index)
     return arg;
 }
 
+char **empty_array()
+{
+    char **array = malloc(sizeof(char *) * 2);
+
+    if (!array)
+        return NULL;
+    array[0] = strdup("");
+    if (!array[0])
+        return NULL;
+    array[1] = NULL;
+    return array;
+}
+
 char **split_by_quote(char *str)
 {
     int index = 0;
@@ -58,6 +71,8 @@ char **split_by_quote(char *str)
     nb_param = count_param_with_quote(str);
     if ((nb_param % 2) != 0)
         return NULL;
+    // if (nb_param == 0)
+        // return empty_array();
     if (!(params = malloc(sizeof(char *) * (nb_param / 2) + 1)))
         return NULL;
     for (int i = 0; i < (nb_param / 2); i++) {
