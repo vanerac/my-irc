@@ -7,7 +7,7 @@
 
 #include "commands.h"
 
-static bool find_by_uuid(void *it, void *data)
+bool find_by_uuid(void *it, void *data)
 {
     uuid tmp;
     uuid_parse(data, tmp);

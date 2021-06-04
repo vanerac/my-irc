@@ -57,13 +57,14 @@ void command_info(t_global *global, session_t *session,
 
 enum command_return is_logged(t_global *global, session_t *session,
 char **args);
+bool find_by_uuid(void *it, void *data);
 
-typedef enum command_return (*command_ptr)(t_global *,session_t *, char **);
+typedef enum command_return (*command_ptr)(t_global *, session_t *, char **);
 
 typedef struct command_s {
     enum command_e command_id;
     char **args;
-    void (*fn)(t_global *, session_t *,char **);
+    void (*fn)(t_global *, session_t *, char **);
     command_ptr check_fn[3];
 } command_t;
 

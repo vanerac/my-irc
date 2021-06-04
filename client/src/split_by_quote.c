@@ -52,13 +52,13 @@ char **split_by_quote(char *str)
     int index = 0;
     char **params = NULL;
     int nb_param = 0;
-    
+
     if (!str)
         return NULL;
     nb_param = count_param_with_quote(str);
-    if (nb_param == 0 || (nb_param % 2) != 0)
+    if ((nb_param % 2) != 0)
         return NULL;
-    if (!(params = malloc(sizeof(char *) * (nb_param / 2) + 1)))
+    if (!(params = malloc(sizeof(char *) * ((nb_param / 2) + 1))))
         return NULL;
     for (int i = 0; i < (nb_param / 2); i++) {
         if (!(params[i] = get_param(str, &index)))

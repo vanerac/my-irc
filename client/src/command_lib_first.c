@@ -70,6 +70,23 @@ void user(char *code, char *allargs)
     }
 }
 
+void loop_display_user(char *allargs)
+{
+    char **args = str_to_word_array(allargs, '\n');
+    char **args_print = NULL;
+
+    if (!args)
+        return;
+    for (int i = 0; args[i] != NULL; i++) {
+        args_print = split_by_quote(allargs);
+        if (!args_print)
+            return;
+        client_print_users(args_print[0], args_print[1], atoi(args_print[2]));
+        free(args_print);
+    }
+    free(args);
+}
+
 void users(char *code, char *allargs)
 {
     char **args = split_by_quote(allargs);
@@ -79,7 +96,8 @@ void users(char *code, char *allargs)
     if (array_size(args) > 0){
         switch (atoi(code)) {
             case 200:
-                client_print_users(args[0], args[1], atoi(args[2]));
+                loop_display_user(allargs);
+                // client_print_users(args[0], args[1], atoi(args[2]));
                 break;
             case 400:
                 client_error_unauthorized();

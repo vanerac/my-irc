@@ -42,10 +42,8 @@ int handle_command(t_global *global, session_t *session)
     if (!read_message(&info, session->socket))
         return HANGUP;
     command_t cmd = parse_command(info.args, info.command);
-    if (!cmd.args) {
-        printf("return\n");
+    if (!cmd.args)
         return SYSTEM_ERROR;
-    }
     enum command_return status = SUCCESS;
     for (command_ptr *fn = cmd.check_fn; status == SUCCESS && *fn; ++fn)
         status = (*fn)(global, session, cmd.args);

@@ -1,9 +1,11 @@
 /*
-** EPITECH PROJECT, XXXX
-** NWP_myteams_XXXX
+** EPITECH PROJECT, 2021
+** server lib header file
 ** File description:
-** a file containing libs functions that should be called in myteams_server
+** logging_server
 */
+
+
 
 #ifndef LIB_MYTEAMS_LOGGING_SERVER_H
 #define LIB_MYTEAMS_LOGGING_SERVER_H

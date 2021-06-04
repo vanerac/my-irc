@@ -75,10 +75,11 @@ void command_users(t_global *global, session_t *session,
 )
 {
     (void) session, (void) args, (void) global;
-    list_t *all_users = global->all_user;
+    list_t *all_users = global->sessions;
     session_t *cur = NULL;
     char *print = strdup("200 ");
     char *buffer = NULL;
+    char uuid[37];
 
     if (!print) {
         send_message(session->socket, "666 \"system error\"", RESPONSE, USERS);
@@ -86,11 +87,12 @@ void command_users(t_global *global, session_t *session,
     }
     for (; all_users; all_users = all_users->next) {
         cur = (session_t *)all_users->data;
-        asprintf(&buffer, "%s\"%s\" \"%s\" \"%i\"\n",
-            ((t_user *)cur->user_data)->uid,
-            ((t_user *)cur->user_data)->username,
-            cur->logged ? 1 : 0);
-
+        uuid_unparse(session->user_data->uid, uuid);
+        asprintf(&buffer, "%s\"%s\" \"%s\" \"%d\"\n",
+            print,
+            uuid,
+            cur->user_data->username,
+            (cur->logged) ? 1 : 0);
         free(print);
         if (!(print = strdup(buffer))) {
             send_message(session->socket, "666 \"system error\"",
@@ -126,6 +128,22 @@ void command_usr(t_global *global, session_t *session,
 )
 {
     (void) session, (void) args, (void) global;
+    list_t *node = node_find_fn(global->sessions, find_by_uuid, args[0]);
+    char *buffer;
+    char uuid[37];
+    session_t *user = (session_t *)node->data;
+
+    if (!node) {
+        asprintf(&buffer, "401 \"%s\"", args[0]);
+        send_message(session->socket, buffer, RESPONSE, USR);
+        return;
+    }
+
+    uuid_unparse(((t_user *)user->user_data)->uid, uuid);
+    asprintf(&buffer, "200 \"%s\" \"%s\" \"%i\"", uuid,
+        ((t_user *)user->user_data)->username, user->logged ? 1 : 0);
+    send_message(session->socket, buffer, RESPONSE, USR);
+    free(buffer);
 //    return SUCCESS;
 }
 
