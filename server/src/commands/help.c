@@ -33,7 +33,8 @@ const command_t commands_list[] = {
     {INFO, NULL, &command_info, {&is_logged, NULL}},};
 
 enum command_return return_invalid(t_global *global, session_t *session,
-    char **args)
+    char **args
+)
 {
     (void) session;
     (void) global, (void) args;
@@ -113,8 +114,23 @@ void command_usr(t_global *global, session_t *session, char **args)
 
 void command_messages(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args, (void) global;
-    //    return SUCCESS;
+    uuid target;
+    uuid_parse(args[0], target);
+    uuid *uuids[2] = {&session->user_data->uid, &target};
+    list_t *dms = node_find_fn(global->private_message, &find_dms, uuids);
+    if (!dms)
+        return;
+    t_dm *dm = dms->data;
+    char *buffer = NULL;
+    for (list_t *i = dm->messages; i; i= i->next) {
+        t_messages *m = i->data;
+        char id[37];
+        uuid_unparse(m->author->uid, id);
+        asprintf(&buffer, "200 \"%s\" \"%lud\" \"%s\"\n", id, m->created_at,
+            m->body);
+        send_message(session->socket, buffer, RESPONSE, MESSAGES);
+    }
+    free(buffer);
 }
 
 void command_subscribe(t_global *global, session_t *session, char **args)

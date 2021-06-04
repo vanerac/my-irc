@@ -6,8 +6,11 @@
 */
 
 #include <commands.h>
+#include <message.h>
 
-static bool find_dms(void *it, void *data)
+int asprintf(char **restrict strp, const char *restrict fmt, ...);
+
+bool find_dms(void *it, void *data)
 {
     return (!uuid_compare(((t_dm *) it)->user_first, *((uuid **) data)[0]) ||
         !uuid_compare(((t_dm *) it)->user_first, *((uuid **) data)[1])) &&
@@ -53,7 +56,11 @@ void command_send(t_global *global, session_t *session, char **args)
 
     if (!node_find_fn(global->all_user, &find_by_uuid,
         args[0])) {
-        return; // todo user doesnt exist
+        // 401 uuid
+        char *buffer = NULL;
+        asprintf(&buffer, "401 \"%s\"\n", args[0]);
+        send_message(session->socket, buffer, RESPONSE, SEND);
+        return;
     }
 
     list_t *dms = node_find_fn(global->private_message, &find_dms, uuids);
@@ -71,8 +78,12 @@ void command_send(t_global *global, session_t *session, char **args)
     // todo write to client OK
     list_t *target_session = node_find_fn(global->sessions, &find_by_uuid,
         target);
-    if (!target_session) {
-        // cant find session
+    if (target_session && ((session_t *)target_session->data)->logged && ((session_t *)
+        target_session->data)->connected) {
+        char *buffer = NULL;
+        char tmp[37];
+        uuid_unparse(session->user_data->uid, tmp);
+        asprintf(&buffer, "200 \"%s\" \"%s\"", tmp, ret->body);
         return;
     }
 
