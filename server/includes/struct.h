@@ -32,6 +32,7 @@ typedef struct user {
     enum data_type type;
     uuid uid;
     char *username;
+    bool logged;
 } t_user;
 
 typedef struct teams {

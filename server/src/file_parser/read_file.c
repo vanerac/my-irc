@@ -139,6 +139,7 @@ t_user *file_read_user(int fd)
     ret->type = USER;
     uuid_parse(args[1], ret->uid);
     ret->username = args[2];
+    ret->logged = false;
     char uuid[37];
     uuid_unparse(ret->uid, uuid);
     server_event_user_loaded(uuid, ret->username); // todo maybe change place

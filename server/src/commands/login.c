@@ -20,10 +20,13 @@ void command_logout(t_global *global, session_t *session, char **args
     char *ret = NULL;
     uuid_unparse(session->user_data->uid, uuid);
     server_event_user_logged_out(uuid);
+    if (!session->user_data)
+        return; // not logged in
     asprintf(&ret, "200 \"%s\" \"%s\"", uuid,
-            ((t_user *)session->user_data)->username);
+        ((t_user *) session->user_data)->username);
     send_message(session->socket, ret, RESPONSE, LOGOUT);
     session->logged = false;
+    session->user_data->logged = false;
     session->user_data = NULL;
     //    return SUCCESS;
 }
@@ -43,6 +46,7 @@ static t_user *create_user(t_global *global, char *username)
         global->all_user = node_list_create(ret);
     else
         node_append_data(global->all_user, ret);
+    ret->logged = true;
 
     uuid_unparse(ret->uid, uuid);
     server_event_user_created(uuid, ret->username);
@@ -70,8 +74,10 @@ void command_login(t_global *global, session_t *session, char **args
     if (session->logged) {
         // already logged in, error ?
     }
-    if (session->logged || node_find_fn(global->sessions, &find_by_username_session, username)) {
-        send_message(session->socket, "407 \"already logged\"", RESPONSE, LOGIN);
+    if (session->logged ||
+        node_find_fn(global->sessions, &find_by_username_session, username)) {
+        send_message(session->socket, "407 \"already logged\"", RESPONSE,
+            LOGIN);
         return; // todo
     }
 
@@ -82,8 +88,8 @@ void command_login(t_global *global, session_t *session, char **args
     else
         session->user_data = create_user(global, username);
 
-    //    if (!session->user_data) todo
-    //        return SYSTEM_ERROR;
+    if (!session->user_data)
+        return; // todo error ???
     session->logged = true;
     uuid_unparse(session->user_data->uid, uuid);
     asprintf(&ret, "200 \"%s\" \"%s\"", uuid, username);

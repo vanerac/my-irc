@@ -75,8 +75,8 @@ void command_users(t_global *global, session_t *session,
 )
 {
     (void) session, (void) args, (void) global;
-    list_t *all_users = global->sessions;
-    session_t *cur = NULL;
+    list_t *all_users = global->all_user;
+    t_user *cur = NULL;
     char *print = strdup("200 ");
     char *buffer = NULL;
     char uuid[37];
@@ -86,12 +86,14 @@ void command_users(t_global *global, session_t *session,
         return;
     }
     for (; all_users; all_users = all_users->next) {
-        cur = (session_t *)all_users->data;
-        uuid_unparse(session->user_data->uid, uuid);
+        cur = (t_user *)all_users->data;
+        if (!cur)
+            continue;
+        uuid_unparse(cur->uid, uuid);
         asprintf(&buffer, "%s\"%s\" \"%s\" \"%d\"\n",
             print,
             uuid,
-            cur->user_data->username,
+            cur->username,
             (cur->logged) ? 1 : 0);
         free(print);
         if (!(print = strdup(buffer))) {
