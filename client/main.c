@@ -50,33 +50,19 @@ int client(int client_fd)
 {
     fd_set rfds;
     bool status = true;
-    // char reading[1024] = {0};
 
     while (status) {
         set_client_fd(&rfds, client_fd);
         if (select(client_fd + 1, &rfds, NULL, NULL, NULL) == -1)
             return 84;
         status = client_read_by_fd(client_fd, &rfds);
-        // for (int i = 0; i < client_fd + 1; i++) {
-            // if (FD_ISSET(i, &rfds)) {
-                // client_read(i, client_fd);
-                // if (i == 0) {
-                    // if (read(0, reading, 200) != 0)
-                        // send_message(client_fd, reading, COMMAND, INVALID);
-                // }
-                // if (i == client_fd) {
-                    // if (read_message(&ok, client_fd))
-                        // server_handler(&ok);
-                // }
-            // }
-        // }
     }
     return 0;
 }
 
 int main(int ac, char **ag)
 {
-    if (ac < 3)
+    if (check_args(ac, ag))
         return (84);
 
     int server_fd = client_create(atoi(ag[2]), ag[1]);

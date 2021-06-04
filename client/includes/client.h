@@ -16,6 +16,7 @@
 #include <sys/select.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <ctype.h>
 
 #include "command_enum.h"
 #include "message.h"
@@ -63,5 +64,7 @@ void list(char *code, char *allargs);
 void list_bis(char *code, char **args);
 void info(char *code, char *allargs);
 void info_bis(char *code, char **args);
+
+int check_args(int ac, char **ag);
 
 #endif /* !CLIENT_H_ */
