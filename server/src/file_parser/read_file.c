@@ -136,7 +136,7 @@ t_user *file_read_user(int fd)
     char uuid[37];
     uuid_unparse(ret->uid, uuid);
     server_event_user_loaded(uuid, ret->username); // todo maybe change place
-    return NULL;
+    return ret;
 }
 
 t_dm *file_read_dm(int fd, int recursion_level)
