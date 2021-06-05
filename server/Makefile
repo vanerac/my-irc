@@ -21,7 +21,6 @@ SRC					=	server.c					\
 						file_parser/file_parser.c	\
 						file_parser/write_file.c	\
 						file_parser/read_file.c		\
-						file_parser/selective_read.c		\
 						file_parser/file_tools.c	\
 						str_to_word_array.c			\
 						split_by_quote.c

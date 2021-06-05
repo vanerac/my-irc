@@ -14,6 +14,7 @@
 #define END_STRUCT UNKNOWN
 
 void write_structure(int fd, void *data, int recursion_levels);
+list_t *parse_file(int fd);
 
 void write_team(int fd, t_teams *team, int recursion_levels);
 void write_channel(int fd, t_channel *channel, int recursion_levels);
@@ -28,20 +29,11 @@ char **get_args(int fd, bool read);
 bool check_type(char **args, enum data_type expected_type);
 
 // returns null if code doesnt correspond
-t_teams *file_read_team(int fd, int recursion_level);
-t_channel *file_read_channel(int fd, int recursion_level);
-t_messages *file_read_thread(int fd, int recursion_level);
-t_messages *file_read_message(int fd);
-t_user *file_read_user(int fd);
-t_dm *file_read_dm(int fd, int recursion_level);
-//
-//
-// selective reads, only parses selected data types
-list_t *read_all_teams(int fd, int recursion_level);
-list_t *read_all_channels(int fd, int recursion_level);
-list_t *read_all_threads(int fd, int recursion_level);
-list_t *read_all_messages(int fd, int recursion_level);
-list_t *read_all_users(int fd);
-list_t *read_all_dm(int fd, int recursion_level);
+t_teams *parse_team(char **args);
+t_channel *parse_channel(char **args);
+t_messages *parse_thread(char **args);
+t_messages *parse_reply(char **args);
+t_user *parse_user(char **args);
+t_dm *parse_dm(char **args);
 
 #endif //C_FILE_PARSER_H

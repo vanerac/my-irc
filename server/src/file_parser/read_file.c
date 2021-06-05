@@ -9,75 +9,40 @@
 #include <logging_server.h>
 #include "file_parser.h"
 
-t_teams *file_read_team(int fd, int recursion_level)
+t_teams *parse_team(char **args)
 {
-    char **args = get_args(fd, false);
     t_teams *ret = malloc(sizeof(t_teams));
-
-    if (!check_type(args, TEAM)) {
-        args = get_args(fd, true);
-        if (!check_type(args, TEAM))
-            return NULL;
-    }
+    if (!check_type(args, TEAM))
+        return NULL;
     // todo check args count
     // read meta data
     uuid_parse(args[1], ret->uid);
     ret->name = args[2], ret->desc = args[3];
-    list_t *channels = NULL;
-    //    list_t *users = NULL;
-    for (void *data = NULL; recursion_level > 0 &&
-        (data = file_read_channel(fd, recursion_level - 1));)
-        if (!channels)
-            channels = node_list_create(data);
-        else
-            node_append_data(channels, data);
-
-    ret->channels = channels;
+    ret->channels = NULL;
 
     return ret;
 }
 
-t_channel *file_read_channel(int fd, int recursion_level)
+t_channel *parse_channel(char **args)
 {
-    (void) recursion_level;
-    char **args = get_args(fd, false);
-    t_channel *ret = malloc(sizeof(t_channel));
 
-    if (!check_type(args, CHANNEL)) {
-        args = get_args(fd, true);
-        if (!check_type(args, CHANNEL))
-            return NULL;
-    }
+    t_channel *ret = malloc(sizeof(t_channel));
+    if (!check_type(args, CHANNEL))
+        return NULL;
     // todo check size
     ret->type = CHANNEL;
     uuid_parse(args[1], ret->uid);
     ret->name = args[2], ret->desc = args[3];
-
-    list_t *threads = NULL;
-    for (void *data = NULL; recursion_level > 0 &&
-        (data = file_read_thread(fd, recursion_level - 1));)
-        if (!threads)
-            threads = node_list_create(data);
-        else
-            node_append_data(threads, data);
-
-    ret->messages = threads;
-
+    ret->messages = NULL;
     return ret;
 }
 
-t_messages *file_read_thread(int fd, int recursion_level)
+t_messages *parse_thread(char **args)
 {
-    (void) recursion_level;
-    char **args = get_args(fd, false);
     t_messages *ret = malloc(sizeof(t_messages));
 
-    if (!check_type(args, THREAD)) {
-        args = get_args(fd, true);
-        if (!check_type(args, THREAD))
-            return NULL;
-    }
-    // todo check size
+    if (!check_type(args, THREAD))
+        return NULL;
     ret->type = MESSAGE;
     uuid_parse(args[2], ret->uid);
     ret->created_at = atoll(
@@ -85,30 +50,16 @@ t_messages *file_read_thread(int fd, int recursion_level)
         args[1]);
 
     list_t *replies = NULL;
-    for (void *data = NULL;
-        recursion_level > 0 && (data = file_read_message(fd));)
-        if (!replies)
-            replies = node_list_create(data);
-        else
-            node_append_data(replies, data);
-
     ret->replies = replies;
-
     return ret;
 }
 
-t_messages *file_read_message(int fd)
+t_messages *parse_reply(char **args)
 {
-    char **args = get_args(fd, false);
     t_messages *ret = malloc(sizeof(t_messages));
 
-    if (!check_type(args, MESSAGE)) {
-        args = get_args(fd, true);
-        if (!check_type(args, MESSAGE))
-            return NULL;
-    }
-    // todo check size
-    // read meta data
+    if (!check_type(args, MESSAGE))
+        return NULL;
     ret->type = MESSAGE;
     uuid_parse(args[2], ret->uid);
     ret->created_at = atoll(
@@ -117,18 +68,12 @@ t_messages *file_read_message(int fd)
     return ret;
 }
 
-t_user *file_read_user(int fd)
+t_user *parse_user(char **args)
 {
-    char **args = get_args(fd, false);
     t_user *ret = malloc(sizeof(t_user));
 
-    if (!check_type(args, USER)) {
-        args = get_args(fd, true);
-        if (!check_type(args, USER))
-            return NULL;
-    }
-    // todo check size
-    // read meta data
+    if (!check_type(args, USER))
+        return NULL;
     ret->type = USER;
     uuid_parse(args[1], ret->uid);
     ret->username = args[2];
@@ -139,28 +84,18 @@ t_user *file_read_user(int fd)
     return ret;
 }
 
-t_dm *file_read_dm(int fd, int recursion_level)
+t_dm *parse_dm(char **args)
 {
-    char **args = get_args(fd, false);
+    if (!check_type(args, USER))
+        return NULL;
     t_dm *ret = malloc(sizeof(t_dm));
-    if (!check_type(args, DM)) {
-        args = get_args(fd, true);
-        if (!check_type(args, USER))
-            return NULL;
-    }
 
     ret->type = DM;
     uuid_parse(args[1], ret->user_second);
     uuid_parse(args[2], ret->user_first);
 
     list_t *message = NULL;
-    for (void *data = NULL;
-        recursion_level > 0 && (data = file_read_message(fd));)
-        if (!message)
-            message = node_list_create(data);
-        else
-            node_append_data(message, data);
-
     ret->messages = message;
+
     return ret;
 }

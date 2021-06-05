@@ -92,11 +92,11 @@ void load(t_global *global)
     int dm_fd = open("./dms.save", O_RDONLY, 0644);
 
     if (team_fd > 0)
-        global->teams = read_all_teams(team_fd, 4);
+        global->teams = parse_file(team_fd);
     if (users_fd > 0)
-        global->all_user = read_all_users(users_fd);
+        global->all_user = parse_file(users_fd);
     if (dm_fd > 0)
-        global->private_message = read_all_dm(dm_fd, 1);
+        global->private_message = parse_file(dm_fd);
 }
 
 void save(t_global *data, bool write)
@@ -113,13 +113,13 @@ void save(t_global *data, bool write)
     int dm_fd = open("./dms.save", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
     for (list_t *l = data_save->teams; l; l = l->next)
-        write_team(team_fd, l->data, 5);
+        write_structure(team_fd, l->data, 5);
     close(team_fd);
     for (list_t *l = data_save->all_user; l; l = l->next)
-        write_user(users_fd, l->data);
+        write_structure(users_fd, l->data, 1);
     close(users_fd);
     for (list_t *l = data_save->private_message; l; l = l->next)
-        write_dm(dm_fd, l->data, 1);
+        write_structure(dm_fd, l->data, 1);
     close(dm_fd);
 }
 
