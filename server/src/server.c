@@ -47,7 +47,7 @@ int get_max_fd(list_t *sessions, int server_socket)
     return max_fd;
 }
 
-int read_stdin()
+int read_stdin(void)
 {
     char buffer[5] = {0};
     return !read(0, buffer, 5);

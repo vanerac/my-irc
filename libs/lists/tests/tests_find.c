@@ -11,9 +11,9 @@
 
 extern list_t *list;
 
-void create_list();
+void create_list(void);
 
-void cleanup();
+void cleanup(void);
 
 static bool find_fn(void *iterator, void *args)
 {
@@ -51,5 +51,3 @@ Test(list_find, find_data_failed, .init = create_list, .fini = cleanup)
     int val = 1;
     cr_assert(node_find_data(list, &val) == NULL);
 }
-
-

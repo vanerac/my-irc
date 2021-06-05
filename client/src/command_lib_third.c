@@ -13,7 +13,7 @@ void unsubscribe(char *code, char *allargs)
 
     if (!args)
         return;
-    if (array_size(args) > 0){
+    if (array_size(args) > 0) {
         switch (atoi(code)) {
             case 200:
                 client_print_unsubscribed(args[0], args[1]);
@@ -35,7 +35,7 @@ void create(char *code, char *allargs)
 
     if (!args)
         return;
-    if (array_size(args) > 0){
+    if (array_size(args) > 0) {
         switch (atoi(code)) {
             case 205:
                 client_event_team_created(args[0], args[1], args[2]);
@@ -45,7 +45,7 @@ void create(char *code, char *allargs)
                 break;
             case 207:
                 client_event_channel_created(args[0], args[1], args[2]);
-                break;   
+                break;
         }
     }
     create_bis(code, args);
@@ -84,7 +84,7 @@ void info(char *code, char *allargs)
 
     if (!args)
         return;
-    if (array_size(args) > 0){
+    if (array_size(args) > 0) {
         switch (atoi(code)) {
             case 213:
                 client_print_user(args[0], args[1], atoi(args[2]));

@@ -10,9 +10,9 @@
 
 extern list_t *list;
 
-void create_list();
+void create_list(void);
 
-void cleanup();
+void cleanup(void);
 
 Test(list_add, append_non_null, .init = create_list, .fini = cleanup)
 {

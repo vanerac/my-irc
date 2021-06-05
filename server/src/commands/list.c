@@ -17,12 +17,11 @@ static enum command_return dump_messages(t_global *global, session_t *session)
     char *buffer = NULL;
 
     for (list_t *node = session->current_thread->replies; node; node = node->next) {
-        printf("%s\n", "test");
         t_channel *channel = node->data;
         char uuid[37];
         uuid_unparse(channel->uid, uuid);
 
-            asprintf(&buffer, "204 \"%s\" \"%s\" \"%s\"\n", uuid,
+        asprintf(&buffer, "204 \"%s\" \"%s\" \"%s\"\n", uuid,
                 channel->name, channel->desc);
 
         send_message(session->socket, buffer, RESPONSE, LIST);

@@ -9,12 +9,12 @@
 
 list_t *list;
 
-void create_list()
+void create_list(void)
 {
     list = node_list_create((void *) 1);
 }
 
-void cleanup()
+void cleanup(void)
 {
     for (list_t *prev = NULL; list; prev = list, list = list->next, free
     (prev));

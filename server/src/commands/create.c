@@ -5,8 +5,8 @@
 ** create.c file
 */
 
-#include "logging_server.h"
 #include <string.h>
+#include "logging_server.h"
 #include "server.h"
 #include "commands.h"
 #include "message.h"
@@ -200,7 +200,8 @@ enum command_return call_create(t_global *global, session_t *session,
     char **args
 )
 {
-    char *first_arg = args[0], *second_arg = args[1]; // todo
+    char *first_arg = args[0];
+    char *second_arg = args[1]; // todo
 
     if (!session->current_team) {
         return create_team(global, session, first_arg, second_arg);

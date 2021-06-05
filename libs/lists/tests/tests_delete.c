@@ -10,8 +10,9 @@
 
 extern list_t *list;
 
-void create_list();
-void cleanup();
+void create_list(void);
+
+void cleanup(void);
 
 Test(list_delete, last_node, .init = create_list, .fini = cleanup)
 {

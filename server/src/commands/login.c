@@ -20,8 +20,8 @@ void command_logout(t_global *global, session_t *session, char **args
     char *ret = NULL;
     uuid_unparse(session->user_data->uid, uuid);
     server_event_user_logged_out(uuid);
-    if (!session->user_data)
-        return; // not logged in
+    // if (!session->user_data)
+        // return; // not logged in
     asprintf(&ret, "200 \"%s\" \"%s\"", uuid,
         ((t_user *) session->user_data)->username);
     send_message(session->socket, ret, RESPONSE, LOGOUT);

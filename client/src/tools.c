@@ -11,15 +11,13 @@ int array_size(char **array)
 {
     int inc;
 
-    for (inc = 0; array[inc] != NULL; inc++){};
-
+    for (inc = 0; array[inc] != NULL; inc++) {};
     return (inc);
 }
 
-
 void free_table(char **table)
 {
-    for(int i = 0; i < array_size(table); i++)
+    for (int i = 0; i < array_size(table); i++)
         free(table[i]);
     free(table);
 }
