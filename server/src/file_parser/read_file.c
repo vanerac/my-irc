@@ -16,6 +16,7 @@ t_teams *parse_team(char **args)
         return NULL;
     // todo check args count
     // read meta data
+    ret->type = TEAM;
     uuid_parse(args[1], ret->uid);
     ret->name = args[2], ret->desc = args[3];
     ret->channels = NULL;
@@ -43,7 +44,7 @@ t_messages *parse_thread(char **args)
 
     if (!check_type(args, THREAD))
         return NULL;
-    ret->type = MESSAGE;
+    ret->type = THREAD;
     uuid_parse(args[2], ret->uid);
     ret->created_at = atoll(
         args[3]), ret->title = args[4], ret->body = args[5], ret->m_type = atoi(
@@ -60,7 +61,7 @@ t_messages *parse_reply(char **args)
 
     if (!check_type(args, MESSAGE))
         return NULL;
-    ret->type = MESSAGE;
+    ret->type = REPLY;
     uuid_parse(args[2], ret->uid);
     ret->created_at = atoll(
         args[3]), ret->title = args[4], ret->body = args[5], ret->m_type = atoi(

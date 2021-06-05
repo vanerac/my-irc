@@ -107,6 +107,7 @@ list_t *parse_file(int fd)
             break;
         case MESSAGE: {
             t_messages *m = parse_reply(args);
+            m->type = MESSAGE;
             if (!current_dm)
                 return NULL;
             if (current_dm->messages)
