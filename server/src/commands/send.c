@@ -32,8 +32,7 @@ static t_dm *create_dm(t_global *global, session_t *session, uuid target)
     return ret;
 }
 
-static t_messages *init_message(t_user  *author, void *destination, char
-*body)
+static t_messages *init_message(t_user *author, void *destination, char *body)
 {
     t_messages *ret = malloc(sizeof(t_messages));
     ret->type = MESSAGE;
@@ -55,8 +54,7 @@ void command_send(t_global *global, session_t *session, char **args)
     uuid_parse(args[0], target);
     uuid *uuids[2] = {&session->user_data->uid, &target};
 
-    if (!node_find_fn(global->all_user, &find_by_uuid,
-        args[0])) {
+    if (!node_find_fn(global->all_user, &find_by_uuid, args[0])) {
         // 401 uuid
         char *buffer = NULL;
         asprintf(&buffer, "401 \"%s\"\n", args[0]);
@@ -81,13 +79,11 @@ void command_send(t_global *global, session_t *session, char **args)
         target);
     char tmp[37];
     uuid_unparse(session->user_data->uid, tmp);
-    if (target_session && ((session_t *)target_session->data)->logged && ((session_t *)
-        target_session->data)->connected) {
+    if (target_session && ((session_t *) target_session->data)->logged) {
         char *buffer = NULL;
 
         asprintf(&buffer, "200 \"%s\" \"%s\"", tmp, ret->body);
         return;
     }
     server_event_private_message_sended(tmp, args[0], args[1]);
-
 }

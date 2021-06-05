@@ -144,15 +144,15 @@ void command_subscribe(t_global *global, session_t *session, char **args)
     char *buffer = NULL;
     enum command_return ret_val = SUCCESS;
     list_t *node = node_find_fn(global->teams, find_by_uuid, args[0]);
-    t_teams *team = node->data;
+
     char user_uuid[37];
     char team_uuid[37];
-
     if (!node) {
         asprintf(&buffer, "402 \"%s\"", args[0]);
         send_message(session->socket, buffer, RESPONSE, SUBSCRIBE);
         return;
     }
+    t_teams *team = node->data;
     if (team->subscribers)
         ret_val = node_append_data(team->subscribers, session)
             ? SUCCESS : SYSTEM_ERROR;
@@ -254,7 +254,24 @@ void command_subscribed(t_global *global, session_t *session, char **args)
 void command_unsubscribe(t_global *global, session_t *session, char **args)
 {
     (void) session, (void) args, (void) global;
-    //    return SUCCESS;
+    list_t *node = node_find_fn(global->teams, &find_by_uuid, args[0]);
+    char *buffer = NULL;
+    if (!node) {
+        asprintf(&buffer, "400 \"%s\"\n", args[0]);
+        send_message(session->socket, buffer,
+            RESPONSE, UNSUBSCRIBE);
+        free(buffer);
+        return;
+    }
+    t_teams *team = node->data;
+    team->subscribers = node_delete_fn(team->subscribers, &find_by_uuid,
+        args[0]);
+    char user_uuid[37];
+    uuid_unparse(session->user_data->uid, user_uuid);
+    asprintf(&buffer, "200 \"%s\" \"%s\"\n", user_uuid, args[0]);
+    send_message(session->socket, buffer,
+        RESPONSE, UNSUBSCRIBE);
+    free(buffer);
 }
 
 

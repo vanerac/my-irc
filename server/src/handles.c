@@ -70,7 +70,6 @@ void handle_connections(list_t *sessions, int server_socket)
     data->current_team = NULL;
     data->current_channel = NULL;
     data->current_thread = NULL;
-    data->connected = true;
     node_append_data(sessions, data);
     send_message(client, "220 Welcome", RESPONSE, INVALID);
 }

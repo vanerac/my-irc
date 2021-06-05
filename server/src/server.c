@@ -21,10 +21,9 @@
 void set_ports(fd_set *rfds, list_t *sessions)
 {
     FD_ZERO(rfds);
-    for (list_t *i = sessions; i; i = i->next) {
-        if (((session_t *) i->data)->connected)
-            FD_SET(((session_t *) i->data)->socket, rfds);
-    }
+    for (list_t *i = sessions; i; i = i->next)
+        FD_SET(((session_t *) i->data)->socket, rfds);
+
     FD_SET(0, rfds);
 }
 
@@ -76,11 +75,8 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
             handle_connections(sessions, server_socket);
         else {
             n = node_find_fn(sessions, &find_session_by_fd, &i);
-            if (handle_command(global, n ? n->data : NULL) == HANGUP) {
-                printf("%s\n", "client left");
-                // todo remove session, its cleaner
-                ((session_t *) n->data)->connected = false;
-            }
+            if (n && handle_command(global, n->data) == HANGUP)
+                node_delete_data(global->sessions, n->data);
         }
     }
 
