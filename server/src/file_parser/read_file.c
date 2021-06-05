@@ -33,13 +33,6 @@ t_teams *file_read_team(int fd, int recursion_level)
             node_append_data(channels, data);
 
     ret->channels = channels;
-    //    for (void *data = NULL; (data = file_read_user(fd));)
-    //        if (!users)
-    //            users = node_list_create(data);
-    //        else
-    //            node_append_data(users, data);
-    //
-    //    ret->users = users;
 
     return ret;
 }

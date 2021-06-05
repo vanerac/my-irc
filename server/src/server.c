@@ -87,12 +87,16 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
 
 void load(t_global *global)
 {
-    (void) global;
-    //    int fd = 0;
-    //    global->teams = read_all_teams(fd, 4);
-    //    global->all_user = read_all_users(fd, 4);
-    //    data->private_message = read_all_messages(fd, 1);
-    return;
+    int team_fd = open("./teams.save", O_RDONLY, 0644);
+    int users_fd = open("./users.save", O_RDONLY, 0644);
+    int dm_fd = open("./dms.save", O_RDONLY, 0644);
+
+    if (team_fd > 0)
+        global->teams = read_all_teams(team_fd, 4);
+    if (users_fd > 0)
+        global->all_user = read_all_users(users_fd);
+    if (dm_fd > 0)
+        global->private_message = read_all_dm(dm_fd, 1);
 }
 
 void save(t_global *data, bool write)
@@ -108,13 +112,13 @@ void save(t_global *data, bool write)
     int users_fd = open("./users.save", O_WRONLY | O_CREAT | O_TRUNC, 0644);
     int dm_fd = open("./dms.save", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
-    for (list_t *l = data_save->teams; l ; l = l->next)
+    for (list_t *l = data_save->teams; l; l = l->next)
         write_team(team_fd, l->data, 5);
     close(team_fd);
-    for (list_t *l = data_save->all_user; l ; l = l->next)
+    for (list_t *l = data_save->all_user; l; l = l->next)
         write_user(users_fd, l->data);
     close(users_fd);
-    for (list_t *l = data_save->private_message; l ; l = l->next)
+    for (list_t *l = data_save->private_message; l; l = l->next)
         write_dm(dm_fd, l->data, 1);
     close(dm_fd);
 }

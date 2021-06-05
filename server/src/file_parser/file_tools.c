@@ -13,9 +13,12 @@ static char *strcatdup(char *dest, char *src)
 {
     size_t len1 = dest ? strlen(dest) : 0;
     size_t len2 = strlen(src);
-    char *ret = realloc(dest, len1 + len2 + 1);
-    memcpy(&ret[len1 - 1], src, len2);
+    char *ret = malloc(sizeof(char) * len1 + len2 + 1);
+    if (dest)
+        memccpy(ret, dest, sizeof(char), len1);
+    memccpy(!len1 ? ret : &ret[len1], src, sizeof(char), len2);
     ret[len1 + len2] = '\0';
+    free(dest);
     return ret;
 }
 
@@ -53,7 +56,8 @@ static char *get_line(int fd)
     char *ret = NULL, *buffer = NULL;
     bool quoted = false;
 
-    for (buffer = malloc(1); read(fd, buffer, 1);) {
+    for (buffer = malloc(2); read(fd, buffer, 1);) {
+        buffer[1] = '\0';
         ret = strcatdup(ret, buffer);
         if (*buffer == '\"')
             quoted = !quoted;

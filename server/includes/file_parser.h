@@ -41,6 +41,7 @@ list_t *read_all_teams(int fd, int recursion_level);
 list_t *read_all_channels(int fd, int recursion_level);
 list_t *read_all_threads(int fd, int recursion_level);
 list_t *read_all_messages(int fd, int recursion_level);
-list_t *read_all_users(int fd, int recursion_level);
+list_t *read_all_users(int fd);
+list_t *read_all_dm(int fd, int recursion_level);
 
 #endif //C_FILE_PARSER_H
