@@ -49,7 +49,7 @@ static enum command_return create_team(t_global *global, session_t *session,
     team->desc = strdup(desc);
     team->channels = NULL;
     team->type = TEAM;
-    team->users = NULL;
+//    team->users = NULL;
     uuid_unparse(team->uid, uuid);
     server_event_team_created(uuid, name,
         ((t_user *) session->user_data)->username);

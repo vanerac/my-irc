@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <file_parser.h>
 #include <signal.h>
+#include <fcntl.h>
 #include "commands.h"
 #include "struct.h"
 #include "sockets.h"
@@ -50,7 +51,6 @@ int read_stdin(void)
 {
     char buffer[5] = {0};
     return !read(0, buffer, 5);
-    return 0;
 }
 
 int listen_updates(int server_socket, list_t *sessions, t_global *global,
@@ -104,15 +104,19 @@ void save(t_global *data, bool write)
         return;
     }
 
-    (void) data_save;
-    // save teams
-    //    int fd = 1; // todo
+    int team_fd = open("./teams.save", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    int users_fd = open("./users.save", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    int dm_fd = open("./dms.save", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
-    // save all users on one file
-
-    // save dms
-
-
+    for (list_t *l = data_save->teams; l ; l = l->next)
+        write_team(team_fd, l->data, 5);
+    close(team_fd);
+    for (list_t *l = data_save->all_user; l ; l = l->next)
+        write_user(users_fd, l->data);
+    close(users_fd);
+    for (list_t *l = data_save->private_message; l ; l = l->next)
+        write_dm(dm_fd, l->data, 1);
+    close(dm_fd);
 }
 
 void sig_save(int blc)
@@ -146,8 +150,10 @@ int myteams_server(int server_socket)
     if (server_socket < 0)
         return 84;
     int status = 0;
-    while (status == 0)
+    while (status == 0) {
+        save(NULL, true);
         status = listen_updates(server_socket, sessions, &global, &rfds);
+    }
     // todo // save global
     save(&global, true);
     return status == 84 ? 84 : 0;

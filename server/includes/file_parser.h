@@ -20,6 +20,7 @@ void write_channel(int fd, t_channel *channel, int recursion_levels);
 void write_thread(int fd, t_messages *thread, int recursion_levels);
 void write_message(int fd, t_messages *messages);
 void write_user(int fd, t_user *user);
+void write_dm(int fd, t_dm *dm, int recursion_level);
 
 
 // tools
@@ -32,6 +33,7 @@ t_channel *file_read_channel(int fd, int recursion_level);
 t_messages *file_read_thread(int fd, int recursion_level);
 t_messages *file_read_message(int fd);
 t_user *file_read_user(int fd);
+t_dm *file_read_dm(int fd, int recursion_level);
 //
 //
 // selective reads, only parses selected data types

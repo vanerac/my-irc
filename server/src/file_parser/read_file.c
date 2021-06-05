@@ -11,7 +11,6 @@
 
 t_teams *file_read_team(int fd, int recursion_level)
 {
-    (void) recursion_level;
     char **args = get_args(fd, false);
     t_teams *ret = malloc(sizeof(t_teams));
 
@@ -25,22 +24,22 @@ t_teams *file_read_team(int fd, int recursion_level)
     uuid_parse(args[1], ret->uid);
     ret->name = args[2], ret->desc = args[3];
     list_t *channels = NULL;
-    list_t *users = NULL;
-    for (void *data = NULL; (data = file_read_channel(fd,
-        recursion_level - 1));)
+    //    list_t *users = NULL;
+    for (void *data = NULL; recursion_level > 0 &&
+        (data = file_read_channel(fd, recursion_level - 1));)
         if (!channels)
             channels = node_list_create(data);
         else
             node_append_data(channels, data);
 
     ret->channels = channels;
-    for (void *data = NULL; (data = file_read_user(fd));)
-        if (!users)
-            users = node_list_create(data);
-        else
-            node_append_data(users, data);
-
-    ret->users = users;
+    //    for (void *data = NULL; (data = file_read_user(fd));)
+    //        if (!users)
+    //            users = node_list_create(data);
+    //        else
+    //            node_append_data(users, data);
+    //
+    //    ret->users = users;
 
     return ret;
 }
@@ -49,7 +48,7 @@ t_channel *file_read_channel(int fd, int recursion_level)
 {
     (void) recursion_level;
     char **args = get_args(fd, false);
-    t_channel *ret = malloc(sizeof(t_teams));
+    t_channel *ret = malloc(sizeof(t_channel));
 
     if (!check_type(args, CHANNEL)) {
         args = get_args(fd, true);
@@ -62,8 +61,8 @@ t_channel *file_read_channel(int fd, int recursion_level)
     ret->name = args[2], ret->desc = args[3];
 
     list_t *threads = NULL;
-    for (void *data = NULL; (data = file_read_thread(fd,
-        recursion_level - 1));)
+    for (void *data = NULL; recursion_level > 0 &&
+        (data = file_read_thread(fd, recursion_level - 1));)
         if (!threads)
             threads = node_list_create(data);
         else
@@ -78,7 +77,7 @@ t_messages *file_read_thread(int fd, int recursion_level)
 {
     (void) recursion_level;
     char **args = get_args(fd, false);
-    t_messages *ret = malloc(sizeof(t_teams));
+    t_messages *ret = malloc(sizeof(t_messages));
 
     if (!check_type(args, THREAD)) {
         args = get_args(fd, true);
@@ -93,7 +92,8 @@ t_messages *file_read_thread(int fd, int recursion_level)
         args[1]);
 
     list_t *replies = NULL;
-    for (void *data = NULL; (data = file_read_message(fd));)
+    for (void *data = NULL;
+        recursion_level > 0 && (data = file_read_message(fd));)
         if (!replies)
             replies = node_list_create(data);
         else
@@ -107,7 +107,7 @@ t_messages *file_read_thread(int fd, int recursion_level)
 t_messages *file_read_message(int fd)
 {
     char **args = get_args(fd, false);
-    t_messages *ret = malloc(sizeof(t_teams));
+    t_messages *ret = malloc(sizeof(t_messages));
 
     if (!check_type(args, MESSAGE)) {
         args = get_args(fd, true);
@@ -127,7 +127,7 @@ t_messages *file_read_message(int fd)
 t_user *file_read_user(int fd)
 {
     char **args = get_args(fd, false);
-    t_user *ret = malloc(sizeof(t_teams));
+    t_user *ret = malloc(sizeof(t_user));
 
     if (!check_type(args, USER)) {
         args = get_args(fd, true);
@@ -144,4 +144,30 @@ t_user *file_read_user(int fd)
     uuid_unparse(ret->uid, uuid);
     server_event_user_loaded(uuid, ret->username); // todo maybe change place
     return NULL;
+}
+
+t_dm *file_read_dm(int fd, int recursion_level)
+{
+    char **args = get_args(fd, false);
+    t_dm *ret = malloc(sizeof(t_dm));
+    if (!check_type(args, DM)) {
+        args = get_args(fd, true);
+        if (!check_type(args, USER))
+            return NULL;
+    }
+
+    ret->type = DM;
+    uuid_parse(args[1], ret->user_second);
+    uuid_parse(args[2], ret->user_first);
+
+    list_t *message = NULL;
+    for (void *data = NULL;
+        recursion_level > 0 && (data = file_read_message(fd));)
+        if (!message)
+            message = node_list_create(data);
+        else
+            node_append_data(message, data);
+
+    ret->messages = message;
+    return ret;
 }

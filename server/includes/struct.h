@@ -44,7 +44,7 @@ typedef struct teams {
     char *desc;
     list_t *users;
     list_t *channels;
-    list_t *subscribers; // todo
+    list_t *subscribers;
 } t_teams;
 
 typedef struct channel {
