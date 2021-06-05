@@ -50,10 +50,15 @@ static t_messages *init_message(t_user *author, void *destination, char *body)
 void command_send(t_global *global, session_t *session, char **args)
 {
     uuid target;
-    char *message = args[1];
+    // char *message = NULL;
     uuid_parse(args[0], target);
     uuid *uuids[2] = {&session->user_data->uid, &target};
 
+    if (!args || !args[0] || !args[1]) {
+        send_message(session->socket, "665 invalid args", RESPONSE, INVALID);
+        return;
+    }
+    // message = args[1];
     if (!node_find_fn(global->all_user, &find_by_uuid, args[0])) {
         // 401 uuid
         char *buffer = NULL;
@@ -68,7 +73,7 @@ void command_send(t_global *global, session_t *session, char **args)
         dm = create_dm(global, session, target);
     else
         dm = dms->data;
-    t_messages *ret = init_message(session->user_data, dm, message);
+    t_messages *ret = init_message(session->user_data, dm, args[1]);
     if (!dm->messages)
         dm->messages = node_list_create(ret);
     else

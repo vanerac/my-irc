@@ -25,6 +25,7 @@ static enum command_return dump_messages(t_global *global, session_t *session)
                 channel->name, channel->desc);
 
         send_message(session->socket, buffer, RESPONSE, LIST);
+        free(buffer);
     }
     return SUCCESS;
 }
@@ -43,6 +44,7 @@ static enum command_return dump_threads(t_global *global, session_t *session)
             t_uuid, u_uuid, thread->created_at, thread->title, thread->body);
 
         send_message(session->socket, buffer, RESPONSE, LIST);
+        free(buffer);
     }
 
     return SUCCESS;
@@ -61,6 +63,7 @@ static enum command_return dump_channels(t_global *global, session_t *session)
         asprintf(&buffer, "202 \"%s\" \"%s\" \"%s\"\n", uuid, channel->name,
             channel->desc);
         send_message(session->socket, buffer, RESPONSE, LIST);
+        free(buffer);
     }
 
     return SUCCESS;
@@ -69,16 +72,15 @@ static enum command_return dump_channels(t_global *global, session_t *session)
 static enum command_return dump_teams(t_global *global, session_t *session)
 {
     char *buffer = NULL;
+    char uuid[37];
 
     for (list_t *node = global->teams; node; node = node->next) {
-        t_teams *team = node->data;
-        char uuid[37];
+        t_teams *team = (t_teams *)node->data;
         uuid_unparse(team->uid, uuid);
-
         asprintf(&buffer, "201 \"%s\" \"%s\" \"%s\"\n", uuid, team->name,
             team->desc);
-
         send_message(session->socket, buffer, RESPONSE, LIST);
+        free(buffer);
     }
 
     return SUCCESS;

@@ -24,6 +24,7 @@ enum command_return {
     UNKNOWN_COMMAND = 100,
     HANGUP = 20,
     DOUBLE_AUTH = -6,
+    INVALID_ARGS = 100,
 };
 
 void command_help(t_global *global, session_t *session,

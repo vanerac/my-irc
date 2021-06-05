@@ -14,7 +14,7 @@ void list(char *code, char *allargs)
     if (!args)
         return;
     if (array_size(args) > 0) {
-        switch (atoi(args[0])) {
+        switch (atoi(code)) {
             case 201:
                 client_print_teams(args[0], args[1], args[2]);
                 break;
@@ -56,6 +56,8 @@ void list_bis(char *code, char **args)
 void invalid(char *code, char *allargs)
 {
     if (code != NULL && atoi(code) == 220) {
+        printf("%s\n", allargs);
+    } else if (code && atoi(code) == 665) {
         printf("%s\n", allargs);
     } else
         printf("INVALID");

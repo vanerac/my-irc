@@ -282,24 +282,28 @@ static enum command_return create_comment(t_messages *pmessages,
 }
 
 enum command_return call_create(t_global *global, session_t *session,
-    char **args
-)
+    char **args)
 {
-    char *first_arg = args[0];
-    char *second_arg = args[1]; // todo
-
     if (!session->current_team) {
-        return create_team(global, session, first_arg, second_arg);
+        if (!args || !args[0] || !args[1])
+            return INVALID_ARGS;
+        return create_team(global, session, args[0], args[1]);
     }
     if (!session->current_channel) {
-        return create_channel(session->current_team, session, first_arg,
-            second_arg);
+        if (!args || !args[0] || !args[1])
+            return INVALID_ARGS;
+        return create_channel(session->current_team, session, args[0],
+            args[1]);
     }
     if (!session->current_thread) {
-        return create_tread(session->current_channel, session, first_arg,
-            second_arg);
+        if (!args || !args[0] || !args[1])
+            return INVALID_ARGS;
+        return create_tread(session->current_channel, session, args[0],
+            args[1]);
     } else {
-        return create_comment(session->current_thread, session, first_arg);
+        if (!args || !args[0])
+            return INVALID_ARGS;
+        return create_comment(session->current_thread, session, args[0]);
     }
 }
 
@@ -314,7 +318,9 @@ void command_create(t_global *global, session_t *session, char **args
         return;
     }
     return_val = call_create(global, session, args);
-    if (return_val != SUCCESS) {
-        send_message(session->socket, "666 \"system error\"", RESPONSE, LIST);
+    if (return_val == SYSTEM_ERROR) {
+        send_message(session->socket, "666 system error", RESPONSE, INVALID);
     }
+    if (return_val == INVALID_ARGS)
+        send_message(session->socket, "665 invalid args", RESPONSE, INVALID);
 }
