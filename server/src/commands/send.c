@@ -40,6 +40,7 @@ static t_messages *init_message(t_user *author, void *destination, char *body)
     ret->body = body;
     ret->title = NULL;
     time(&ret->created_at);
+    uuid_copy(ret->author_uuid, author->uid);
     ret->replies = NULL;
     ret->m_type = M_DM;
     return ret;

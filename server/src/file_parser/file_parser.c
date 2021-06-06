@@ -88,6 +88,8 @@ list_t *parse_file(int fd)
             if (!current_dm)
                 return NULL;
             t_messages *m = parse_reply(args);
+            if (!m)
+                return ret;
             m->type = MESSAGE;
             NODE_ADD(current_dm->messages, m)
             break;

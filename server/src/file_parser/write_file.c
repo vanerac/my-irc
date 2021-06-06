@@ -16,10 +16,11 @@ void write_user(int fd, t_user *user)
 
 void write_message(int fd, t_messages *messages)
 {
-    char uuid[37];
+    char uuid[37], author_uuid[37];
     uuid_unparse(messages->uid, uuid);
-    dprintf(fd, "\"%d\" \"%u\" \"%s\" \"%lud\" \"%s\" \"%s\"\n",
-        messages->type, messages->m_type, uuid, messages->created_at,
+    uuid_unparse(messages->author_uuid, author_uuid);
+    dprintf(fd, "\"%d\" \"%u\" \"%s\" \"%s\" \"%lud\" \"%s\" \"%s\"\n",
+        messages->type, messages->m_type, uuid, author_uuid, messages->created_at,
         messages->title, messages->body);
 }
 

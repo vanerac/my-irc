@@ -79,6 +79,7 @@ typedef struct messages {
     time_t created_at;
     list_t *replies;
     enum message_type m_type;
+    uuid author_uuid;
 } t_messages;
 
 typedef struct global {
