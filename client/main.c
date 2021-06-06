@@ -62,10 +62,12 @@ int client(int client_fd)
 
 int main(int ac, char **ag)
 {
+    int server_fd = 0;
+    
     if (check_args(ac, ag))
         return (84);
-
-    int server_fd = client_create(atoi(ag[2]), ag[1]);
-
+    server_fd = client_create(atoi(ag[2]), ag[1]);
+    if (server_fd == -1)
+        return 84;
     return client(server_fd);
 }

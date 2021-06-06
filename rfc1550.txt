@@ -134,6 +134,7 @@ Teams Protocol Chat
 
         Réponse numériques:
             200     407
+                    665
 
     3.3.    LOGOUT
 
@@ -165,6 +166,7 @@ Teams Protocol Chat
         Réponse numériques:
             200     400
    	                401
+                    665
 
 Planchot, Mas & Quenelle                                        [Page 3]
 ------------------------------------------------------------------------
@@ -182,6 +184,7 @@ Teams Protocol Chat
         Réponse numériques:
             200     400
    	                401
+                    665
 
     3.7.    MESSAGES
 
@@ -193,6 +196,7 @@ Teams Protocol Chat
         Réponse numériques:
             200     400
                     401
+                    665
 
     3.8.    SUBSCRIBE
 
@@ -204,6 +208,7 @@ Teams Protocol Chat
         Réponse numériques:
             200     400
 	                402
+                    665
 
     3.9.    SUBSCRIBED
 
@@ -235,6 +240,7 @@ Teams Protocol Chat
         Réponse numériques:
             200     400
                     402
+                    665
 
     3.11.   USE
 
@@ -267,7 +273,7 @@ Teams Protocol Chat
             207     403
             208     404
 	        209     405
-            210
+            210     665
             211
             212
 
@@ -325,7 +331,9 @@ Teams Protocol Chat
         404     -> le paramètre **<thread_uuid>** spécifié est invalide.
         405     -> il y a déja une ressources possédant ce nom.
         406     -> il y a trop ou pas assez d'arguments.
-        407     -> l'utilisateur est déjà connecté
+        407     -> l'utilisateur est déjà connecté.
+        665     -> pas assez d'arguments.
+        666     -> erreur coté serveur.
 
     4.2.    REPONSES AUX COMMANDES
 
@@ -359,18 +367,14 @@ Teams Protocol Chat
     qu'à une seule commande qui est /login.
 
 
+6.  PARAMETRES
+
+    Si le nombre d'arguents donné est supérieur au nombre d'arguments
+    nécessaire il n'y aura pas d'erreur mais les x premiers arguments
+    seront utilisés.  Tandis que, si le nombre d'arguments donné est
+    inférieur au nombre d'arguments nécessaire alors le serveur renverra
+    une erreur au client avec le code 665.
+
+
 Planchot, Mas & Quenelle                                        [Page 7]
 ------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-/use
- 200 only ?
- unknow team
- unknow channel
- unknow thread

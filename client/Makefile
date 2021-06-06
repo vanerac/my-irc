@@ -8,17 +8,26 @@
 NAME				=	../myteams_cli
 TNAME				=	unit_test
 
-SRC					=	manager.c				\
-						tools.c					\
-						str_to_word_array.c		\
-						command_lib_first.c		\
-						command_lib_second.c	\
-						command_lib_third.c		\
-						function_pointer.c		\
-						create_cmd.c			\
-						command_lib_fourth.c	\
-						split_by_quote.c		\
-						error.c
+SRC					=	manager.c						\
+						tools.c							\
+						str_to_word_array.c				\
+						function_pointer.c				\
+						split_by_quote.c				\
+						error.c							\
+						commands/client_create.c		\
+						commands/client_help.c			\
+						commands/client_info.c			\
+						commands/client_invalid.c		\
+						commands/client_list.c			\
+						commands/client_login.c			\
+						commands/client_logout.c		\
+						commands/client_messages.c		\
+						commands/client_send.c			\
+						commands/client_subscribe.c		\
+						commands/client_subscribed.c	\
+						commands/client_unsubscribe.c	\
+						commands/client_user.c			\
+						commands/client_users.c
 
 TRC					=
 MAIN				= 	main.c

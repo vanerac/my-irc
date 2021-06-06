@@ -7,17 +7,21 @@
 
 #include "client.h"
 
-int array_size(char **array)
+int get_array_size(char **array)
 {
-    int inc;
+    int size = 0;
 
-    for (inc = 0; array[inc] != NULL; inc++) {};
-    return (inc);
+    if (!array)
+        return 0;
+    while (array[size] != NULL) {
+        size += 1;
+    }
+    return size;
 }
 
 void free_table(char **table)
 {
-    for (int i = 0; i < array_size(table); i++)
+    for (int i = 0; table[i]; i++)
         free(table[i]);
     free(table);
 }
