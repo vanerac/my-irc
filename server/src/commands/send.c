@@ -25,6 +25,7 @@ static t_dm *create_dm(t_global *global, session_t *session, uuid target)
     uuid_copy(ret->user_first, session->user_data->uid);
     uuid_copy(ret->user_second, target);
     ret->type = DM;
+    ret->messages = NULL;
     NODE_ADD(global->private_message, ret)
     return ret;
 }

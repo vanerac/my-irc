@@ -75,8 +75,11 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
             handle_connections(sessions, server_socket);
         else {
             n = node_find_fn(sessions, &find_session_by_fd, &i);
-            if (n && handle_command(global, n->data) == HANGUP)
+            if (n && handle_command(global, n->data) == HANGUP) {
+                command_logout(global, n->data, NULL);
                 node_delete_data(global->sessions, n->data);
+            }
+
         }
     }
 
