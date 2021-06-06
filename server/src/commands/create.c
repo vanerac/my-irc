@@ -11,11 +11,27 @@
 #include "commands.h"
 #include "message.h"
 
+bool check_if_user_is_subscribed(session_t *session)
+{
+    list_t *all_subs = session->current_team->subscribers;
+
+    for (; all_subs; all_subs = all_subs->next) {
+        session_t *user = (session_t *)all_subs->data;
+        if (uuid_compare(user->user_data->uid, session->user_data->uid) == 0)
+            return true;
+    }
+    return false;
+}
+
 enum command_return call_create(t_global *global, session_t *session,
     char **args)
 {
     if (!session->current_team) {
         return create_team(global, session, args[0], args[1]);
+    }
+    if (!check_if_user_is_subscribed(session)) {
+        send_message(session->socket, "400 you can't", RESPONSE, INVALID);
+        return SUCCESS;
     }
     if (!session->current_channel) {
         return create_channel(session->current_team, session, args[0],

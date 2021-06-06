@@ -18,6 +18,9 @@ void invalid(int code, char *allargs)
         case 665:
             printf("%s\n", allargs);
             break;
+        case 666:
+            printf("%s\n", allargs);
+            break;
         case 400:
             client_error_unauthorized();
             break;
