@@ -59,7 +59,8 @@ t_messages *parse_reply(char **args)
 {
     t_messages *ret = malloc(sizeof(t_messages));
 
-    if (!check_type(args, MESSAGE) || !args_len(args, 7))
+    if ((!check_type(args, REPLY) && !check_type(args, REPLY)) ||
+        !args_len(args, 7))
         return NULL;
     ret->type = REPLY;
     uuid_parse(args[2], ret->uid);
