@@ -39,6 +39,13 @@ typedef struct session_s {
 
 void send_error_to_client(session_t *session);
 bool args_len(char **args, int len);
+void sig_save(int blc);
+void save(t_global *data, bool write);
+void load(t_global *global);
+int read_stdin(void);
+int get_max_fd(list_t *sessions, int server_socket);
+bool find_session_by_fd(void *iterator, void *value);
+void set_ports(fd_set *rfds, list_t *sessions, int server_socket);
 
 #define CHECK_ARGS(args, len, socket) \
     if (!args_len(args, len))        \

@@ -39,7 +39,9 @@ SRC					=	server.c							\
 						file_parser/case.c					\
 						file_parser/case_bis.c				\
 						str_to_word_array.c					\
-						split_by_quote.c
+						split_by_quote.c					\
+						server_two.c						\
+						save.c
 
 TRC					=	test_basic.c
 MAIN				= 	main.c

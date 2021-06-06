@@ -62,6 +62,11 @@ enum command_return create_team(t_global *global, session_t *session,
 
     if (!team)
         return SYSTEM_ERROR;
+
+    if (node_find_fn(global->teams, &find_by_name, name)) {
+        send_message(session->socket, "405 already exist", RESPONSE, CREATE);
+        return SUCCESS;
+    }
     uuid_generate(team->uid);
     team->name = strdup(name);
     team->desc = strdup(desc);

@@ -34,7 +34,8 @@ static void notify_thread_created(session_t *session, t_messages *thread)
 }
 
 static enum command_return create_thread_second_part(t_channel *pchannel,
-    session_t *session, t_messages *thread)
+    session_t *session, t_messages *thread
+)
 {
     char *ret = NULL;
     enum command_return ret_val = SUCCESS;
@@ -59,8 +60,9 @@ static enum command_return create_thread_second_part(t_channel *pchannel,
     return SUCCESS;
 }
 
-enum command_return create_tread(t_channel *pchannel,
-    session_t *session, char *arg, char *arg1)
+enum command_return create_tread(t_channel *pchannel, session_t *session,
+    char *arg, char *arg1
+)
 {
     t_messages *thread = malloc(sizeof(t_messages));
     char id_t[37];
@@ -69,6 +71,10 @@ enum command_return create_tread(t_channel *pchannel,
 
     if (!thread)
         return SYSTEM_ERROR;
+    if (node_find_fn(session->current_channel->messages, &find_by_name, arg)) {
+        send_message(session->socket, "405 already exist", RESPONSE, CREATE);
+        return SUCCESS;
+    }
     uuid_generate(thread->uid);
     thread->type = THREAD;
     thread->m_type = M_THREAD;

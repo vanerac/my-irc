@@ -14,7 +14,6 @@
 bool find_by_name(void *it, void *data)
 {
     switch (*((enum data_type *) it)) {
-    case USER:
     case TEAM:
         return !strcmp(((t_teams *) it)->name, data);
     case CHANNEL:
