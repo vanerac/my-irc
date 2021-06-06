@@ -51,7 +51,7 @@ list_t *parse_file(int fd)
     for (char **args = NULL; (args = get_args(fd, true));) {
         switch ((enum data_type) atoi(args[0])) {
         case USER:
-            case_USER(args);
+            case_USER(args, &ret);
             break;
         case TEAM:
             current_channel = NULL, current_thread = NULL;
@@ -70,7 +70,7 @@ list_t *parse_file(int fd)
                 return NULL;
             break;
         case DM:
-            case_DM(args, &current_dm);
+            case_DM(args, &current_dm, &ret);
             break;
         case MESSAGE:
             if (case_MESSAGE(args, &current_dm) == 84)

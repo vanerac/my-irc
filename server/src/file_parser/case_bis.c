@@ -24,11 +24,10 @@ t_messages **current_thread)
     return 0;
 }
 
-void case_USER(char **args)
+void case_USER(char **args, list_t **ret)
 {
     t_user *current_user = NULL;
-    list_t *ret = NULL;
 
     current_user = parse_user(args);
-    NODE_ADD(ret, current_user)
+    NODE_ADD(*ret, current_user)
 }

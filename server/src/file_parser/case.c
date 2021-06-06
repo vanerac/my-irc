@@ -19,10 +19,8 @@ int case_MESSAGE(char **args, t_dm **current_dm)
     return 0;
 }
 
-void case_DM(char **args, t_dm **current_dm)
+void case_DM(char **args, t_dm **current_dm, list_t **ret)
 {
-    list_t *ret = NULL;
-
     *current_dm = parse_dm(args);
     NODE_ADD(ret, *current_dm);
 }
