@@ -16,10 +16,11 @@ void write_user(int fd, t_user *user)
 
 void write_message(int fd, t_messages *messages)
 {
-    char uuid[37];
+    char uuid[37], author_uuid[37];
     uuid_unparse(messages->uid, uuid);
-    dprintf(fd, "\"%d\" \"%u\" \"%s\" \"%lud\" \"%s\" \"%s\"\n",
-        messages->type, messages->m_type, uuid, messages->created_at,
+    uuid_unparse(messages->author_uuid, author_uuid);
+    dprintf(fd, "\"%d\" \"%u\" \"%s\" \"%s\" \"%lud\" \"%s\" \"%s\"\n",
+        messages->type, messages->m_type, uuid, author_uuid, messages->created_at,
         messages->title, messages->body);
 }
 
@@ -40,7 +41,8 @@ void write_channel(int fd, t_channel *channel, int recursion_levels)
 {
     char uuid[37];
     uuid_unparse(channel->uid, uuid);
-    dprintf(fd, "\"%d\" \"%s\" \"%s\"\n", channel->type, uuid, channel->desc);
+    dprintf(fd, "\"%d\" \"%s\" \"%s\" \"%s\"\n", channel->type, uuid,
+        channel->name, channel->desc);
     for (list_t *tread = channel->messages;
         tread && recursion_levels > 0; tread = tread->next) {
         write_thread(fd, tread->data, recursion_levels - 1);

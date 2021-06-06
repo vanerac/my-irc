@@ -59,12 +59,13 @@ t_messages *parse_reply(char **args)
 {
     t_messages *ret = malloc(sizeof(t_messages));
 
-    if (!check_type(args, MESSAGE) || !args_len(args, 6))
+    if (!check_type(args, MESSAGE) || !args_len(args, 7))
         return NULL;
     ret->type = REPLY;
     uuid_parse(args[2], ret->uid);
+    uuid_parse(args[3], ret->author_uuid);
     ret->created_at = atoll(
-        args[3]), ret->title = args[4], ret->body = args[5], ret->m_type = atoi(
+        args[4]), ret->title = args[5], ret->body = args[6], ret->m_type = atoi(
         args[1]);
     return ret;
 }
@@ -87,7 +88,7 @@ t_user *parse_user(char **args)
 
 t_dm *parse_dm(char **args)
 {
-    if (!check_type(args, USER) || !args_len(args, 3))
+    if (!check_type(args, DM) || !args_len(args, 3))
         return NULL;
     t_dm *ret = malloc(sizeof(t_dm));
 

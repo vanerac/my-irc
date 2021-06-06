@@ -12,6 +12,8 @@ int case_MESSAGE(char **args, t_dm *current_dm)
     if (!current_dm)
         return 84;
     t_messages *m = parse_reply(args);
+    if (!m)
+        return 84;
     m->type = MESSAGE;
     NODE_ADD(current_dm->messages, m);
     return 0;

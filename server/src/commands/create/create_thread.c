@@ -78,6 +78,7 @@ enum command_return create_tread(t_channel *pchannel,
     thread->author = session->user_data;
     thread->replies = NULL;
     time(&thread->created_at);
+    uuid_copy(thread->author_uuid, session->user_data->uid);
     uuid_unparse(thread->uid, id_t);
     uuid_unparse(session->user_data->uid, id_s);
     uuid_unparse(pchannel->uid, id_c);

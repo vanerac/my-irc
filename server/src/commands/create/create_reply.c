@@ -77,6 +77,7 @@ enum command_return create_comment(t_messages *pmessages,
     thread->destination = pmessages;
     thread->author = session->user_data;
     thread->replies = NULL;
+    uuid_copy(thread->author_uuid, session->user_data->uid);
     time(&thread->created_at);
     uuid_unparse(pmessages->uid, uuid_m);
     uuid_unparse(session->user_data->uid, uuid_s);

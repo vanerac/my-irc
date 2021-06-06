@@ -40,6 +40,7 @@ static t_messages *init_message(t_user *author, void *destination, char *body)
     ret->body = body;
     ret->title = NULL;
     time(&ret->created_at);
+    uuid_copy(ret->author_uuid, author->uid);
     ret->replies = NULL;
     ret->m_type = M_DM;
     return ret;
@@ -55,8 +56,9 @@ void send_second_part(t_global *global, session_t *session, char **args,
     t_dm *dm = dms ? dms->data : create_dm(global, session, *target);
     t_messages *ret = init_message(session->user_data, dm, args[1]);
     NODE_ADD(dm->messages, ret)
+    uuid_unparse(*target, tmp);
     list_t *target_session = node_find_fn(global->sessions, &find_by_uuid,
-        target);
+        tmp);
 
     uuid_unparse(session->user_data->uid, tmp);
     if (target_session && ((session_t *) target_session->data)->logged) {
