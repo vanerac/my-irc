@@ -62,6 +62,10 @@ enum command_return create_channel(t_teams *team, session_t *session,
 
     if (!channel)
         return SYSTEM_ERROR;
+    if (find_by_name(session->current_team, arg)) {
+        send_message(session->socket, "405 already exist", RESPONSE, CREATE);
+        return SUCCESS;
+    }
     channel->type = CHANNEL;
     channel->name = arg;
     channel->desc = arg1;

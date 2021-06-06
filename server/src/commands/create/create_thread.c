@@ -69,6 +69,10 @@ enum command_return create_tread(t_channel *pchannel,
 
     if (!thread)
         return SYSTEM_ERROR;
+    if (find_by_name(session->current_channel, arg)) {
+        send_message(session->socket, "405 already exist", RESPONSE, CREATE);
+        return SUCCESS;
+    }
     uuid_generate(thread->uid);
     thread->type = THREAD;
     thread->m_type = M_THREAD;
