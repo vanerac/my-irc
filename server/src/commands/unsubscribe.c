@@ -20,10 +20,10 @@ void command_unsubscribe(t_global *global, session_t *session, char **args)
         return;
     }
     t_teams *team = node->data;
-    team->subscribers = node_delete_fn(team->subscribers, &find_by_uuid,
-        args[0]);
     char user_uuid[37];
     uuid_unparse(session->user_data->uid, user_uuid);
+    team->subscribers = node_delete_fn(team->subscribers, &find_by_uuid,
+        user_uuid);
     SEND_MESSAGE(session->socket, RESPONSE, UNSUBSCRIBE, "200 \"%s\" \"%s\"\n",
         user_uuid, args[0])
 }

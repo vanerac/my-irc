@@ -11,7 +11,7 @@
 
 void command_users(t_global *global, session_t *session, char **args)
 {
-    (void) session, (void) args, (void) global;
+    (void) args;
     list_t *all_users = global->all_user;
     t_user *cur = NULL;
     char uuid[37];

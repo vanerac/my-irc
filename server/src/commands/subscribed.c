@@ -26,7 +26,6 @@ enum command_return display_subscribed_teams(t_global *global,
                 "201 \"%s\" \"%s\" \"%s\"\n", uuid, team->name, team->desc);
         }
     }
-
     return SUCCESS;
 }
 
