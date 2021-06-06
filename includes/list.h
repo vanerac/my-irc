@@ -48,5 +48,5 @@ list_t *node_find_fn(list_t *list, CHECKFN, void *data);
         if (!(list)) \
             (list) = node_list_create(data);\
         else \
-            node_append_data(list, list);
+            node_append_data(list, data);
 #endif //C_LIST_H
