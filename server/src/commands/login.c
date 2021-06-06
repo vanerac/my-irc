@@ -49,10 +49,9 @@ void command_login(t_global *global, session_t *session, char **args)
     char uuid[37];
     CHECK_ARGS(args, 1, session->socket)
     if (session->logged ||
-        node_find_fn(global->sessions, &find_by_username_session, args[0])) {
-        send_message(session->socket, "407 already logged", RESPONSE, LOGIN);
-        return;
-    }
+        node_find_fn(global->sessions, &find_by_username_session, args[0]))
+        return (void) send_message(session->socket, "407 already logged",
+            RESPONSE, LOGIN);;
     list_t *user = node_find_fn(global->all_user, &find_by_username, args[0]);
 
     if (user)
@@ -63,6 +62,7 @@ void command_login(t_global *global, session_t *session, char **args)
     if (!session->user_data)
         return;
     session->logged = true;
+    session->user_data->logged = true;
     uuid_unparse(session->user_data->uid, uuid);
     server_event_user_logged_in(uuid);
     SEND_MESSAGE(session->socket, RESPONSE, LOGIN, "200 \"%s\" \"%s\"", uuid,
