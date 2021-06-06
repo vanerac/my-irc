@@ -69,7 +69,7 @@ enum command_return create_tread(t_channel *pchannel,
 
     if (!thread)
         return SYSTEM_ERROR;
-    if (find_by_name(session->current_channel, arg)) {
+    if (node_find_fn(session->current_channel, &find_by_name, arg)) {
         send_message(session->socket, "405 already exist", RESPONSE, CREATE);
         return SUCCESS;
     }

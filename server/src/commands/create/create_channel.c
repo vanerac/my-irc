@@ -62,7 +62,7 @@ enum command_return create_channel(t_teams *team, session_t *session,
 
     if (!channel)
         return SYSTEM_ERROR;
-    if (find_by_name(session->current_team, arg)) {
+    if (node_find_fn(session->current_team, &find_by_name, arg)) {
         send_message(session->socket, "405 already exist", RESPONSE, CREATE);
         return SUCCESS;
     }
