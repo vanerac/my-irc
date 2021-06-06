@@ -87,7 +87,7 @@ t_user *parse_user(char **args)
 
 t_dm *parse_dm(char **args)
 {
-    if (!check_type(args, USER) || !args_len(args, 3))
+    if (!check_type(args, DM) || !args_len(args, 3))
         return NULL;
     t_dm *ret = malloc(sizeof(t_dm));
 

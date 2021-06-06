@@ -40,7 +40,8 @@ void write_channel(int fd, t_channel *channel, int recursion_levels)
 {
     char uuid[37];
     uuid_unparse(channel->uid, uuid);
-    dprintf(fd, "\"%d\" \"%s\" \"%s\"\n", channel->type, uuid, channel->desc);
+    dprintf(fd, "\"%d\" \"%s\" \"%s\" \"%s\"\n", channel->type, uuid,
+        channel->name, channel->desc);
     for (list_t *tread = channel->messages;
         tread && recursion_levels > 0; tread = tread->next) {
         write_thread(fd, tread->data, recursion_levels - 1);
