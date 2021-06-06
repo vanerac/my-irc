@@ -21,8 +21,8 @@ void invalid(int code, char *allargs)
         case 400:
             client_error_unauthorized();
             break;
-        default:
-            printf("INVALID");
+        case 399:
+            printf("%s\n", allargs);
             break;
     }
 }

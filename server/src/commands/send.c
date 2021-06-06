@@ -47,9 +47,9 @@ static t_messages *init_message(t_user *author, void *destination, char *body)
 void command_send(t_global *global, session_t *session, char **args)
 {
     uuid target, *uuids[2] = {&session->user_data->uid, &target};
-    uuid_parse(args[0], target);
     char tmp[37];
     CHECK_ARGS(args, 2, session->socket)
+    uuid_parse(args[0], target);
     if (!node_find_fn(global->all_user, &find_by_uuid, args[0])) {
         SEND_MESSAGE(session->socket, RESPONSE, SEND, "401 \"%s\"\n", args[0]);
         return;
