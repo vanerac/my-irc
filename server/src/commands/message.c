@@ -24,10 +24,7 @@ void command_messages(t_global *global, session_t *session, char **args)
     char *buff = NULL;
     char id[37];
 
-    if (!args || !args[0]) {
-        send_message(session->socket, "665 invalid args", RESPONSE, INVALID);
-        return;
-    }
+    CHECK_ARGS(args, 1, session->socket)
     if (!dms) {
         asprintf(&buff, "401 \"%s\"", args[0]);
         send_message(session->socket, buff, RESPONSE, MESSAGES);
