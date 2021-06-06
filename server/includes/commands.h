@@ -81,6 +81,8 @@ enum command_return team_info(session_t *session);
 enum command_return channel_info(session_t *session);
 enum command_return thread_info(session_t *session);
 
+bool find_by_name(void *it, void *data);
+
 typedef enum command_return (*command_ptr)(t_global *, session_t *, char **);
 
 typedef struct command_s {
