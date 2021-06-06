@@ -40,6 +40,7 @@ static enum command_return create_thread_second_part(t_channel *pchannel,
     enum command_return ret_val = SUCCESS;
     char t_uuid[37];
     char s_uuid[37];
+
     if (pchannel->messages)
         ret_val = node_append_data(pchannel->messages, thread) ? SUCCESS :
             SYSTEM_ERROR;
@@ -62,7 +63,10 @@ enum command_return create_tread(t_channel *pchannel,
     session_t *session, char *arg, char *arg1)
 {
     t_messages *thread = malloc(sizeof(t_messages));
-    char uuid_t[37], uuid_s[37], uuid_c[37];
+    char uuid_t[37];
+    char uuid_s[37];
+    char uuid_c[37];
+
     if (!thread)
         return SYSTEM_ERROR;
     uuid_generate(thread->uid);

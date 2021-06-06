@@ -59,6 +59,7 @@ enum command_return create_team(t_global *global, session_t *session,
 {
     t_teams *team = malloc(sizeof(t_teams));
     char uuid[37];
+
     if (!team)
         return SYSTEM_ERROR;
     uuid_generate(team->uid);

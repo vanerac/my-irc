@@ -53,9 +53,11 @@ static enum command_return set_channel(t_global *global, session_t *session,
 )
 {
     (void) global;
+    list_t *channel = NULL;
+
     if (!session->current_team)
         return UNKNOWN_TEAM;
-    list_t *channel = node_find_fn(session->current_team->channels,
+    channel = node_find_fn(session->current_team->channels,
         find_by_uuid, target_uuid);
     if (!channel) {
         session->error = ERROR_CHANNEL;
@@ -72,11 +74,13 @@ static enum command_return set_thread(t_global *global, session_t *session,
 )
 {
     (void) global;
+    list_t *thread = NULL;
+
     if (!session->current_team)
         return UNKNOWN_TEAM;
     if (!session->current_channel)
         return UNKNOWN_CHANNEL;
-    list_t *thread = node_find_fn(session->current_channel->messages,
+    thread = node_find_fn(session->current_channel->messages,
         find_by_uuid, target_uuid);
     if (!thread) {
         session->error = ERROR_THREAD;
@@ -92,8 +96,8 @@ void command_use(t_global *global, session_t *session, char **args
 {
     enum command_return (*fn[4])(t_global *, session_t *, char *
     ) = {&set_team, &set_channel, &set_thread, NULL};
-
     enum command_return status = SUCCESS;
+
     for (int i = 0; fn[i] && args[i] && status == SUCCESS; ++i)
         status = fn[i](global, session, args[i]);
     if (status == SUCCESS)

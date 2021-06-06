@@ -59,6 +59,7 @@ enum command_return create_channel(t_teams *team, session_t *session,
     t_channel *channel = malloc(sizeof(t_channel));
     char uuid[37];
     char t_uuid[37];
+
     if (!channel)
         return SYSTEM_ERROR;
     channel->type = CHANNEL;

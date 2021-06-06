@@ -47,7 +47,6 @@ enum command_return dump_threads(t_global *global, session_t *session)
         send_message(session->socket, buffer, RESPONSE, LIST);
         free(buffer);
     }
-
     return SUCCESS;
 }
 

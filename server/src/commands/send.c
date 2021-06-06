@@ -45,8 +45,10 @@ static t_messages *init_message(t_user *author, void *destination, char *body)
     return ret;
 }
 
-void send_second_part(t_global *global, session_t *session, char **args, uuid *target)
+void send_second_part(t_global *global, session_t *session, char **args,
+    uuid *target)
 {
+    char *buff = NULL;
     char tmp[37];
     uuid *uuids[2] = {&session->user_data->uid, target};
     list_t *dms = node_find_fn(global->private_message, &find_dms, uuids);
@@ -57,16 +59,19 @@ void send_second_part(t_global *global, session_t *session, char **args, uuid *t
         target);
 
     uuid_unparse(session->user_data->uid, tmp);
-    if (target_session &&
-        ((session_t *) target_session->data)->logged) SEND_MESSAGE(
-        ((session_t *) target_session->data)->socket, RESPONSE, SEND,
-        "200 \"%s\" \"%s\"", tmp, ret->body)
+    if (target_session && ((session_t *) target_session->data)->logged) {
+        asprintf(&buff, "200 \"%s\" \"%s\"", tmp, ret->body);
+        send_message(((session_t *) target_session->data)->socket, buff,
+            RESPONSE, SEND);
+        free(buff);
+    }
     server_event_private_message_sended(tmp, args[0], args[1]);
 }
 
 void command_send(t_global *global, session_t *session, char **args)
 {
     uuid target;
+    char *buff = NULL;
 
     if (!args || !args[0] || !args[1]) {
         send_message(session->socket, "665 invalid args", RESPONSE, INVALID);
@@ -78,7 +83,9 @@ void command_send(t_global *global, session_t *session, char **args)
     }
     uuid_parse(args[0], target);
     if (!node_find_fn(global->all_user, &find_by_uuid, args[0])) {
-        SEND_MESSAGE(session->socket, RESPONSE, SEND, "401 \"%s\"\n", args[0]);
+        asprintf(&buff, "401 \"%s\"\n", args[0]);
+        send_message(session->socket, buff, RESPONSE, SEND);
+        free(buff);
         return;
     }
     send_second_part(global, session, args, &target);

@@ -37,8 +37,9 @@ enum command_return return_invalid(t_global *global, session_t *session,
     char **args
 )
 {
-    (void) session;
-    (void) global, (void) args;
+    (void) global;
+    (void) args;
+
     send_message(session->socket, "399 Invalid Command", RESPONSE, INVALID);
     return UNKNOWN_COMMAND;
 }
@@ -46,7 +47,8 @@ enum command_return return_invalid(t_global *global, session_t *session,
 enum command_return is_logged(t_global *global, session_t *session, char **args
 )
 {
-    (void) global, (void) args;
+    (void) global;
+    (void) args;
 
     if (session->logged && session->user_data)
         return SUCCESS;

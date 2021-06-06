@@ -14,19 +14,16 @@ int asprintf(char **strp, const char *fmt, ...);
 
 static t_user *create_user(t_global *global, char *username)
 {
-    if (!username)
-        return NULL;
     t_user *ret = malloc(sizeof(t_user));
     char uuid[37];
-    if (!ret)
+
+    if (!ret || !username)
         return NULL;
     uuid_generate(ret->uid);
     ret->type = USER;
     ret->username = strdup(username);
     NODE_ADD(global->all_user, ret)
-
     ret->logged = true;
-
     uuid_unparse(ret->uid, uuid);
     server_event_user_created(uuid, ret->username);
     return ret;
@@ -47,6 +44,7 @@ static bool find_by_username_session(void *it, void *data)
 void login_second_part(t_global *global, session_t *session,
     char **args, list_t *user)
 {
+    char *buff = NULL;
     char uuid[37];
 
     if (user)
@@ -59,8 +57,9 @@ void login_second_part(t_global *global, session_t *session,
     session->user_data->logged = true;
     uuid_unparse(session->user_data->uid, uuid);
     server_event_user_logged_in(uuid);
-    SEND_MESSAGE(session->socket, RESPONSE, LOGIN, "200 \"%s\" \"%s\"", uuid,
-        args[0])
+    asprintf(&buff, "200 \"%s\" \"%s\"", uuid, args[0]);
+    send_message(session->socket, buff, RESPONSE, LOGIN);
+    free(buff);
 }
 
 void command_login(t_global *global, session_t *session, char **args)
@@ -68,6 +67,10 @@ void command_login(t_global *global, session_t *session, char **args)
     list_t *user = NULL;
 
     CHECK_ARGS(args, 1, session->socket)
+    if (!args || !args[0]) {
+        send_message(session->socket, "665 invalid args", RESPONSE, INVALID);
+        return;
+    }
     if (strlen(args[0]) > 32) {
         send_message(session->socket, "665 too long args", RESPONSE, INVALID);
         return;

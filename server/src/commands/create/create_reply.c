@@ -64,7 +64,9 @@ enum command_return create_comment(t_messages *pmessages,
     session_t *session, char *arg)
 {
     t_messages *thread = malloc(sizeof(t_messages));
-    char uuid_m[37], uuid_s[37];
+    char uuid_m[37];
+    char uuid_s[37];
+
     if (!thread)
         return SYSTEM_ERROR;
     uuid_generate(thread->uid);
