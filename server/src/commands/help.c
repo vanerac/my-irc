@@ -166,7 +166,7 @@ void command_subscribe(t_global *global, session_t *session, char **args)
             SYSTEM_ERROR;
     if (ret_val != SUCCESS) {
         send_message(session->socket, "666 \"system error\"", RESPONSE,
-            SUBSCRIBE);
+            INVALID);
         return;
     }
     uuid_unparse(team->uid, team_uuid);
@@ -219,7 +219,6 @@ enum command_return display_subscribers_to_team(t_global *global,
             "202 \"%s\" \"%s\" \"%d\"\n", uuid, user->user_data->username,
             user->logged);
     }
-
     return SUCCESS;
 }
 
@@ -228,14 +227,14 @@ void command_subscribed(t_global *global, session_t *session, char **args)
     (void) session, (void) args, (void) global;
     enum command_return ret_val = SUCCESS;
 
-    if (!args[0]) {
+    if (args || !args[0]) {
         ret_val = display_subscribed_teams(global, session);
     } else {
         ret_val = display_subscribers_to_team(global, session, args[0]);
     }
     if (ret_val != SUCCESS)
         send_message(session->socket, "666 \"system error\"", RESPONSE,
-            SUBSCRIBED);
+            INVALID);
 }
 
 void command_unsubscribe(t_global *global, session_t *session, char **args)

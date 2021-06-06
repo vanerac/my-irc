@@ -61,6 +61,16 @@ char **args);
 bool find_by_uuid(void *it, void *data);
 bool find_dms(void *it, void *data);
 
+enum command_return create_channel(t_teams *team, session_t *session,
+    char *arg, char *arg1);
+enum command_return create_team(t_global *global, session_t *session,
+    char *name, char *desc);
+enum command_return create_tread(t_channel *pchannel,
+    session_t *session, char *arg, char *arg1);
+enum command_return create_comment(t_messages *pmessages,
+    session_t *session, char *arg);
+
+
 typedef enum command_return (*command_ptr)(t_global *, session_t *, char **);
 
 typedef struct command_s {
