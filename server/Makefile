@@ -37,6 +37,7 @@ SRC					=	server.c							\
 						file_parser/read_file.c				\
 						file_parser/file_tools.c			\
 						file_parser/case.c					\
+						file_parser/case_bis.c				\
 						str_to_word_array.c					\
 						split_by_quote.c
 
