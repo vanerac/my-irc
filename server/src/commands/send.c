@@ -72,7 +72,7 @@ void command_send(t_global *global, session_t *session, char **args)
         send_message(session->socket, "665 invalid args", RESPONSE, INVALID);
         return;
     }
-    if (strlen(args[1]) > 51) {
+    if (strlen(args[1]) > 512) {
         send_message(session->socket, "665 too long args", RESPONSE, INVALID);
         return;
     }
