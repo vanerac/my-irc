@@ -32,7 +32,8 @@ static void notify_channel_created(session_t *session, t_channel *channel)
 }
 
 static enum command_return create_channel_second_part(t_teams *team,
-    session_t *session, t_channel *channel, char *uuid)
+    session_t *session, t_channel *channel, char *uuid
+)
 {
     char *ret = NULL;
     enum command_return ret_val = SUCCESS;
@@ -54,7 +55,8 @@ static enum command_return create_channel_second_part(t_teams *team,
 }
 
 enum command_return create_channel(t_teams *team, session_t *session,
-    char *arg, char *arg1)
+    char *arg, char *arg1
+)
 {
     t_channel *channel = malloc(sizeof(t_channel));
     char uuid[37];
@@ -62,7 +64,8 @@ enum command_return create_channel(t_teams *team, session_t *session,
 
     if (!channel)
         return SYSTEM_ERROR;
-    if (node_find_fn(session->current_team, &find_by_name, arg)) {
+
+    if (node_find_fn(session->current_team->channels, &find_by_name, arg)) {
         send_message(session->socket, "405 already exist", RESPONSE, CREATE);
         return SUCCESS;
     }
