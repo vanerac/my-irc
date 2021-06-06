@@ -25,10 +25,11 @@ static t_dm *create_dm(t_global *global, session_t *session, uuid target)
     uuid_copy(ret->user_first, session->user_data->uid);
     uuid_copy(ret->user_second, target);
     ret->type = DM;
-    if (!global->private_message)
-        global->private_message = node_list_create(ret);
-    else
-        node_append_data(global->private_message, ret);
+    NODE_ADD(global->private_message, ret)
+//    if (!global->private_message)
+//        global->private_message = node_list_create(ret);
+//    else
+//        node_append_data(global->private_message, ret);
     return ret;
 }
 
@@ -74,10 +75,11 @@ void command_send(t_global *global, session_t *session, char **args)
     else
         dm = dms->data;
     t_messages *ret = init_message(session->user_data, dm, args[1]);
-    if (!dm->messages)
-        dm->messages = node_list_create(ret);
-    else
-        node_append_data(dm->messages, ret);
+    NODE_ADD(dm->messages, ret)
+//    if (!dm->messages)
+//        dm->messages = node_list_create(ret);
+//    else
+//        node_append_data(dm->messages, ret);
 
     // todo write to client OK
     list_t *target_session = node_find_fn(global->sessions, &find_by_uuid,

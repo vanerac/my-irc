@@ -42,10 +42,11 @@ static t_user *create_user(t_global *global, char *username)
     uuid_generate(ret->uid);
     ret->type = USER;
     ret->username = strdup(username);
-    if (!global->all_user)
-        global->all_user = node_list_create(ret);
-    else
-        node_append_data(global->all_user, ret);
+    NODE_ADD(global->all_user, ret)
+//    if (!global->all_user)
+//        global->all_user = node_list_create(ret);
+//    else
+//        node_append_data(global->all_user, ret);
     ret->logged = true;
 
     uuid_unparse(ret->uid, uuid);
