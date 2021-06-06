@@ -45,26 +45,41 @@ static t_messages *init_message(t_user *author, void *destination, char *body)
     return ret;
 }
 
-void command_send(t_global *global, session_t *session, char **args)
+void send_second_part(t_global *global, session_t *session, char **args, uuid *target)
 {
-    uuid target, *uuids[2] = {&session->user_data->uid, &target};
     char tmp[37];
-    CHECK_ARGS(args, 2, session->socket)
-    uuid_parse(args[0], target);
-    if (!node_find_fn(global->all_user, &find_by_uuid, args[0])) {
-        SEND_MESSAGE(session->socket, RESPONSE, SEND, "401 \"%s\"\n", args[0]);
-        return;
-    }
+    uuid *uuids[2] = {&session->user_data->uid, target};
     list_t *dms = node_find_fn(global->private_message, &find_dms, uuids);
-    t_dm *dm = dms ? dms->data : create_dm(global, session, target);
+    t_dm *dm = dms ? dms->data : create_dm(global, session, *target);
     t_messages *ret = init_message(session->user_data, dm, args[1]);
     NODE_ADD(dm->messages, ret)
     list_t *target_session = node_find_fn(global->sessions, &find_by_uuid,
         target);
+
     uuid_unparse(session->user_data->uid, tmp);
     if (target_session &&
         ((session_t *) target_session->data)->logged) SEND_MESSAGE(
         ((session_t *) target_session->data)->socket, RESPONSE, SEND,
         "200 \"%s\" \"%s\"", tmp, ret->body)
     server_event_private_message_sended(tmp, args[0], args[1]);
+}
+
+void command_send(t_global *global, session_t *session, char **args)
+{
+    uuid target;
+
+    if (!args || !args[0] || !args[1]) {
+        send_message(session->socket, "665 invalid args", RESPONSE, INVALID);
+        return;
+    }
+    if (strlen(args[1]) > 51) {
+        send_message(session->socket, "665 too long args", RESPONSE, INVALID);
+        return;
+    }
+    uuid_parse(args[0], target);
+    if (!node_find_fn(global->all_user, &find_by_uuid, args[0])) {
+        SEND_MESSAGE(session->socket, RESPONSE, SEND, "401 \"%s\"\n", args[0]);
+        return;
+    }
+    send_second_part(global, session, args, &target);
 }

@@ -10,6 +10,13 @@ TNAME				=	unit_test
 
 SRC					=	server.c					\
 						handles.c					\
+						commands/gestion_commands.c	\
+						commands/message.c			\
+						commands/subscribe.c		\
+						commands/subscribed.c		\
+						commands/unsubscribe.c		\
+						commands/user.c				\
+						commands/users.c			\
 						commands/help.c				\
 						commands/use.c				\
 						commands/create.c			\
@@ -17,6 +24,7 @@ SRC					=	server.c					\
 						commands/list.c				\
 						commands/list_print.c		\
 						commands/info.c				\
+						commands/info_print.c				\
 						commands/send.c				\
 						commands/logout.c			\
 						commands/utils_command.c	\

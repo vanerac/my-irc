@@ -10,7 +10,6 @@
 
 int asprintf(char **restrict strp, const char *restrict fmt, ...);
 
-
 bool args_len(char **args, int len)
 {
     int size = 0;

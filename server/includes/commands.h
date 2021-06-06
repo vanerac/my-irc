@@ -25,6 +25,7 @@ enum command_return {
     HANGUP = 20,
     DOUBLE_AUTH = -6,
     INVALID_ARGS = 100,
+    TOO_LONG_ARGS = 101,
 };
 
 void command_help(t_global *global, session_t *session,
@@ -75,6 +76,10 @@ enum command_return dump_channels(t_global *global, session_t *session);
 enum command_return dump_threads(t_global *global, session_t *session);
 enum command_return dump_messages(t_global *global, session_t *session);
 
+enum command_return user_info(session_t *session);
+enum command_return team_info(session_t *session);
+enum command_return channel_info(session_t *session);
+enum command_return thread_info(session_t *session);
 
 typedef enum command_return (*command_ptr)(t_global *, session_t *, char **);
 
