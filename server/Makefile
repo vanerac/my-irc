@@ -17,8 +17,12 @@ SRC					=	server.c					\
 						commands/list.c				\
 						commands/info.c				\
 						commands/send.c				\
-						commands/logout.c				\
+						commands/logout.c			\
 						commands/utils_command.c	\
+						commands/create/create_team.c	\
+						commands/create/create_channel.c	\
+						commands/create/create_thread.c	\
+						commands/create/create_reply.c	\
 						file_parser/file_parser.c	\
 						file_parser/write_file.c	\
 						file_parser/read_file.c		\
