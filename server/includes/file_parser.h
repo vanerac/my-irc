@@ -37,14 +37,13 @@ t_user *parse_user(char **args);
 t_dm *parse_dm(char **args);
 
 void case_USER(char **args);
-void case_TEAM(char **args, t_teams *current_team, t_channel **current_channel,
+void case_TEAM(char **args, t_teams **current_team, list_t **ret);
+int case_CHANNEL(char **args, t_teams **current_team, t_channel **current_channel,
 t_messages **current_thread);
-int case_CHANNEL(char **args, t_teams *current_team, t_channel *current_channel,
-t_messages **current_thread);
-int case_THREAD(char **args, t_messages *current_thread,
-t_channel *current_channel);
-void case_DM(char **args, t_dm *current_dm);
-int case_MESSAGE(char **args, t_dm *current_dm);
-int case_REPLY(char **args, t_messages *current_thread);
+int case_THREAD(char **args, t_messages **current_thread,
+t_channel **current_channel);
+void case_DM(char **args, t_dm **current_dm);
+int case_MESSAGE(char **args, t_dm **current_dm);
+int case_REPLY(char **args, t_messages **current_thread);
 
 #endif //C_FILE_PARSER_H
