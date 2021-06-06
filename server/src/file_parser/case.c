@@ -22,7 +22,7 @@ int case_MESSAGE(char **args, t_dm **current_dm)
 void case_DM(char **args, t_dm **current_dm, list_t **ret)
 {
     *current_dm = parse_dm(args);
-    NODE_ADD(ret, *current_dm);
+    NODE_ADD(*ret, *current_dm);
 }
 
 int case_REPLY(char **args, t_messages **current_thread)
