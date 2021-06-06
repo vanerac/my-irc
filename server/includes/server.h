@@ -38,5 +38,11 @@ typedef struct session_s {
 } session_t;
 
 void send_error_to_client(session_t *session);
+bool args_len(char **args, int len);
+
+#define CHECK_ARGS(args, len, socket) \
+    if (!args_len(args, len))        \
+        return (void) send_message(socket, "665 invalid args",RESPONSE, \
+        INVALID);
 
 #endif //C_SERVER_H

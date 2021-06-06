@@ -98,5 +98,4 @@ void command_use(t_global *global, session_t *session, char **args
         status = fn[i](global, session, args[i]);
     if (status == SUCCESS)
         session->error = NO_ERROR;
-    //    return status;
 }

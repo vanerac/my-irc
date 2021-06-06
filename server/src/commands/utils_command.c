@@ -10,6 +10,16 @@
 
 int asprintf(char **restrict strp, const char *restrict fmt, ...);
 
+
+bool args_len(char **args, int len)
+{
+    int size = 0;
+    if (!args)
+        return false;
+    for (size = 0; args[size]; ++size);
+    return size == len;
+}
+
 void send_error_to_client(session_t *session)
 {
     char *ret = NULL;
