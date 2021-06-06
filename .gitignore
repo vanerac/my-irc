@@ -8,3 +8,4 @@ myteams_*
 .vscode
 vgcore.*
 unit_test
+*.save

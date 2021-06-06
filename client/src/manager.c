@@ -18,6 +18,10 @@ void server_handler(message_info_t *info)
     }
     if (!code)
         return;
+    if (strcmp(code, "666") == 0){
+        printf("System error\n");
+        return;
+    }
     for (int i = 0; i < 14; i++) {
         if (func_ptr_client[i].command == info->command) {
             (*func_ptr_client[i].func)(atoi(code), args);

@@ -47,53 +47,34 @@ list_t *parse_file(int fd)
     t_teams *current_team = NULL;
     t_channel *current_channel = NULL;
     t_messages *current_thread = NULL;
-    t_user *current_user = NULL;
 
     for (char **args = NULL; (args = get_args(fd, true));) {
         switch ((enum data_type) atoi(args[0])) {
         case USER:
-            current_user = parse_user(args);
-            NODE_ADD(ret, current_user)
+            case_USER(args);
             break;
         case TEAM:
-            current_channel = NULL, current_thread = NULL;
-            current_team = parse_team(args);
-            NODE_ADD(ret, current_team)
+            case_TEAM(args, current_team, &current_channel, &current_thread);
             break;
         case CHANNEL:
-            current_thread = NULL;
-            current_channel = parse_channel(args);
-            if (!current_team)
+            if (case_CHANNEL(args, current_team, current_channel, &current_thread) == 84)
                 return NULL;
-            NODE_ADD(current_team->channels, current_channel)
             break;
         case THREAD:
-            current_thread = parse_thread(args);
-            if (!current_channel)
+            if (case_THREAD(args, current_thread, current_channel) == 84)
                 return NULL;
-            NODE_ADD(current_channel->messages, current_thread)
             break;
-        case REPLY: {
-            t_messages *m = parse_reply(args);
-            if (!current_thread)
+        case REPLY:
+            if (case_REPLY(args, current_thread) == 84)
                 return NULL;
-            NODE_ADD(current_thread->replies, m)
             break;
-        }
         case DM:
-            current_dm = parse_dm(args);
-            NODE_ADD(ret, current_dm)
+            case_DM(args, current_dm);
             break;
-        case MESSAGE: {
-            if (!current_dm)
+        case MESSAGE:
+            if (case_MESSAGE(args, current_dm) == 84)
                 return NULL;
-            t_messages *m = parse_reply(args);
-            if (!m)
-                return ret;
-            m->type = MESSAGE;
-            NODE_ADD(current_dm->messages, m)
             break;
-        }
         default:
             return ret;
         }
