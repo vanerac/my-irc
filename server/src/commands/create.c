@@ -11,6 +11,21 @@
 #include "commands.h"
 #include "message.h"
 
+bool find_by_name(void *it, void *data)
+{
+    switch (*((enum data_type *) it)) {
+    case USER:
+    case TEAM:
+        return !strcmp(((t_teams *) it)->name, data);
+    case CHANNEL:
+        return !strcmp(((t_channel *) it)->name, data);
+    case THREAD:
+        return !strcmp(((t_messages *) it)->title, data);
+    default:
+        return false;
+    }
+}
+
 bool check_if_user_is_subscribed(session_t *session)
 {
     list_t *all_subs = session->current_team->subscribers;

@@ -7,24 +7,20 @@
 
 #include "file_parser.h"
 
-void case_TEAM(char **args, t_teams *current_team, t_channel **current_channel,
-t_messages **current_thread)
+void case_TEAM(char **args, t_teams **current_team, list_t **ret)
 {
-    list_t *ret = NULL;
-    *current_channel = NULL, *current_thread = NULL;
-
-    current_team = parse_team(args);
-    NODE_ADD(ret, current_team);
+    *current_team = parse_team(args);
+    NODE_ADD(*ret, *current_team);
 }
 
-int case_CHANNEL(char **args, t_teams *current_team, t_channel *current_channel,
+int case_CHANNEL(char **args, t_teams **current_team, t_channel **current_channel,
 t_messages **current_thread)
 {
     *current_thread = NULL;
-    current_channel = parse_channel(args);
+    *current_channel = parse_channel(args);
     if (!current_team)
         return 84;
-    NODE_ADD(current_team->channels, current_channel);
+    NODE_ADD((*current_team)->channels, *current_channel);
     return 0;
 }
 

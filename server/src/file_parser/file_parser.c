@@ -54,25 +54,26 @@ list_t *parse_file(int fd)
             case_USER(args);
             break;
         case TEAM:
-            case_TEAM(args, current_team, &current_channel, &current_thread);
+            current_channel = NULL, current_thread = NULL;
+            case_TEAM(args, &current_team, &ret);
             break;
         case CHANNEL:
-            if (case_CHANNEL(args, current_team, current_channel, &current_thread) == 84)
+            if (case_CHANNEL(args, &current_team, &current_channel, &current_thread) == 84)
                 return NULL;
             break;
         case THREAD:
-            if (case_THREAD(args, current_thread, current_channel) == 84)
+            if (case_THREAD(args, &current_thread, &current_channel) == 84)
                 return NULL;
             break;
         case REPLY:
-            if (case_REPLY(args, current_thread) == 84)
+            if (case_REPLY(args, &current_thread) == 84)
                 return NULL;
             break;
         case DM:
-            case_DM(args, current_dm);
+            case_DM(args, &current_dm);
             break;
         case MESSAGE:
-            if (case_MESSAGE(args, current_dm) == 84)
+            if (case_MESSAGE(args, &current_dm) == 84)
                 return NULL;
             break;
         default:
