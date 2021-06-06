@@ -8,7 +8,8 @@
 #include "commands.h"
 #include "message.h"
 
-void messages_second_part(session_t *session, char **args, uuid target, list_t *dms)
+void messages_second_part(session_t *session, char **args,
+    uuid target, list_t *dms)
 {
     char *buff = NULL;
     t_dm *dm = NULL;
@@ -24,7 +25,7 @@ void messages_second_part(session_t *session, char **args, uuid target, list_t *
             m->created_at, m->body);
         send_message(session->socket, buff, RESPONSE, MESSAGES);
         free(buff);
-    }   
+    }
 }
 
 void command_messages(t_global *global, session_t *session, char **args)

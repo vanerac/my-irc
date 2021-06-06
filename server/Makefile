@@ -41,7 +41,8 @@ SRC					=	server.c							\
 						str_to_word_array.c					\
 						split_by_quote.c					\
 						server_two.c						\
-						save.c
+						save.c								\
+						commands/utils_create.c
 
 TRC					=	test_basic.c
 MAIN				= 	main.c
