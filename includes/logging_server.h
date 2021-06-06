@@ -92,7 +92,8 @@ int server_event_user_subscribed(char const *team_uuid, char const *user_uuid);
 ** Commands:
 ** /unsubscribe "team_uuid"
 **/
-int server_event_user_unsubscribed(char const *team_uuid, char const *user_uuid);
+int server_event_user_unsubscribed(char const *team_uuid,
+    char const *user_uuid);
 
 /**
 ** @brief Must be called when a user didn't existed in save and was created

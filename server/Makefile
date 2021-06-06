@@ -15,6 +15,7 @@ SRC					=	server.c					\
 						commands/create.c			\
 						commands/login.c			\
 						commands/list.c				\
+						commands/list_print.c		\
 						commands/info.c				\
 						commands/send.c				\
 						commands/logout.c			\
@@ -37,14 +38,8 @@ OBJ					=	$(SRC:.c=.o)
 TOBJ				=	$(TRC:.c=.o)
 OMAIN				=	$(MAIN:.c=.o)
 
-# LIBS				=	../libnode.a 		\
-# 						../libsockets.a		\
-# 						../libmessage.a
-
-
 OBJECTS				=	$(addprefix ./src/, $(OBJ))
 TOBJECTS			=	$(addprefix ./tests/, $(TOBJ))
-# ABS_LIBS			=	$(addprefix -l../lilbs/, $(LIBS))
 
 CFLAGS				+=	-W -Wall -Wextra -Werror -g
 

@@ -70,6 +70,11 @@ enum command_return create_tread(t_channel *pchannel,
 enum command_return create_comment(t_messages *pmessages,
     session_t *session, char *arg);
 
+enum command_return dump_teams(t_global *global, session_t *session);
+enum command_return dump_channels(t_global *global, session_t *session);
+enum command_return dump_threads(t_global *global, session_t *session);
+enum command_return dump_messages(t_global *global, session_t *session);
+
 
 typedef enum command_return (*command_ptr)(t_global *, session_t *, char **);
 

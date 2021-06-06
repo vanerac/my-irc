@@ -42,7 +42,7 @@ bool args_len(char **args, int len);
 
 #define CHECK_ARGS(args, len, socket) \
     if (!args_len(args, len))        \
-        return (void) send_message(socket, "665 invalid args",RESPONSE, \
+        return (void) send_message(socket, "665 invalid args", RESPONSE, \
         INVALID);
 
 #endif //C_SERVER_H
