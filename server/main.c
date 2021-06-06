@@ -36,6 +36,7 @@ int main(int ac, char **ag)
         return 84;
     if ((server_fd = server_create(atoi(ag[1]))) == -1)
         return 84;
-    myteams_server(server_fd); // todo return code ??
+    if (myteams_server(server_fd) == 84)
+        return 84;
     return 0;
 }

@@ -98,6 +98,9 @@ void command_use(t_global *global, session_t *session, char **args
     ) = {&set_team, &set_channel, &set_thread, NULL};
     enum command_return status = SUCCESS;
 
+    session->current_team = NULL;
+    session->current_channel = NULL;
+    session->current_thread = NULL;
     for (int i = 0; fn[i] && args[i] && status == SUCCESS; ++i)
         status = fn[i](global, session, args[i]);
     if (status == SUCCESS)

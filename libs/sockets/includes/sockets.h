@@ -21,10 +21,4 @@ int socket_accept(int server_fd);
 int server_create(int port);
 int client_create(int port, char *host);
 
-// char *binary_encode(const char *buffer);
-// char *binary_decode(const char *buffer);
-
-// char *socket_read(int socket);
-// size_t socket_write(int socket, char *buffer);
-
 #endif //C_SOCKETS_H
