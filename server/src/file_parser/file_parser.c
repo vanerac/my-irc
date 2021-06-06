@@ -55,7 +55,7 @@ list_t *parse_file(int fd)
         case UNKNOWN:
             return ret;
         case USER:
-            current_user =  parse_user(args);
+            current_user = parse_user(args);
             NODE_ADD(ret, current_user)
             break;
         case TEAM:
@@ -72,7 +72,7 @@ list_t *parse_file(int fd)
             break;
         case THREAD:
             current_thread = parse_thread(args);
-            if (!current_channel )
+            if (!current_channel)
                 return NULL;
             NODE_ADD(current_channel->messages, current_thread)
             break;
@@ -84,7 +84,7 @@ list_t *parse_file(int fd)
             break;
         }
         case DM:
-            current_dm =  parse_dm(args);
+            current_dm = parse_dm(args);
             NODE_ADD(ret, current_dm)
             break;
         case MESSAGE: {

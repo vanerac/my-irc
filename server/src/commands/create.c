@@ -11,10 +11,9 @@
 #include "commands.h"
 #include "message.h"
 
-// todo handle duplicates
 int asprintf(char **restrict strp, const char *restrict fmt, ...);
 
-void notify_team_created(t_global *global, t_teams* team)
+void notify_team_created(t_global *global, t_teams *team)
 {
     list_t *all_sess = global->sessions;
     session_t *sess = NULL;
@@ -22,12 +21,12 @@ void notify_team_created(t_global *global, t_teams* team)
     char uuid[37];
 
     uuid_unparse(team->uid, uuid);
-    asprintf(&buffer, "205 \"%s\" \"%s\" \"%s\"", uuid, team->name, team->desc);
+    asprintf(&buffer, "205 \"%s\" \"%s\" \"%s\"", uuid, team->name,
+        team->desc);
     for (; all_sess; all_sess = all_sess->next) {
-        sess = (session_t *)all_sess->data;
-        // printf("%i\n", sess->socket);
+        sess = (session_t *) all_sess->data;
+
         if (sess->logged) {
-            // send_message(sess->socket, buffer, RESPONSE, CREATE);
         }
     }
     free(buffer);
@@ -53,7 +52,7 @@ static enum command_return create_team_second_part(t_global *global,
     send_message(session->socket, ret, RESPONSE, CREATE);
     free(ret);
     notify_team_created(global, team);
-    // to do notify all user subscribed to this team
+
     return SUCCESS;
 }
 
@@ -70,7 +69,7 @@ static enum command_return create_team(t_global *global, session_t *session,
     team->desc = strdup(desc);
     team->channels = NULL;
     team->type = TEAM;
-//    team->users = NULL;
+
     uuid_unparse(team->uid, uuid);
     server_event_team_created(uuid, name,
         ((t_user *) session->user_data)->username);
@@ -85,9 +84,10 @@ void notify_channel_created(session_t *session, t_channel *channel)
     char uuid[37];
 
     uuid_unparse(channel->uid, uuid);
-    asprintf(&buff, "207 \"%s\" \"%s\" \"%s\"", uuid, channel->name, channel->desc);
+    asprintf(&buff, "207 \"%s\" \"%s\" \"%s\"", uuid, channel->name,
+        channel->desc);
     for (; subs; subs = subs->next) {
-        curr = (session_t *)subs->data;
+        curr = (session_t *) subs->data;
         if (curr->logged) {
             send_message(curr->socket, buff, RESPONSE, CREATE);
         }
@@ -110,7 +110,8 @@ static enum command_return create_channel_second_part(t_teams *team,
             SYSTEM_ERROR;
     if (ret_val != SUCCESS)
         return SYSTEM_ERROR;
-    asprintf(&ret, "208 \"%s\" \"%s\" \"%s\"", uuid, channel->name, channel->desc);
+    asprintf(&ret, "208 \"%s\" \"%s\" \"%s\"", uuid, channel->name,
+        channel->desc);
     send_message(session->socket, ret, RESPONSE, CREATE);
     free(ret);
     notify_channel_created(session, channel);
@@ -150,7 +151,7 @@ void notify_thread_created(session_t *session, t_messages *thread)
     asprintf(&buff, "209 \"%s\" \"%s\" \"%ld\" \"%s\" \"%s\"", t_uuid, u_uuid,
         thread->created_at, thread->title, thread->body);
     for (; subs; subs = subs->next) {
-        curr = (session_t *)subs->data;
+        curr = (session_t *) subs->data;
         if (curr->logged) {
             send_message(curr->socket, buff, RESPONSE, CREATE);
         }
@@ -204,8 +205,8 @@ static enum command_return create_tread(t_channel *pchannel,
     uuid_unparse(thread->uid, uuid_t);
     uuid_unparse(session->user_data->uid, uuid_s);
     uuid_unparse(pchannel->uid, uuid_c);
-    server_event_thread_created(uuid_c, uuid_t, uuid_s,
-        thread->title, thread->body);
+    server_event_thread_created(uuid_c, uuid_t, uuid_s, thread->title,
+        thread->body);
     return create_thread_second_part(pchannel, session, thread);
 }
 
@@ -220,10 +221,11 @@ void notify_reply_created(session_t *session, t_messages *thread)
 
     uuid_unparse(session->current_team->uid, team_uuid);
     uuid_unparse(thread->uid, thread_uuid);
-    uuid_unparse(session->user_data->uid , user_uuid);
-    asprintf(&buff, "211 \"%s\" \"%s\" \"%s\" \"%s\"", team_uuid, thread_uuid, user_uuid, thread->body);
+    uuid_unparse(session->user_data->uid, user_uuid);
+    asprintf(&buff, "211 \"%s\" \"%s\" \"%s\" \"%s\"", team_uuid, thread_uuid,
+        user_uuid, thread->body);
     for (; subs; subs = subs->next) {
-        curr = (session_t *)subs->data;
+        curr = (session_t *) subs->data;
         if (curr->logged) {
             send_message(curr->socket, buff, RESPONSE, CREATE);
         }
@@ -249,9 +251,8 @@ static enum command_return create_comment_second_part(session_t *session,
     char t_uuid[37], s_uuid[37];
     uuid_unparse(((t_user *) session->user_data)->uid, s_uuid);
     uuid_unparse(thread->uid, t_uuid);
-    asprintf(&ret, "212 \"%s\" \"%s\" \"%ld\" \"%s\"", t_uuid,
-        s_uuid, pmessages->created_at,
-        pmessages->body);
+    asprintf(&ret, "212 \"%s\" \"%s\" \"%ld\" \"%s\"", t_uuid, s_uuid,
+        pmessages->created_at, pmessages->body);
     send_message(session->socket, ret, RESPONSE, CREATE);
     free(ret);
     notify_reply_created(session, thread);
@@ -282,7 +283,8 @@ static enum command_return create_comment(t_messages *pmessages,
 }
 
 enum command_return call_create(t_global *global, session_t *session,
-    char **args)
+    char **args
+)
 {
     if (!session->current_team) {
         if (!args || !args[0] || !args[1])
@@ -310,7 +312,7 @@ enum command_return call_create(t_global *global, session_t *session,
 void command_create(t_global *global, session_t *session, char **args
 )
 {
-    (void) args; // todo parse args
+    (void) args;
     enum command_return return_val = SUCCESS;
 
     if (session->error != NO_ERROR) {

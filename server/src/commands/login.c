@@ -12,25 +12,6 @@
 
 int asprintf(char **strp, const char *fmt, ...);
 
-void command_logout(t_global *global, session_t *session, char **args
-)
-{
-    (void) global, (void) args;
-    char uuid[37];
-    char *ret = NULL;
-    uuid_unparse(session->user_data->uid, uuid);
-    server_event_user_logged_out(uuid);
-    // if (!session->user_data)
-        // return; // not logged in
-    asprintf(&ret, "200 \"%s\" \"%s\"", uuid,
-        ((t_user *) session->user_data)->username);
-    send_message(session->socket, ret, RESPONSE, LOGOUT);
-    session->logged = false;
-    session->user_data->logged = false;
-    session->user_data = NULL;
-    //    return SUCCESS;
-}
-
 static t_user *create_user(t_global *global, char *username)
 {
     if (!username)
@@ -43,10 +24,7 @@ static t_user *create_user(t_global *global, char *username)
     ret->type = USER;
     ret->username = strdup(username);
     NODE_ADD(global->all_user, ret)
-//    if (!global->all_user)
-//        global->all_user = node_list_create(ret);
-//    else
-//        node_append_data(global->all_user, ret);
+
     ret->logged = true;
 
     uuid_unparse(ret->uid, uuid);
@@ -69,22 +47,12 @@ static bool find_by_username_session(void *it, void *data)
 void command_login(t_global *global, session_t *session, char **args)
 {
     char uuid[37];
-    char *ret = NULL;
-    // char *username = args[0];
-    // if (session->logged) {
-        // already logged in, error ?
-    // }
-    if (!args || !args[0]) {
-        send_message(session->socket, "665 invalid arguments", RESPONSE, INVALID);
-        return;
-    }
+    CHECK_ARGS(args, 1, session->socket)
     if (session->logged ||
         node_find_fn(global->sessions, &find_by_username_session, args[0])) {
-        send_message(session->socket, "407 already logged", RESPONSE,
-            LOGIN);
-        return; // todo
+        send_message(session->socket, "407 already logged", RESPONSE, LOGIN);
+        return;
     }
-
     list_t *user = node_find_fn(global->all_user, &find_by_username, args[0]);
 
     if (user)
@@ -93,12 +61,10 @@ void command_login(t_global *global, session_t *session, char **args)
         session->user_data = create_user(global, args[0]);
 
     if (!session->user_data)
-        return; // todo error ???
+        return;
     session->logged = true;
     uuid_unparse(session->user_data->uid, uuid);
-    asprintf(&ret, "200 \"%s\" \"%s\"", uuid, args[0]);
     server_event_user_logged_in(uuid);
-    send_message(session->socket, ret, RESPONSE, LOGIN);
-    //    return SUCCESS;
+    SEND_MESSAGE(session->socket, RESPONSE, LOGIN, "200 \"%s\" \"%s\"", uuid,
+        args[0])
 }
-

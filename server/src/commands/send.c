@@ -26,10 +26,6 @@ static t_dm *create_dm(t_global *global, session_t *session, uuid target)
     uuid_copy(ret->user_second, target);
     ret->type = DM;
     NODE_ADD(global->private_message, ret)
-//    if (!global->private_message)
-//        global->private_message = node_list_create(ret);
-//    else
-//        node_append_data(global->private_message, ret);
     return ret;
 }
 
@@ -50,47 +46,24 @@ static t_messages *init_message(t_user *author, void *destination, char *body)
 
 void command_send(t_global *global, session_t *session, char **args)
 {
-    uuid target;
-    // char *message = NULL;
+    uuid target, *uuids[2] = {&session->user_data->uid, &target};
     uuid_parse(args[0], target);
-    uuid *uuids[2] = {&session->user_data->uid, &target};
-
-    if (!args || !args[0] || !args[1]) {
-        send_message(session->socket, "665 invalid args", RESPONSE, INVALID);
-        return;
-    }
-    // message = args[1];
+    char tmp[37];
+    CHECK_ARGS(args, 2, session->socket)
     if (!node_find_fn(global->all_user, &find_by_uuid, args[0])) {
-        // 401 uuid
-        char *buffer = NULL;
-        asprintf(&buffer, "401 \"%s\"\n", args[0]);
-        send_message(session->socket, buffer, RESPONSE, SEND);
+        SEND_MESSAGE(session->socket, RESPONSE, SEND, "401 \"%s\"\n", args[0]);
         return;
     }
-
     list_t *dms = node_find_fn(global->private_message, &find_dms, uuids);
-    t_dm *dm;
-    if (!dms)
-        dm = create_dm(global, session, target);
-    else
-        dm = dms->data;
+    t_dm *dm = dms ? dms->data : create_dm(global, session, target);
     t_messages *ret = init_message(session->user_data, dm, args[1]);
     NODE_ADD(dm->messages, ret)
-//    if (!dm->messages)
-//        dm->messages = node_list_create(ret);
-//    else
-//        node_append_data(dm->messages, ret);
-
-    // todo write to client OK
     list_t *target_session = node_find_fn(global->sessions, &find_by_uuid,
         target);
-    char tmp[37];
     uuid_unparse(session->user_data->uid, tmp);
-    if (target_session && ((session_t *) target_session->data)->logged) {
-        char *buffer = NULL;
-
-        asprintf(&buffer, "200 \"%s\" \"%s\"", tmp, ret->body);
-        return;
-    }
+    if (target_session &&
+        ((session_t *) target_session->data)->logged) SEND_MESSAGE(
+        ((session_t *) target_session->data)->socket, RESPONSE, SEND,
+        "200 \"%s\" \"%s\"", tmp, ret->body)
     server_event_private_message_sended(tmp, args[0], args[1]);
 }

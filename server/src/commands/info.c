@@ -27,9 +27,8 @@ enum command_return channel_info(session_t *session)
 {
     char *buff = NULL;
 
-    asprintf(&buff, "215 \"%s\" \"%s\" \"%s\"",
-        session->current_channel->uid, session->current_channel->name,
-        session->current_channel->desc);
+    asprintf(&buff, "215 \"%s\" \"%s\" \"%s\"", session->current_channel->uid,
+        session->current_channel->name, session->current_channel->desc);
     send_message(session->socket, buff, RESPONSE, INFO);
     free(buff);
     return SUCCESS;
@@ -39,9 +38,8 @@ enum command_return team_info(session_t *session)
 {
     char *buff = NULL;
 
-    asprintf(&buff, "214 \"%s\" \"%s\" \"%s\"",
-        session->current_team->uid, session->current_team->name,
-        session->current_team->desc);
+    asprintf(&buff, "214 \"%s\" \"%s\" \"%s\"", session->current_team->uid,
+        session->current_team->name, session->current_team->desc);
     send_message(session->socket, buff, RESPONSE, INFO);
     free(buff);
     return SUCCESS;
@@ -54,9 +52,8 @@ enum command_return user_info(session_t *session)
 
     uuid_unparse(session->user_data->uid, uuid);
 
-    asprintf(&buff, "213 \"%s\" \"%s\" \"%i\"",
-        uuid, session->user_data->username,
-        session->logged ? 1 : 0);
+    asprintf(&buff, "213 \"%s\" \"%s\" \"%i\"", uuid,
+        session->user_data->username, session->logged ? 1 : 0);
     send_message(session->socket, buff, RESPONSE, INFO);
     free(buff);
     return SUCCESS;
@@ -72,20 +69,12 @@ enum command_return call_info(session_t *session)
         return team_info(session);
     else
         return user_info(session);
-    // if (session->current_thread)
-        // return dump_messages(global, session);
-    // if (session->current_channel)
-        // return dump_threads(global, session);
-    // if (session->current_team)
-        // return dump_channels(global, session);
-    // else
-        // return dump_teams(global, session);
 }
 
 void command_info(t_global *global, session_t *session, char **args)
 {
-    (void)args;
-    (void)global;
+    (void) args;
+    (void) global;
     enum command_return ret_val = SUCCESS;
 
     if (session->error != NO_ERROR) {
