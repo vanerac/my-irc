@@ -42,7 +42,6 @@ bool check_type(char **args, enum data_type expected_type)
 
 list_t *parse_file(int fd)
 {
-
     list_t *ret = NULL;
     t_dm *current_dm = NULL;
     t_teams *current_team = NULL;
@@ -52,8 +51,6 @@ list_t *parse_file(int fd)
 
     for (char **args = NULL; (args = get_args(fd, true));) {
         switch ((enum data_type) atoi(args[0])) {
-        case UNKNOWN:
-            return ret;
         case USER:
             current_user = parse_user(args);
             NODE_ADD(ret, current_user)

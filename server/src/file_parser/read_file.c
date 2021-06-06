@@ -7,15 +7,14 @@
 
 #include <unistd.h>
 #include <logging_server.h>
+#include <server.h>
 #include "file_parser.h"
 
 t_teams *parse_team(char **args)
 {
     t_teams *ret = malloc(sizeof(t_teams));
-    if (!check_type(args, TEAM))
+    if (!check_type(args, TEAM) || !args_len(args, 4))
         return NULL;
-    // todo check args count
-    // read meta data
     ret->type = TEAM;
     uuid_parse(args[1], ret->uid);
     ret->name = args[2], ret->desc = args[3];
@@ -28,9 +27,8 @@ t_channel *parse_channel(char **args)
 {
 
     t_channel *ret = malloc(sizeof(t_channel));
-    if (!check_type(args, CHANNEL))
+    if (!check_type(args, CHANNEL) || !args_len(args, 4))
         return NULL;
-    // todo check size
     ret->type = CHANNEL;
     uuid_parse(args[1], ret->uid);
     ret->name = args[2], ret->desc = args[3];
@@ -42,7 +40,7 @@ t_messages *parse_thread(char **args)
 {
     t_messages *ret = malloc(sizeof(t_messages));
 
-    if (!check_type(args, THREAD))
+    if (!check_type(args, THREAD) || !args_len(args, 6))
         return NULL;
     ret->type = THREAD;
     uuid_parse(args[2], ret->uid);
@@ -59,7 +57,7 @@ t_messages *parse_reply(char **args)
 {
     t_messages *ret = malloc(sizeof(t_messages));
 
-    if (!check_type(args, MESSAGE))
+    if (!check_type(args, MESSAGE) || !args_len(args, 6))
         return NULL;
     ret->type = REPLY;
     uuid_parse(args[2], ret->uid);
@@ -73,7 +71,7 @@ t_user *parse_user(char **args)
 {
     t_user *ret = malloc(sizeof(t_user));
 
-    if (!check_type(args, USER))
+    if (!check_type(args, USER) || !args_len(args, 3))
         return NULL;
     ret->type = USER;
     uuid_parse(args[1], ret->uid);
@@ -87,7 +85,7 @@ t_user *parse_user(char **args)
 
 t_dm *parse_dm(char **args)
 {
-    if (!check_type(args, USER))
+    if (!check_type(args, USER) || !args_len(args, 3))
         return NULL;
     t_dm *ret = malloc(sizeof(t_dm));
 

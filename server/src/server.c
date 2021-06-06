@@ -83,8 +83,6 @@ int listen_updates(int server_socket, list_t *sessions, t_global *global,
     return status;
 }
 
-// todo handle sig
-
 void load(t_global *global)
 {
     int team_fd = open("./teams.save", O_RDONLY, 0644);
@@ -144,21 +142,17 @@ int myteams_server(int server_socket)
     t_global global = {.all_user = NULL, .private_message = NULL, .teams =
     NULL, .sessions = sessions};
     load(&global);
-    // todo load global
-    save(&global, false); // save ptr;
+    save(&global, false);
     signal(SIGTERM, sig_save);
     signal(SIGINT, sig_save);
-    //    signal(SIGSEGV, sig_save);
     if (!sessions)
         return 84;
     if (server_socket < 0)
         return 84;
     int status = 0;
-    while (status == 0) {
-        save(NULL, true);
+    while (status == 0)
         status = listen_updates(server_socket, sessions, &global, &rfds);
-    }
-    // todo // save global
+
     save(&global, true);
     return status == 84 ? 84 : 0;
 }
