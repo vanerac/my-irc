@@ -19,6 +19,8 @@ t_teams *parse_team(char **args)
     uuid_parse(args[1], ret->uid);
     ret->name = args[2], ret->desc = args[3];
     ret->channels = NULL;
+    ret->subscribers = NULL;
+    ret->users = NULL;
 
     return ret;
 }

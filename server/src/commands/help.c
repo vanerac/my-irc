@@ -50,24 +50,25 @@ enum command_return is_logged(t_global *global, session_t *session, char **args
     if (session->logged && session->user_data)
         return SUCCESS;
     send_message(session->socket, "400 client not logged", RESPONSE, INVALID);
-    return UNAUTHORISED;}
+    return UNAUTHORISED;
+}
 
 void command_help(t_global *global, session_t *session, char **args)
 {
     (void) session, (void) args, (void) global;
 
     char *h = "200 /help -> show help\n/login 'user' -> set the user used by"
-        " client\n/logout -> disconnect the client from the server\n"
-        "/users -> list of all users that exist\n/user 'user_uuid' -> get"
-        " information about a user\n/send 'user_uuid' 'message_body' -> send"
-        " a message to a user\n/messages 'user_uuid' -> list all messages with"
-        " a user\n/subscribe 'team_uuid' -> subscribe to a team\n/subscribed ?"
-        "'team_uuid' -> list all subscribed teams or list all users subscribed"
-        " to a team\n/unsubscribe 'team_uuid' -> unsubscribe from a team\n"
-        "/use ? 'team_uuid' ?'channel_uuid' ?'thread_uuid' -> use specify a "
-        "context team/channel/thread\n/create -> create team/channel/thread\n"
-        "/list -> list existing teams/channels/threads\n/info -> display info"
-        " about users/team/channel/thread\n";
+              " client\n/logout -> disconnect the client from the server\n"
+              "/users -> list of all users that exist\n/user 'user_uuid' -> get"
+              " information about a user\n/send 'user_uuid' 'message_body' -> send"
+              " a message to a user\n/messages 'user_uuid' -> list all messages with"
+              " a user\n/subscribe 'team_uuid' -> subscribe to a team\n/subscribed ?"
+              "'team_uuid' -> list all subscribed teams or list all users subscribed"
+              " to a team\n/unsubscribe 'team_uuid' -> unsubscribe from a team\n"
+              "/use ? 'team_uuid' ?'channel_uuid' ?'thread_uuid' -> use specify a "
+              "context team/channel/thread\n/create -> create team/channel/thread\n"
+              "/list -> list existing teams/channels/threads\n/info -> display info"
+              " about users/team/channel/thread\n";
 
     send_message(session->socket, h, RESPONSE, HELP);
 }
@@ -182,28 +183,18 @@ enum command_return display_subscribed_teams(t_global *global,
 {
     list_t *all_teams = global->teams;
     t_teams *team = NULL;
-    list_t *user = NULL;
-    char *print = strdup("201 ");
-    char *buffer = NULL;
     char uuid[37];
 
-    if (!print)
-        return SYSTEM_ERROR;
     for (; all_teams; all_teams = all_teams->next) {
         team = all_teams->data;
-        user = node_find_fn(team->subscribers, find_by_uuid,
-            session->user_data->uid);
-        if (user) {
+        if (node_find_fn(team->subscribers, find_by_uuid,
+            session->user_data->uid)) {
             uuid_unparse(team->uid, uuid);
-            asprintf(&buffer, "%s\"%s\" \"%s\" \"%s\"\n", print, uuid,
-                team->name, team->desc);
-            free(print);
-            if (!(print = strdup(buffer)))
-                return SYSTEM_ERROR;
+            SEND_MESSAGE(session->socket, RESPONSE, SUBSCRIBE,
+                "201 \"%s\" \"%s\" \"%s\"\n", uuid, team->name, team->desc);
         }
-        user = NULL;
     }
-    send_message(session->socket, print, RESPONSE, SUBSCRIBE);
+
     return SUCCESS;
 }
 
@@ -214,29 +205,21 @@ enum command_return display_subscribers_to_team(t_global *global,
     list_t *node = node_find_fn(global->teams, find_by_uuid, uid);
     t_teams *team = NULL;
     session_t *user = NULL;
-
-    char *print = strdup("202 ");
     char uuid[37];
-    char *buffer = NULL;
 
-    if (!print)
-        return SYSTEM_ERROR;
     if (!node) {
-        asprintf(&print, "402 \"%s\"", uuid);
-        send_message(session->socket, print, RESPONSE, SUBSCRIBE);
+        SEND_MESSAGE(session->socket, RESPONSE, SUBSCRIBE, "402 \"%s\"", uuid);
         return SUCCESS;
     }
     team = node->data;
     for (; team->subscribers; team->subscribers = team->subscribers->next) {
         user = (session_t *) team->subscribers;
         uuid_unparse(user->user_data->uid, uuid);
-        asprintf(&buffer, "%s\"%s\" \"%s\" \"%s\"\n", print, uuid,
-            user->user_data->username, user->logged);
-        free(print);
-        if (!(print = strdup(buffer)))
-            return SYSTEM_ERROR;
+        SEND_MESSAGE(session->socket, RESPONSE, SUBSCRIBED,
+            "202 \"%s\" \"%s\" \"%d\"\n", uuid, user->user_data->username,
+            user->logged);
     }
-    send_message(session->socket, print, RESPONSE, SUBSCRIBED);
+
     return SUCCESS;
 }
 
