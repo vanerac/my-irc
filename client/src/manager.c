@@ -16,12 +16,12 @@ void server_handler(message_info_t *info)
         code = strtok(info->args, " ");
         args = strtok(NULL, "\0");
     }
+    if (!code)
+        return;
     if (strcmp(code, "666") == 0){
         printf("System error\n");
         return;
     }
-    if (!code)
-        return;
     for (int i = 0; i < 14; i++) {
         if (func_ptr_client[i].command == info->command) {
             (*func_ptr_client[i].func)(atoi(code), args);
