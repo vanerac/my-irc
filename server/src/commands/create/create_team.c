@@ -22,15 +22,12 @@ static void notify_team_created(t_global *global, t_teams *team)
     uuid_unparse(team->uid, uuid);
     asprintf(&buffer, "205 \"%s\" \"%s\" \"%s\"", uuid, team->name,
         team->desc);
+    if (all_sess)
+        all_sess = all_sess->next;
     for (; all_sess; all_sess = all_sess->next) {
         sess = (session_t *) all_sess->data;
         if (sess->logged) {
-            //
-            //
-            //      SEGFAULT
-            // send_message(sess->socket, buffer, RESPONSE, CREATE);
-            //
-            //
+            send_message(sess->socket, buffer, RESPONSE, CREATE);
         }
     }
     free(buffer);
@@ -51,11 +48,9 @@ static enum command_return create_team_second_part(t_global *global,
     if (ret_val != SUCCESS)
         return SYSTEM_ERROR;
     asprintf(&ret, "206 \"%s\" \"%s\" \"%s\"", uuid, team->name, team->desc);
-    // printf("bef = %i\n", session->socket);
     send_message(session->socket, ret, RESPONSE, CREATE);
     free(ret);
     notify_team_created(global, team);
-
     return SUCCESS;
 }
 
