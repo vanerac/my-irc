@@ -40,7 +40,7 @@ void convert_args(uint8_t *to_send, char *end);
 size_t get_size_uint(char *str);
 
 #define SEND_MESSAGE(socket, type, command, format_str, ...)    \
-        {char *buffer = NULL;                                    \
+        {char *buffer = NULL;                                   \
         asprintf(&buffer, format_str, __VA_ARGS__);             \
         send_message(socket, buffer, type, command);            \
         free(buffer);};

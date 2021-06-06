@@ -22,9 +22,6 @@ void subscribe(int code, char *allargs)
             if (get_array_size(args) >= 1)
                 client_error_unknown_team(args[0]);
             break;
-        // case 400:
-            // client_error_unauthorized();
-            // break;
     }
     free_table(args);
 }

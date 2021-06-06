@@ -38,7 +38,7 @@ enum command_return return_invalid(t_global *global, session_t *session,
 {
     (void) session;
     (void) global, (void) args;
-    send_message(session->socket, "220 Invalid Command", RESPONSE, INVALID);
+    send_message(session->socket, "399 Invalid Command", RESPONSE, INVALID);
     return UNKNOWN_COMMAND;
 }
 
@@ -47,25 +47,27 @@ enum command_return is_logged(t_global *global, session_t *session, char **args
 {
     (void) global, (void) args;
 
-    return session->logged && session->user_data ? SUCCESS : UNAUTHORISED;
-}
+    if (session->logged && session->user_data)
+        return SUCCESS;
+    send_message(session->socket, "400 client not logged", RESPONSE, INVALID);
+    return UNAUTHORISED;}
 
 void command_help(t_global *global, session_t *session, char **args)
 {
     (void) session, (void) args, (void) global;
 
     char *h = "200 /help -> show help\n/login 'user' -> set the user used by"
-              " client\n/logout -> disconnect the client from the server\n"
-              "/users -> list of all users that exist\n/user 'user_uuid' -> get"
-              " information about a user\n/send 'user_uuid' 'message_body' -> send"
-              " a message to a user\n/messages 'user_uuid' -> list all messages with"
-              " a user\n/subscribe 'team_uuid' -> subscribe to a team\n/subscribed ?"
-              "'team_uuid' -> list all subscribed teams or list all users subscribed"
-              " to a team\n/unsubscribe 'team_uuid' -> unsubscribe from a team\n"
-              "/use ? 'team_uuid' ?'channel_uuid' ?'thread_uuid' -> use specify a "
-              "context team/channel/thread\n/create -> create a team/channel/thread\n"
-              "/list -> list existing teams/channels/threads\n/info -> display info"
-              " about users/team/channel/thread\n";
+        " client\n/logout -> disconnect the client from the server\n"
+        "/users -> list of all users that exist\n/user 'user_uuid' -> get"
+        " information about a user\n/send 'user_uuid' 'message_body' -> send"
+        " a message to a user\n/messages 'user_uuid' -> list all messages with"
+        " a user\n/subscribe 'team_uuid' -> subscribe to a team\n/subscribed ?"
+        "'team_uuid' -> list all subscribed teams or list all users subscribed"
+        " to a team\n/unsubscribe 'team_uuid' -> unsubscribe from a team\n"
+        "/use ? 'team_uuid' ?'channel_uuid' ?'thread_uuid' -> use specify a "
+        "context team/channel/thread\n/create -> create team/channel/thread\n"
+        "/list -> list existing teams/channels/threads\n/info -> display info"
+        " about users/team/channel/thread\n";
 
     send_message(session->socket, h, RESPONSE, HELP);
 }

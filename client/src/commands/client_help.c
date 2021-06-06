@@ -13,8 +13,5 @@ void help(int code, char *allargs)
         case 200:
             printf("%s", allargs);
             break;
-        // case 400:
-            // client_error_unauthorized();
-            // break;
     }
 }
