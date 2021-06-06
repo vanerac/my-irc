@@ -32,5 +32,5 @@ void command_info(t_global *global, session_t *session, char **args)
     }
     ret_val = call_info(session);
     if (ret_val != SYSTEM_ERROR)
-        send_message(session->socket, "666 \"system error\"", RESPONSE, LIST);
+        send_message(session->socket, "666 system error", RESPONSE, LIST);
 }

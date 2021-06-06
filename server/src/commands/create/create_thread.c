@@ -63,9 +63,9 @@ enum command_return create_tread(t_channel *pchannel,
     session_t *session, char *arg, char *arg1)
 {
     t_messages *thread = malloc(sizeof(t_messages));
-    char uuid_t[37];
-    char uuid_s[37];
-    char uuid_c[37];
+    char id_t[37];
+    char id_s[37];
+    char id_c[37];
 
     if (!thread)
         return SYSTEM_ERROR;
@@ -78,10 +78,9 @@ enum command_return create_tread(t_channel *pchannel,
     thread->author = session->user_data;
     thread->replies = NULL;
     time(&thread->created_at);
-    uuid_unparse(thread->uid, uuid_t);
-    uuid_unparse(session->user_data->uid, uuid_s);
-    uuid_unparse(pchannel->uid, uuid_c);
-    server_event_thread_created(uuid_c, uuid_t, uuid_s, thread->title,
-        thread->body);
+    uuid_unparse(thread->uid, id_t);
+    uuid_unparse(session->user_data->uid, id_s);
+    uuid_unparse(pchannel->uid, id_c);
+    server_event_thread_created(id_c, id_t, id_s, thread->title, thread->body);
     return create_thread_second_part(pchannel, session, thread);
 }
