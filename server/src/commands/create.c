@@ -63,7 +63,7 @@ enum command_return check_size_args(session_t *session, char **args)
         if (strlen(args[0]) > 512)
             return TOO_LONG_ARGS;
     }
-    return SUCCESS;   
+    return SUCCESS;
 }
 
 void command_create(t_global *global, session_t *session, char **args)
@@ -75,7 +75,7 @@ void command_create(t_global *global, session_t *session, char **args)
         send_error_to_client(session);
         return;
     }
-    if ((return_val = check_nb_arg(session, args))== INVALID_ARGS) {
+    if ((return_val = check_nb_arg(session, args)) == INVALID_ARGS) {
         send_message(session->socket, "665 invalid args", RESPONSE, INVALID);
         return;
     }

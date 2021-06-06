@@ -78,6 +78,5 @@ void command_subscribed(t_global *global, session_t *session, char **args)
         ret_val = display_subscribers_to_team(global, session, args[0]);
     }
     if (ret_val != SUCCESS)
-        send_message(session->socket, "666 \"system error\"", RESPONSE,
-            INVALID);
+        send_message(session->socket, "666 system error", RESPONSE, INVALID);
 }
