@@ -13,7 +13,6 @@ void send(int code, char *allargs)
 
     if (!args)
         return;
-    // if (array_size(args) > 0) {
     switch (code) {
         case 200:
             if (get_array_size(args) >= 2)
@@ -23,9 +22,6 @@ void send(int code, char *allargs)
             if (get_array_size(args) >= 1)
                 client_error_unknown_user(args[0]);
             break;
-        // case 400:
-            // client_error_unauthorized();
-            // break;
     }
     free_table(args);
 }

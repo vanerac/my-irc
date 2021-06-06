@@ -18,9 +18,6 @@ void users(int code, char *allargs)
             if (get_array_size(args) >= 3)
                 client_print_users(args[0], args[1], atoi(args[2]));
             break;
-        // case 400:
-            // client_error_unauthorized();
-            // break;
     }
     free_table(args);
 }

@@ -84,7 +84,7 @@ void create(int code, char *allargs)
                 client_print_team_created(args[0], args[1], args[2]);
             break;
     }
-    create_second(code, args);    
+    create_second(code, args);
     create_third(code, args);
     create_error_response(code, args);
     free_table(args);
