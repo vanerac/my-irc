@@ -13,8 +13,8 @@ void case_TEAM(char **args, t_teams **current_team, list_t **ret)
     NODE_ADD(*ret, *current_team);
 }
 
-int case_CHANNEL(char **args, t_teams **current_team, t_channel **current_channel,
-t_messages **current_thread)
+int case_CHANNEL(char **args, t_teams **current_team,
+t_channel **current_channel, t_messages **current_thread)
 {
     *current_thread = NULL;
     *current_channel = parse_channel(args);

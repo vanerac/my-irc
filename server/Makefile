@@ -34,7 +34,9 @@ SRC					=	server.c							\
 						commands/create/create_reply.c		\
 						file_parser/file_parser.c			\
 						file_parser/write_file.c			\
+						file_parser/write_team.c			\
 						file_parser/read_file.c				\
+						file_parser/read_team.c				\
 						file_parser/file_tools.c			\
 						file_parser/case.c					\
 						file_parser/case_bis.c				\
