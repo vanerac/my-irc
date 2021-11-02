@@ -1,0 +1,2 @@
+# my-irc
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c13eba2fc6c14f2eafbb4b6d1f2db0ec)](https://app.codacy.com/gh/vanerac/my-irc?utm_source=github.com&utm_medium=referral&utm_content=vanerac/my-irc&utm_campaign=Badge_Grade_Settings)
